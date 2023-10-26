@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export { GammaTradeMarket__factory } from "./GammaTradeMarket__factory";
+export { LeveragedGammaMarket__factory } from "./LeveragedGammaMarket__factory";
 export { Permit2__factory } from "./Permit2__factory";
 export { PerpMarket__factory } from "./PerpMarket__factory";
 export { PerpMarketQuoter__factory } from "./PerpMarketQuoter__factory";

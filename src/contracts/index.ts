@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { GammaTradeMarket } from "./GammaTradeMarket";
+export type { LeveragedGammaMarket } from "./LeveragedGammaMarket";
 export type { Permit2 } from "./Permit2";
 export type { PerpMarket } from "./PerpMarket";
 export type { PerpMarketQuoter } from "./PerpMarketQuoter";
@@ -9,6 +10,7 @@ export type { PredyPool } from "./PredyPool";
 export type { PredyPoolQuoter } from "./PredyPoolQuoter";
 export * as factories from "./factories";
 export { GammaTradeMarket__factory } from "./factories/GammaTradeMarket__factory";
+export { LeveragedGammaMarket__factory } from "./factories/LeveragedGammaMarket__factory";
 export { Permit2__factory } from "./factories/Permit2__factory";
 export { PerpMarket__factory } from "./factories/PerpMarket__factory";
 export { PerpMarketQuoter__factory } from "./factories/PerpMarketQuoter__factory";

@@ -3,6 +3,7 @@ import { PERMIT2_MAPPING } from "@uniswap/uniswapx-sdk";
 import { BigNumber } from "ethers";
 
 import { DutchOrderBuilder } from "../builder";
+import { LeveragedGammaMarket__factory } from "../contracts";
 
 interface TradeOptions {
   side: "BUY" | "SELL";

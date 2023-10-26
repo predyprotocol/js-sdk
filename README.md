@@ -1,9 +1,9 @@
 js-sdk
 =====
 
+A JavaScript SDK for the Predy Protocol.
 
 ## Example
-
 
 ### Sign order
 
@@ -20,4 +20,14 @@ const order = builder
 const { domain } = order.permitData()
 const signature = wallet._signTypedData(domain, types, values)
 
+```
+
+### settlement
+
+```
+const LeveragedGammaMarket = LeveragedGammaMarket__factory.connect('0x00...', signer)
+
+const settlement = new UniswapSettlement(/*...*/)
+
+await LeveragedGammaMarket.executeOrder(order, settlement.serialize());
 ```

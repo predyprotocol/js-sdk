@@ -776,9 +776,7 @@ export interface PredyPool extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[IPredyPool.VaultStatusStructOutput]>;
 
-    globalData(
-      overrides?: CallOverrides
-    ): Promise<
+    globalData(overrides?: CallOverrides): Promise<
       [BigNumber, BigNumber, string, LockDataLibrary.LockDataStructOutput] & {
         pairsCount: BigNumber;
         vaultCount: BigNumber;
@@ -902,9 +900,7 @@ export interface PredyPool extends BaseContract {
     overrides?: CallOverrides
   ): Promise<IPredyPool.VaultStatusStructOutput>;
 
-  globalData(
-    overrides?: CallOverrides
-  ): Promise<
+  globalData(overrides?: CallOverrides): Promise<
     [BigNumber, BigNumber, string, LockDataLibrary.LockDataStructOutput] & {
       pairsCount: BigNumber;
       vaultCount: BigNumber;
@@ -1028,9 +1024,7 @@ export interface PredyPool extends BaseContract {
       overrides?: CallOverrides
     ): Promise<IPredyPool.VaultStatusStructOutput>;
 
-    globalData(
-      overrides?: CallOverrides
-    ): Promise<
+    globalData(overrides?: CallOverrides): Promise<
       [BigNumber, BigNumber, string, LockDataLibrary.LockDataStructOutput] & {
         pairsCount: BigNumber;
         vaultCount: BigNumber;

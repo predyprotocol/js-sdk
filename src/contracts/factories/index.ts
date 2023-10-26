@@ -4,4 +4,6 @@
 export { GammaTradeMarket__factory } from "./GammaTradeMarket__factory";
 export { Permit2__factory } from "./Permit2__factory";
 export { PerpMarket__factory } from "./PerpMarket__factory";
+export { PerpMarketQuoter__factory } from "./PerpMarketQuoter__factory";
 export { PredyPool__factory } from "./PredyPool__factory";
+export { PredyPoolQuoter__factory } from "./PredyPoolQuoter__factory";

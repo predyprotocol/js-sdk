@@ -4,7 +4,6 @@ import { BigNumber } from "ethers";
 
 import { DutchOrderBuilder } from "../builder";
 
-
 interface TradeOptions {
   side: "BUY" | "SELL";
   orderType: "MARKET" | "LIMIT";
@@ -39,12 +38,7 @@ export class Trade {
     );
 
     return builder
-      .validationData({
-        startPrice: 0,
-        endPrice: 0,
-        startTime: now,
-        endTime: now + this.defaultAuctionTime,
-      })
+      .validationData(0, 0, now, now + this.defaultAuctionTime)
       .deadline(now + this.defaultTimeUntilDeadline)
       .nonce(options.nonce)
       .tradeAmount(options.side === "BUY" ? tradeAmount : tradeAmount.mul(-1))

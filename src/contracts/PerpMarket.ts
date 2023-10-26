@@ -27,18 +27,58 @@ import type {
   PromiseOrValue,
 } from "./common";
 
+export type OrderInfoStruct = {
+  market: PromiseOrValue<string>;
+  trader: PromiseOrValue<string>;
+  nonce: PromiseOrValue<BigNumberish>;
+  deadline: PromiseOrValue<BigNumberish>;
+};
+
+export type OrderInfoStructOutput = [string, string, BigNumber, BigNumber] & {
+  market: string;
+  trader: string;
+  nonce: BigNumber;
+  deadline: BigNumber;
+};
+
+export type PerpOrderStruct = {
+  info: OrderInfoStruct;
+  positionId: PromiseOrValue<BigNumberish>;
+  pairId: PromiseOrValue<BigNumberish>;
+  tradeAmount: PromiseOrValue<BigNumberish>;
+  marginAmount: PromiseOrValue<BigNumberish>;
+  validatorAddress: PromiseOrValue<string>;
+  validationData: PromiseOrValue<BytesLike>;
+};
+
+export type PerpOrderStructOutput = [
+  OrderInfoStructOutput,
+  BigNumber,
+  BigNumber,
+  BigNumber,
+  BigNumber,
+  string,
+  string
+] & {
+  info: OrderInfoStructOutput;
+  positionId: BigNumber;
+  pairId: BigNumber;
+  tradeAmount: BigNumber;
+  marginAmount: BigNumber;
+  validatorAddress: string;
+  validationData: string;
+};
+
 export declare namespace PerpMarket {
   export type PerpTradeResultStruct = {
-    tradeAmount: PromiseOrValue<BigNumberish>;
     entryUpdate: PromiseOrValue<BigNumberish>;
     payoff: PromiseOrValue<BigNumberish>;
   };
 
-  export type PerpTradeResultStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber
-  ] & { tradeAmount: BigNumber; entryUpdate: BigNumber; payoff: BigNumber };
+  export type PerpTradeResultStructOutput = [BigNumber, BigNumber] & {
+    entryUpdate: BigNumber;
+    payoff: BigNumber;
+  };
 
   export type TotalPositionStruct = {
     totalLongAmount: PromiseOrValue<BigNumberish>;
@@ -162,8 +202,10 @@ export interface PerpMarketInterface extends utils.Interface {
     "execLiquidationCall(uint256,(address,bytes))": FunctionFragment;
     "executeOrder(uint256,(bytes,bytes),(address,bytes))": FunctionFragment;
     "fillers(uint256)": FunctionFragment;
-    "positionCounts()": FunctionFragment;
+    "positionCount()": FunctionFragment;
     "predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))": FunctionFragment;
+    "quoteExecuteOrder(((address,address,uint256,uint256),uint256,uint64,int256,int256,address,bytes),(address,bytes),address)": FunctionFragment;
+    "quoteUserPosition(uint256)": FunctionFragment;
     "userPositions(uint256)": FunctionFragment;
     "withdrawFromFillerPool(uint256,uint256)": FunctionFragment;
     "withdrawMargin(uint256)": FunctionFragment;
@@ -179,8 +221,10 @@ export interface PerpMarketInterface extends utils.Interface {
       | "execLiquidationCall"
       | "executeOrder"
       | "fillers"
-      | "positionCounts"
+      | "positionCount"
       | "predyTradeAfterCallback"
+      | "quoteExecuteOrder"
+      | "quoteUserPosition"
       | "userPositions"
       | "withdrawFromFillerPool"
       | "withdrawMargin"
@@ -223,12 +267,24 @@ export interface PerpMarketInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "positionCounts",
+    functionFragment: "positionCount",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "predyTradeAfterCallback",
     values: [IPredyPool.TradeParamsStruct, IPredyPool.TradeResultStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "quoteExecuteOrder",
+    values: [
+      PerpOrderStruct,
+      ISettlement.SettlementDataStruct,
+      PromiseOrValue<string>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "quoteUserPosition",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "userPositions",
@@ -270,11 +326,19 @@ export interface PerpMarketInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "fillers", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "positionCounts",
+    functionFragment: "positionCount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "predyTradeAfterCallback",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "quoteExecuteOrder",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "quoteUserPosition",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -292,7 +356,7 @@ export interface PerpMarketInterface extends utils.Interface {
 
   events: {
     "FundingPayment(uint256,uint256,int256,int256)": EventFragment;
-    "PositionUpdated(uint256,uint256,tuple)": EventFragment;
+    "PositionUpdated(uint256,uint256,int256,tuple)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "FundingPayment"): EventFragment;
@@ -315,10 +379,11 @@ export type FundingPaymentEventFilter = TypedEventFilter<FundingPaymentEvent>;
 export interface PositionUpdatedEventObject {
   positionId: BigNumber;
   fillerMarketId: BigNumber;
+  tradeAmount: BigNumber;
   tradeResult: PerpMarket.PerpTradeResultStructOutput;
 }
 export type PositionUpdatedEvent = TypedEvent<
-  [BigNumber, BigNumber, PerpMarket.PerpTradeResultStructOutput],
+  [BigNumber, BigNumber, BigNumber, PerpMarket.PerpTradeResultStructOutput],
   PositionUpdatedEventObject
 >;
 
@@ -420,11 +485,23 @@ export interface PerpMarket extends BaseContract {
       }
     >;
 
-    positionCounts(overrides?: CallOverrides): Promise<[BigNumber]>;
+    positionCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    quoteExecuteOrder(
+      perpOrder: PerpOrderStruct,
+      settlementData: ISettlement.SettlementDataStruct,
+      quoter: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    quoteUserPosition(
+      positionId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -532,11 +609,23 @@ export interface PerpMarket extends BaseContract {
     }
   >;
 
-  positionCounts(overrides?: CallOverrides): Promise<BigNumber>;
+  positionCount(overrides?: CallOverrides): Promise<BigNumber>;
 
   predyTradeAfterCallback(
     tradeParams: IPredyPool.TradeParamsStruct,
     tradeResult: IPredyPool.TradeResultStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  quoteExecuteOrder(
+    perpOrder: PerpOrderStruct,
+    settlementData: ISettlement.SettlementDataStruct,
+    quoter: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  quoteUserPosition(
+    positionId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -644,11 +733,23 @@ export interface PerpMarket extends BaseContract {
       }
     >;
 
-    positionCounts(overrides?: CallOverrides): Promise<BigNumber>;
+    positionCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    quoteExecuteOrder(
+      perpOrder: PerpOrderStruct,
+      settlementData: ISettlement.SettlementDataStruct,
+      quoter: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    quoteUserPosition(
+      positionId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -701,14 +802,16 @@ export interface PerpMarket extends BaseContract {
       fillerFundingFee?: null
     ): FundingPaymentEventFilter;
 
-    "PositionUpdated(uint256,uint256,tuple)"(
+    "PositionUpdated(uint256,uint256,int256,tuple)"(
       positionId?: null,
       fillerMarketId?: null,
+      tradeAmount?: null,
       tradeResult?: null
     ): PositionUpdatedEventFilter;
     PositionUpdated(
       positionId?: null,
       fillerMarketId?: null,
+      tradeAmount?: null,
       tradeResult?: null
     ): PositionUpdatedEventFilter;
   };
@@ -759,11 +862,23 @@ export interface PerpMarket extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    positionCounts(overrides?: CallOverrides): Promise<BigNumber>;
+    positionCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    quoteExecuteOrder(
+      perpOrder: PerpOrderStruct,
+      settlementData: ISettlement.SettlementDataStruct,
+      quoter: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    quoteUserPosition(
+      positionId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -830,11 +945,23 @@ export interface PerpMarket extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    positionCounts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    positionCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    quoteExecuteOrder(
+      perpOrder: PerpOrderStruct,
+      settlementData: ISettlement.SettlementDataStruct,
+      quoter: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    quoteUserPosition(
+      positionId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

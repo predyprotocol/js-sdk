@@ -12,10 +12,11 @@
   },
   "scripts": {
     "build": "npm run typechain && tsc -p tsconfig.json",
+    "test": "run-s build test:*",
+    "test:unit": "jest --testPathPattern src --detectOpenHandles --forceExit",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "typechain": "typechain --target=ethers-v5 --out-dir src/contracts --glob ./abis/**/*.json"
   },
   "author": "Predy",

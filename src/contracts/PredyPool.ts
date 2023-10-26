@@ -385,6 +385,20 @@ export declare namespace Perp {
   };
 }
 
+export declare namespace PositionCalculator {
+  export type PositionParamsStruct = {
+    amountStable: PromiseOrValue<BigNumberish>;
+    amountSqrt: PromiseOrValue<BigNumberish>;
+    amountUnderlying: PromiseOrValue<BigNumberish>;
+  };
+
+  export type PositionParamsStructOutput = [BigNumber, BigNumber, BigNumber] & {
+    amountStable: BigNumber;
+    amountSqrt: BigNumber;
+    amountUnderlying: BigNumber;
+  };
+}
+
 export declare namespace DataType {
   export type VaultStruct = {
     id: PromiseOrValue<BigNumberish>;
@@ -469,9 +483,10 @@ export declare namespace AddPairLogic {
 export interface PredyPoolInterface extends utils.Interface {
   functions: {
     "allowedUniswapPools(address)": FunctionFragment;
-    "createVault(uint256,uint256)": FunctionFragment;
+    "createVault(uint256)": FunctionFragment;
     "execLiquidationCall(uint256,uint256,(address,bytes))": FunctionFragment;
     "getPairStatus(uint256)": FunctionFragment;
+    "getPositionWithUnrealizedFee(uint256)": FunctionFragment;
     "getSqrtIndexPrice(uint256)": FunctionFragment;
     "getSqrtPrice(uint256)": FunctionFragment;
     "getVault(uint256)": FunctionFragment;
@@ -479,6 +494,8 @@ export interface PredyPoolInterface extends utils.Interface {
     "globalData()": FunctionFragment;
     "reallocate(uint256,(address,bytes))": FunctionFragment;
     "registerPair((address,address,address,address,uint8,(uint256,int24,int24),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256)))": FunctionFragment;
+    "revertPairStatus(uint256)": FunctionFragment;
+    "revertVaultStatus(uint256)": FunctionFragment;
     "supply(uint256,bool,uint256)": FunctionFragment;
     "take(bool,address,uint256)": FunctionFragment;
     "trade((uint256,uint256,int256,int256,bytes),(address,bytes))": FunctionFragment;
@@ -494,6 +511,7 @@ export interface PredyPoolInterface extends utils.Interface {
       | "createVault"
       | "execLiquidationCall"
       | "getPairStatus"
+      | "getPositionWithUnrealizedFee"
       | "getSqrtIndexPrice"
       | "getSqrtPrice"
       | "getVault"
@@ -501,6 +519,8 @@ export interface PredyPoolInterface extends utils.Interface {
       | "globalData"
       | "reallocate"
       | "registerPair"
+      | "revertPairStatus"
+      | "revertVaultStatus"
       | "supply"
       | "take"
       | "trade"
@@ -516,7 +536,7 @@ export interface PredyPoolInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "createVault",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "execLiquidationCall",
@@ -528,6 +548,10 @@ export interface PredyPoolInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getPairStatus",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPositionWithUnrealizedFee",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -557,6 +581,14 @@ export interface PredyPoolInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "registerPair",
     values: [AddPairLogic.AddPairParamsStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revertPairStatus",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revertVaultStatus",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "supply",
@@ -620,6 +652,10 @@ export interface PredyPoolInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getPositionWithUnrealizedFee",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getSqrtIndexPrice",
     data: BytesLike
   ): Result;
@@ -636,6 +672,14 @@ export interface PredyPoolInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "reallocate", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "registerPair",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "revertPairStatus",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "revertVaultStatus",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "supply", data: BytesLike): Result;
@@ -691,7 +735,6 @@ export interface PredyPool extends BaseContract {
     ): Promise<[boolean]>;
 
     createVault(
-      vaultId: PromiseOrValue<BigNumberish>,
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -707,6 +750,11 @@ export interface PredyPool extends BaseContract {
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[Perp.PairStatusStructOutput]>;
+
+    getPositionWithUnrealizedFee(
+      vaultId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[PositionCalculator.PositionParamsStructOutput]>;
 
     getSqrtIndexPrice(
       pairId: PromiseOrValue<BigNumberish>,
@@ -745,6 +793,16 @@ export interface PredyPool extends BaseContract {
 
     registerPair(
       addPairParam: AddPairLogic.AddPairParamsStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    revertPairStatus(
+      pairId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    revertVaultStatus(
+      vaultId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -801,7 +859,6 @@ export interface PredyPool extends BaseContract {
   ): Promise<boolean>;
 
   createVault(
-    vaultId: PromiseOrValue<BigNumberish>,
     pairId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -817,6 +874,11 @@ export interface PredyPool extends BaseContract {
     pairId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<Perp.PairStatusStructOutput>;
+
+  getPositionWithUnrealizedFee(
+    vaultId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<PositionCalculator.PositionParamsStructOutput>;
 
   getSqrtIndexPrice(
     pairId: PromiseOrValue<BigNumberish>,
@@ -855,6 +917,16 @@ export interface PredyPool extends BaseContract {
 
   registerPair(
     addPairParam: AddPairLogic.AddPairParamsStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  revertPairStatus(
+    pairId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  revertVaultStatus(
+    vaultId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -911,7 +983,6 @@ export interface PredyPool extends BaseContract {
     ): Promise<boolean>;
 
     createVault(
-      vaultId: PromiseOrValue<BigNumberish>,
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -927,6 +998,11 @@ export interface PredyPool extends BaseContract {
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<Perp.PairStatusStructOutput>;
+
+    getPositionWithUnrealizedFee(
+      vaultId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PositionCalculator.PositionParamsStructOutput>;
 
     getSqrtIndexPrice(
       pairId: PromiseOrValue<BigNumberish>,
@@ -967,6 +1043,16 @@ export interface PredyPool extends BaseContract {
       addPairParam: AddPairLogic.AddPairParamsStruct,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    revertPairStatus(
+      pairId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    revertVaultStatus(
+      vaultId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     supply(
       pairId: PromiseOrValue<BigNumberish>,
@@ -1029,7 +1115,6 @@ export interface PredyPool extends BaseContract {
     ): Promise<BigNumber>;
 
     createVault(
-      vaultId: PromiseOrValue<BigNumberish>,
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -1043,6 +1128,11 @@ export interface PredyPool extends BaseContract {
 
     getPairStatus(
       pairId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getPositionWithUnrealizedFee(
+      vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1076,6 +1166,16 @@ export interface PredyPool extends BaseContract {
 
     registerPair(
       addPairParam: AddPairLogic.AddPairParamsStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    revertPairStatus(
+      pairId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    revertVaultStatus(
+      vaultId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1133,7 +1233,6 @@ export interface PredyPool extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     createVault(
-      vaultId: PromiseOrValue<BigNumberish>,
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -1147,6 +1246,11 @@ export interface PredyPool extends BaseContract {
 
     getPairStatus(
       pairId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getPositionWithUnrealizedFee(
+      vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1180,6 +1284,16 @@ export interface PredyPool extends BaseContract {
 
     registerPair(
       addPairParam: AddPairLogic.AddPairParamsStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    revertPairStatus(
+      pairId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    revertVaultStatus(
+      vaultId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

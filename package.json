@@ -1,9 +1,9 @@
 {
   "name": "@predy/js-sdk",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
-  "main": "dist/src/index.js",
-  "typings": "dist/src/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -17,10 +17,11 @@
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
+    "prepare": "npm run build",
     "typechain": "typechain --target=ethers-v5 --out-dir src/contracts --glob ./abis/**/*.json"
   },
   "author": "Predy",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@typechain/ethers-v5": "^10.1.0",
     "@types/jest": "^29.0.3",

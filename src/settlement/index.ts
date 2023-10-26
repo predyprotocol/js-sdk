@@ -2,8 +2,8 @@ import { BigNumber, ethers } from "ethers";
 
 const UNISWAP_SETTLEMENT_DATA_ABI = [
   "tuple(" +
-    ["bytes", "uint256", "address", "address", "uint256"].join(",") +
-    ")",
+  ["bytes", "uint256", "address", "address", "uint256"].join(",") +
+  ")",
 ];
 
 interface SettlementData {
@@ -31,35 +31,13 @@ export class UniswapSettlement extends BaseSettlement {
 
     return {
       settlementContractAddress: "",
-      encodedData: abiCoder.encode(UNISWAP_SETTLEMENT_DATA_ABI, [
+      encodedData: abiCoder.encode(UNISWAP_SETTLEMENT_DATA_ABI, [[
         this.path,
         this.amountOutMinimumOrInMaximum,
         this.quoteTokenAddress,
         this.baseTokenAddress,
         this.fee,
-      ]),
+      ]]),
     };
   }
 }
-
-/*
-class SettlementBuilder {
-  constructor(public quoter: Quoter) {
-
-  }
-
-  async test(provider: BaseProvider, order: any, settlementData: BaseSettlement) {
-    const PerpMarket = PerpMarketQuoter__factory.connect('', provider)
-    const quoterMarket = PredyPoolQuoter__factory.connect('', provider)
-
-    const baseAmountDelta = await quoterMarket.callStatic.quoteBaseAmountDelta(order)
-
-    // calculate amountOutMinimumOrInMaximum
-    PerpMarket.quoteExecuteOrder(order, settlementData.serialize())
-    const amountOut = this.quoter.quote('', BigNumber.from(0))
-
-    // TODO calculate settlement data
-  }
-}
-
-*/

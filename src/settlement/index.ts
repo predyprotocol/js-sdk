@@ -1,24 +1,24 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers } from 'ethers'
 
-import { UNISWAP_SETTLEMENT_MAPPING } from "../constants";
+import { UNISWAP_SETTLEMENT_MAPPING } from '../constants'
 
 const UNISWAP_SETTLEMENT_DATA_ABI = [
-  "tuple(" +
-    ["bytes", "uint256", "address", "address", "uint256"].join(",") +
-    ")",
-];
+  'tuple(' +
+    ['bytes', 'uint256', 'address', 'address', 'uint256'].join(',') +
+    ')',
+]
 
 interface SettlementData {
-  settlementContractAddress: string;
-  encodedData: string;
+  settlementContractAddress: string
+  encodedData: string
 }
 
 abstract class BaseSettlement {
-  abstract serialize(): SettlementData;
+  abstract serialize(): SettlementData
 }
 
 export class UniswapSettlement extends BaseSettlement {
-  settlementContractAddress: string;
+  settlementContractAddress: string
 
   constructor(
     public chainId: number,
@@ -29,17 +29,17 @@ export class UniswapSettlement extends BaseSettlement {
     public fee: BigNumber,
     settlementContractAddress?: string
   ) {
-    super();
+    super()
 
     if (settlementContractAddress) {
-      this.settlementContractAddress = settlementContractAddress;
+      this.settlementContractAddress = settlementContractAddress
     } else {
-      this.settlementContractAddress = UNISWAP_SETTLEMENT_MAPPING[chainId];
+      this.settlementContractAddress = UNISWAP_SETTLEMENT_MAPPING[chainId]
     }
   }
 
   serialize(): SettlementData {
-    const abiCoder = new ethers.utils.AbiCoder();
+    const abiCoder = new ethers.utils.AbiCoder()
 
     return {
       settlementContractAddress: this.settlementContractAddress,
@@ -52,6 +52,6 @@ export class UniswapSettlement extends BaseSettlement {
           this.fee,
         ],
       ]),
-    };
+    }
   }
 }

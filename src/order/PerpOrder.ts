@@ -3,48 +3,48 @@ import {
   PermitTransferFromData,
   SignatureTransfer,
   Witness,
-} from "@uniswap/permit2-sdk";
-import { PERMIT2_MAPPING } from "@uniswap/uniswapx-sdk";
-import { ethers } from "ethers";
+} from '@uniswap/permit2-sdk'
+import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
+import { ethers } from 'ethers'
 
-import { BaseValidationData, PerpOrderParams } from "./types";
+import { BaseValidationData, PerpOrderParams } from './types'
 
 const PERP_ORDER_TYPES = {
   GeneralOrderParams: [
-    { name: "info", type: "OrderInfo" },
-    { name: "pairId", type: "uint256" },
-    { name: "positionId", type: "uint256" },
-    { name: "entryTokenAddress", type: "address" },
-    { name: "tradeAmount", type: "int256" },
-    { name: "marginAmount", type: "int256" },
-    { name: "validatorAddress", type: "address" },
-    { name: "validationData", type: "bytes" },
+    { name: 'info', type: 'OrderInfo' },
+    { name: 'pairId', type: 'uint256' },
+    { name: 'positionId', type: 'uint256' },
+    { name: 'entryTokenAddress', type: 'address' },
+    { name: 'tradeAmount', type: 'int256' },
+    { name: 'marginAmount', type: 'int256' },
+    { name: 'validatorAddress', type: 'address' },
+    { name: 'validationData', type: 'bytes' },
   ],
   OrderInfo: [
-    { name: "market", type: "address" },
-    { name: "trader", type: "address" },
-    { name: "nonce", type: "uint256" },
-    { name: "deadline", type: "uint256" },
+    { name: 'market', type: 'address' },
+    { name: 'trader', type: 'address' },
+    { name: 'nonce', type: 'uint256' },
+    { name: 'deadline', type: 'uint256' },
   ],
-};
+}
 
 const PERP_ORDER_ABI = [
-  "tuple(" +
+  'tuple(' +
     [
-      "tuple(address,address,uint256,uint256)",
-      "uint256",
-      "address",
-      "uint256",
-      "int256",
-      "int256",
-      "address",
-      "bytes",
-    ].join(",") +
-    ")",
-];
+      'tuple(address,address,uint256,uint256)',
+      'uint256',
+      'address',
+      'uint256',
+      'int256',
+      'int256',
+      'address',
+      'bytes',
+    ].join(',') +
+    ')',
+]
 
 export class PerpOrder {
-  public permit2Address: string;
+  public permit2Address: string
 
   constructor(
     public readonly perpOrder: PerpOrderParams,
@@ -52,14 +52,14 @@ export class PerpOrder {
     readonly _permit2Address?: string
   ) {
     if (_permit2Address) {
-      this.permit2Address = _permit2Address;
+      this.permit2Address = _permit2Address
     } else {
-      this.permit2Address = PERMIT2_MAPPING[chainId];
+      this.permit2Address = PERMIT2_MAPPING[chainId]
     }
   }
 
   serialize(): string {
-    const abiCoder = new ethers.utils.AbiCoder();
+    const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(PERP_ORDER_ABI, [
       [
@@ -77,12 +77,12 @@ export class PerpOrder {
         this.perpOrder.validatorAddress,
         this.perpOrder.validationData,
       ],
-    ]);
+    ])
   }
 
   static parse(encoded: string, chainId: number, permit2?: string): PerpOrder {
-    const abiCoder = new ethers.utils.AbiCoder();
-    const decoded = abiCoder.decode(PERP_ORDER_ABI, encoded);
+    const abiCoder = new ethers.utils.AbiCoder()
+    const decoded = abiCoder.decode(PERP_ORDER_ABI, encoded)
 
     const [
       [
@@ -95,7 +95,7 @@ export class PerpOrder {
         validatorAddress,
         validationData,
       ],
-    ] = decoded;
+    ] = decoded
 
     return new PerpOrder(
       {
@@ -111,7 +111,7 @@ export class PerpOrder {
       },
       chainId,
       permit2
-    );
+    )
   }
 
   private witnessInfo() {
@@ -129,7 +129,7 @@ export class PerpOrder {
       marginAmount: this.perpOrder.marginAmount,
       validatorAddress: this.perpOrder.validatorAddress,
       validationData: this.perpOrder.validationData,
-    };
+    }
   }
 
   permitData(): PermitTransferFromData {
@@ -138,7 +138,7 @@ export class PerpOrder {
       this.permit2Address,
       this.chainId,
       this.witness()
-    ) as PermitTransferFromData;
+    ) as PermitTransferFromData
   }
 
   toPermit(): PermitTransferFrom {
@@ -150,27 +150,27 @@ export class PerpOrder {
       spender: this.perpOrder.orderInfo.market,
       nonce: this.perpOrder.orderInfo.nonce,
       deadline: this.perpOrder.orderInfo.deadline,
-    };
+    }
   }
 
   private witness(): Witness {
     return {
       witness: this.witnessInfo(),
-      witnessTypeName: "PerpOrder",
+      witnessTypeName: 'PerpOrder',
       witnessType: PERP_ORDER_TYPES,
-    };
+    }
   }
 
   hash(): string {
     return ethers.utils._TypedDataEncoder
       .from(PERP_ORDER_TYPES)
-      .hash(this.witnessInfo());
+      .hash(this.witnessInfo())
   }
 }
 
 const DUTCH_ORDER_VALIDATION_ABI = [
-  "tuple(" + ["uint256", "uint256", "uint256", "uint256"].join(",") + ")",
-];
+  'tuple(' + ['uint256', 'uint256', 'uint256', 'uint256'].join(',') + ')',
+]
 
 export class PerpDutchOrderValidationData extends BaseValidationData {
   constructor(
@@ -179,36 +179,36 @@ export class PerpDutchOrderValidationData extends BaseValidationData {
     public startTime: number,
     public endTime: number
   ) {
-    super();
+    super()
   }
 
   serialize(): string {
-    const abiCoder = new ethers.utils.AbiCoder();
+    const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(DUTCH_ORDER_VALIDATION_ABI, [
       this.startPrice,
       this.endPrice,
       this.startTime,
       this.endTime,
-    ]);
+    ])
   }
 }
 
 const LIMIT_ORDER_VALIDATION_ABI = [
-  "tuple(" + ["uint256", "uint256"].join(",") + ")",
-];
+  'tuple(' + ['uint256', 'uint256'].join(',') + ')',
+]
 
 export class PerpLimitOrderValidationData extends BaseValidationData {
   constructor(public triggerPrice: number, public limitPrice: number) {
-    super();
+    super()
   }
 
   serialize(): string {
-    const abiCoder = new ethers.utils.AbiCoder();
+    const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(LIMIT_ORDER_VALIDATION_ABI, [
       this.triggerPrice,
       this.limitPrice,
-    ]);
+    ])
   }
 }

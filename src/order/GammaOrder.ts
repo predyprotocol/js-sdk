@@ -3,50 +3,50 @@ import {
   PermitTransferFromData,
   SignatureTransfer,
   Witness,
-} from "@uniswap/permit2-sdk";
-import { PERMIT2_MAPPING } from "@uniswap/uniswapx-sdk";
-import { ethers } from "ethers";
+} from '@uniswap/permit2-sdk'
+import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
+import { ethers } from 'ethers'
 
-import { BaseValidationData, GammaOrderParams } from "./types";
+import { BaseValidationData, GammaOrderParams } from './types'
 
 const GAMMA_ORDER_TYPES = {
   GeneralOrderParams: [
-    { name: "info", type: "OrderInfo" },
-    { name: "positionId", type: "uint256" },
-    { name: "pairId", type: "uint256" },
-    { name: "entryTokenAddress", type: "address" },
-    { name: "tradeAmount", type: "int256" },
-    { name: "tradeAmountSqrt", type: "int256" },
-    { name: "marginAmount", type: "int256" },
-    { name: "validatorAddress", type: "address" },
-    { name: "validationData", type: "bytes" },
+    { name: 'info', type: 'OrderInfo' },
+    { name: 'positionId', type: 'uint256' },
+    { name: 'pairId', type: 'uint256' },
+    { name: 'entryTokenAddress', type: 'address' },
+    { name: 'tradeAmount', type: 'int256' },
+    { name: 'tradeAmountSqrt', type: 'int256' },
+    { name: 'marginAmount', type: 'int256' },
+    { name: 'validatorAddress', type: 'address' },
+    { name: 'validationData', type: 'bytes' },
   ],
   OrderInfo: [
-    { name: "market", type: "address" },
-    { name: "trader", type: "address" },
-    { name: "nonce", type: "uint256" },
-    { name: "deadline", type: "uint256" },
+    { name: 'market', type: 'address' },
+    { name: 'trader', type: 'address' },
+    { name: 'nonce', type: 'uint256' },
+    { name: 'deadline', type: 'uint256' },
   ],
-};
+}
 
 const GAMMA_ORDER_ABI = [
-  "tuple(" +
+  'tuple(' +
     [
-      "tuple(address,address,uint256,uint256)",
-      "uint256",
-      "address",
-      "uint256",
-      "int256",
-      "int256",
-      "int256",
-      "address",
-      "bytes",
-    ].join(",") +
-    ")",
-];
+      'tuple(address,address,uint256,uint256)',
+      'uint256',
+      'address',
+      'uint256',
+      'int256',
+      'int256',
+      'int256',
+      'address',
+      'bytes',
+    ].join(',') +
+    ')',
+]
 
 export class GammaOrder {
-  public permit2Address: string;
+  public permit2Address: string
 
   constructor(
     public readonly generalOrder: GammaOrderParams,
@@ -54,14 +54,14 @@ export class GammaOrder {
     readonly _permit2Address?: string
   ) {
     if (_permit2Address) {
-      this.permit2Address = _permit2Address;
+      this.permit2Address = _permit2Address
     } else {
-      this.permit2Address = PERMIT2_MAPPING[chainId];
+      this.permit2Address = PERMIT2_MAPPING[chainId]
     }
   }
 
   serialize(): string {
-    const abiCoder = new ethers.utils.AbiCoder();
+    const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(GAMMA_ORDER_ABI, [
       [
@@ -80,12 +80,12 @@ export class GammaOrder {
         this.generalOrder.validatorAddress,
         this.generalOrder.validationData,
       ],
-    ]);
+    ])
   }
 
   static parse(encoded: string, chainId: number, permit2?: string): GammaOrder {
-    const abiCoder = new ethers.utils.AbiCoder();
-    const decoded = abiCoder.decode(GAMMA_ORDER_ABI, encoded);
+    const abiCoder = new ethers.utils.AbiCoder()
+    const decoded = abiCoder.decode(GAMMA_ORDER_ABI, encoded)
 
     const [
       [
@@ -99,7 +99,7 @@ export class GammaOrder {
         validatorAddress,
         validationData,
       ],
-    ] = decoded;
+    ] = decoded
 
     return new GammaOrder(
       {
@@ -116,7 +116,7 @@ export class GammaOrder {
       },
       chainId,
       permit2
-    );
+    )
   }
 
   private witnessInfo() {
@@ -135,7 +135,7 @@ export class GammaOrder {
       marginAmount: this.generalOrder.marginAmount,
       validatorAddress: this.generalOrder.validatorAddress,
       validationData: this.generalOrder.validationData,
-    };
+    }
   }
 
   permitData(): PermitTransferFromData {
@@ -144,7 +144,7 @@ export class GammaOrder {
       this.permit2Address,
       this.chainId,
       this.witness()
-    ) as PermitTransferFromData;
+    ) as PermitTransferFromData
   }
 
   toPermit(): PermitTransferFrom {
@@ -156,27 +156,27 @@ export class GammaOrder {
       spender: this.generalOrder.orderInfo.market,
       nonce: this.generalOrder.orderInfo.nonce,
       deadline: this.generalOrder.orderInfo.deadline,
-    };
+    }
   }
 
   private witness(): Witness {
     return {
       witness: this.witnessInfo(),
-      witnessTypeName: "GammaOrder",
+      witnessTypeName: 'GammaOrder',
       witnessType: GAMMA_ORDER_TYPES,
-    };
+    }
   }
 
   hash(): string {
     return ethers.utils._TypedDataEncoder
       .from(GAMMA_ORDER_TYPES)
-      .hash(this.witnessInfo());
+      .hash(this.witnessInfo())
   }
 }
 
 const DUTCH_ORDER_VALIDATION_ABI = [
-  "tuple(" + ["uint256", "uint256", "uint256", "uint256"].join(",") + ")",
-];
+  'tuple(' + ['uint256', 'uint256', 'uint256', 'uint256'].join(',') + ')',
+]
 
 export class DutchOrderValidationData extends BaseValidationData {
   constructor(
@@ -185,24 +185,24 @@ export class DutchOrderValidationData extends BaseValidationData {
     public startTime: number,
     public endTime: number
   ) {
-    super();
+    super()
   }
 
   serialize(): string {
-    const abiCoder = new ethers.utils.AbiCoder();
+    const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(DUTCH_ORDER_VALIDATION_ABI, [
       this.startPrice,
       this.endPrice,
       this.startTime,
       this.endTime,
-    ]);
+    ])
   }
 }
 
 const LIMIT_ORDER_VALIDATION_ABI = [
-  "tuple(" + ["uint256", "uint256", "uint256", "uint256"].join(",") + ")",
-];
+  'tuple(' + ['uint256', 'uint256', 'uint256', 'uint256'].join(',') + ')',
+]
 
 export class LimitOrderValidationData extends BaseValidationData {
   constructor(
@@ -211,17 +211,17 @@ export class LimitOrderValidationData extends BaseValidationData {
     public limitPrice: number,
     public limitPriceSqrt: number
   ) {
-    super();
+    super()
   }
 
   serialize(): string {
-    const abiCoder = new ethers.utils.AbiCoder();
+    const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(LIMIT_ORDER_VALIDATION_ABI, [
       this.triggerPrice,
       this.triggerPriceSqrt,
       this.limitPrice,
       this.limitPriceSqrt,
-    ]);
+    ])
   }
 }

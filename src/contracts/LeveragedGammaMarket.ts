@@ -11,51 +11,51 @@ import type {
   Overrides,
   PopulatedTransaction,
   Signer,
-  utils,
-} from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  utils
+} from 'ethers'
+import type { FunctionFragment, Result } from '@ethersproject/abi'
+import type { Listener, Provider } from '@ethersproject/providers'
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
-} from "./common";
+  PromiseOrValue
+} from './common'
 
 export declare namespace ISettlement {
   export type SettlementDataStruct = {
-    settlementContractAddress: PromiseOrValue<string>;
-    encodedData: PromiseOrValue<BytesLike>;
-  };
+    settlementContractAddress: PromiseOrValue<string>
+    encodedData: PromiseOrValue<BytesLike>
+  }
 
   export type SettlementDataStructOutput = [string, string] & {
-    settlementContractAddress: string;
-    encodedData: string;
-  };
+    settlementContractAddress: string
+    encodedData: string
+  }
 }
 
 export declare namespace IFillerMarket {
   export type SignedOrderStruct = {
-    order: PromiseOrValue<BytesLike>;
-    sig: PromiseOrValue<BytesLike>;
-  };
+    order: PromiseOrValue<BytesLike>
+    sig: PromiseOrValue<BytesLike>
+  }
 
   export type SignedOrderStructOutput = [string, string] & {
-    order: string;
-    sig: string;
-  };
+    order: string
+    sig: string
+  }
 }
 
 export declare namespace IPredyPool {
   export type PayoffStruct = {
-    perpEntryUpdate: PromiseOrValue<BigNumberish>;
-    sqrtEntryUpdate: PromiseOrValue<BigNumberish>;
-    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>;
-    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>;
-    perpPayoff: PromiseOrValue<BigNumberish>;
-    sqrtPayoff: PromiseOrValue<BigNumberish>;
-  };
+    perpEntryUpdate: PromiseOrValue<BigNumberish>
+    sqrtEntryUpdate: PromiseOrValue<BigNumberish>
+    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>
+    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>
+    perpPayoff: PromiseOrValue<BigNumberish>
+    sqrtPayoff: PromiseOrValue<BigNumberish>
+  }
 
   export type PayoffStructOutput = [
     BigNumber,
@@ -65,23 +65,23 @@ export declare namespace IPredyPool {
     BigNumber,
     BigNumber
   ] & {
-    perpEntryUpdate: BigNumber;
-    sqrtEntryUpdate: BigNumber;
-    sqrtRebalanceEntryUpdateUnderlying: BigNumber;
-    sqrtRebalanceEntryUpdateStable: BigNumber;
-    perpPayoff: BigNumber;
-    sqrtPayoff: BigNumber;
-  };
+    perpEntryUpdate: BigNumber
+    sqrtEntryUpdate: BigNumber
+    sqrtRebalanceEntryUpdateUnderlying: BigNumber
+    sqrtRebalanceEntryUpdateStable: BigNumber
+    perpPayoff: BigNumber
+    sqrtPayoff: BigNumber
+  }
 
   export type TradeResultStruct = {
-    payoff: IPredyPool.PayoffStruct;
-    vaultId: PromiseOrValue<BigNumberish>;
-    fee: PromiseOrValue<BigNumberish>;
-    minMargin: PromiseOrValue<BigNumberish>;
-    averagePrice: PromiseOrValue<BigNumberish>;
-    sqrtTwap: PromiseOrValue<BigNumberish>;
-    sqrtPrice: PromiseOrValue<BigNumberish>;
-  };
+    payoff: IPredyPool.PayoffStruct
+    vaultId: PromiseOrValue<BigNumberish>
+    fee: PromiseOrValue<BigNumberish>
+    minMargin: PromiseOrValue<BigNumberish>
+    averagePrice: PromiseOrValue<BigNumberish>
+    sqrtTwap: PromiseOrValue<BigNumberish>
+    sqrtPrice: PromiseOrValue<BigNumberish>
+  }
 
   export type TradeResultStructOutput = [
     IPredyPool.PayoffStructOutput,
@@ -92,22 +92,22 @@ export declare namespace IPredyPool {
     BigNumber,
     BigNumber
   ] & {
-    payoff: IPredyPool.PayoffStructOutput;
-    vaultId: BigNumber;
-    fee: BigNumber;
-    minMargin: BigNumber;
-    averagePrice: BigNumber;
-    sqrtTwap: BigNumber;
-    sqrtPrice: BigNumber;
-  };
+    payoff: IPredyPool.PayoffStructOutput
+    vaultId: BigNumber
+    fee: BigNumber
+    minMargin: BigNumber
+    averagePrice: BigNumber
+    sqrtTwap: BigNumber
+    sqrtPrice: BigNumber
+  }
 
   export type TradeParamsStruct = {
-    pairId: PromiseOrValue<BigNumberish>;
-    vaultId: PromiseOrValue<BigNumberish>;
-    tradeAmount: PromiseOrValue<BigNumberish>;
-    tradeAmountSqrt: PromiseOrValue<BigNumberish>;
-    extraData: PromiseOrValue<BytesLike>;
-  };
+    pairId: PromiseOrValue<BigNumberish>
+    vaultId: PromiseOrValue<BigNumberish>
+    tradeAmount: PromiseOrValue<BigNumberish>
+    tradeAmountSqrt: PromiseOrValue<BigNumberish>
+    extraData: PromiseOrValue<BytesLike>
+  }
 
   export type TradeParamsStructOutput = [
     BigNumber,
@@ -116,227 +116,227 @@ export declare namespace IPredyPool {
     BigNumber,
     string
   ] & {
-    pairId: BigNumber;
-    vaultId: BigNumber;
-    tradeAmount: BigNumber;
-    tradeAmountSqrt: BigNumber;
-    extraData: string;
-  };
+    pairId: BigNumber
+    vaultId: BigNumber
+    tradeAmount: BigNumber
+    tradeAmountSqrt: BigNumber
+    extraData: string
+  }
 }
 
 export interface LeveragedGammaMarketInterface extends utils.Interface {
   functions: {
-    "BORROW_FEE_RATE()": FunctionFragment;
-    "confirmLiquidation(uint256)": FunctionFragment;
-    "depositMargin(uint256)": FunctionFragment;
-    "depositToInsurancePool(uint256)": FunctionFragment;
-    "execLiquidationCall(uint64,(address,bytes))": FunctionFragment;
-    "executeOrder((bytes,bytes),(address,bytes))": FunctionFragment;
-    "insurancePools(address)": FunctionFragment;
-    "predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))": FunctionFragment;
-    "updateQuoteTokenMap(uint256)": FunctionFragment;
-    "userPositions(uint256)": FunctionFragment;
-    "withdrawFromInsurancePool(uint256)": FunctionFragment;
-    "withdrawMargin(uint256)": FunctionFragment;
-  };
+    'BORROW_FEE_RATE()': FunctionFragment
+    'confirmLiquidation(uint256)': FunctionFragment
+    'depositMargin(uint256)': FunctionFragment
+    'depositToInsurancePool(uint256)': FunctionFragment
+    'execLiquidationCall(uint64,(address,bytes))': FunctionFragment
+    'executeOrder((bytes,bytes),(address,bytes))': FunctionFragment
+    'insurancePools(address)': FunctionFragment
+    'predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))': FunctionFragment
+    'updateQuoteTokenMap(uint256)': FunctionFragment
+    'userPositions(uint256)': FunctionFragment
+    'withdrawFromInsurancePool(uint256)': FunctionFragment
+    'withdrawMargin(uint256)': FunctionFragment
+  }
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "BORROW_FEE_RATE"
-      | "confirmLiquidation"
-      | "depositMargin"
-      | "depositToInsurancePool"
-      | "execLiquidationCall"
-      | "executeOrder"
-      | "insurancePools"
-      | "predyTradeAfterCallback"
-      | "updateQuoteTokenMap"
-      | "userPositions"
-      | "withdrawFromInsurancePool"
-      | "withdrawMargin"
-  ): FunctionFragment;
+      | 'BORROW_FEE_RATE'
+      | 'confirmLiquidation'
+      | 'depositMargin'
+      | 'depositToInsurancePool'
+      | 'execLiquidationCall'
+      | 'executeOrder'
+      | 'insurancePools'
+      | 'predyTradeAfterCallback'
+      | 'updateQuoteTokenMap'
+      | 'userPositions'
+      | 'withdrawFromInsurancePool'
+      | 'withdrawMargin'
+  ): FunctionFragment
 
   encodeFunctionData(
-    functionFragment: "BORROW_FEE_RATE",
+    functionFragment: 'BORROW_FEE_RATE',
     values?: undefined
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "confirmLiquidation",
+    functionFragment: 'confirmLiquidation',
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "depositMargin",
+    functionFragment: 'depositMargin',
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "depositToInsurancePool",
+    functionFragment: 'depositToInsurancePool',
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "execLiquidationCall",
+    functionFragment: 'execLiquidationCall',
     values: [PromiseOrValue<BigNumberish>, ISettlement.SettlementDataStruct]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "executeOrder",
+    functionFragment: 'executeOrder',
     values: [IFillerMarket.SignedOrderStruct, ISettlement.SettlementDataStruct]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "insurancePools",
+    functionFragment: 'insurancePools',
     values: [PromiseOrValue<string>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "predyTradeAfterCallback",
+    functionFragment: 'predyTradeAfterCallback',
     values: [IPredyPool.TradeParamsStruct, IPredyPool.TradeResultStruct]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "updateQuoteTokenMap",
+    functionFragment: 'updateQuoteTokenMap',
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "userPositions",
+    functionFragment: 'userPositions',
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "withdrawFromInsurancePool",
+    functionFragment: 'withdrawFromInsurancePool',
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "withdrawMargin",
+    functionFragment: 'withdrawMargin',
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
 
   decodeFunctionResult(
-    functionFragment: "BORROW_FEE_RATE",
+    functionFragment: 'BORROW_FEE_RATE',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "confirmLiquidation",
+    functionFragment: 'confirmLiquidation',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "depositMargin",
+    functionFragment: 'depositMargin',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "depositToInsurancePool",
+    functionFragment: 'depositToInsurancePool',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "execLiquidationCall",
+    functionFragment: 'execLiquidationCall',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "executeOrder",
+    functionFragment: 'executeOrder',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "insurancePools",
+    functionFragment: 'insurancePools',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "predyTradeAfterCallback",
+    functionFragment: 'predyTradeAfterCallback',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "updateQuoteTokenMap",
+    functionFragment: 'updateQuoteTokenMap',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "userPositions",
+    functionFragment: 'userPositions',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "withdrawFromInsurancePool",
+    functionFragment: 'withdrawFromInsurancePool',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "withdrawMargin",
+    functionFragment: 'withdrawMargin',
     data: BytesLike
-  ): Result;
+  ): Result
 
-  events: {};
+  events: {}
 }
 
 export interface LeveragedGammaMarket extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
-  interface: LeveragedGammaMarketInterface;
+  interface: LeveragedGammaMarketInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TEvent>>
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
+  ): Array<TypedListener<TEvent>>
+  listeners(eventName?: string): Array<Listener>
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  ): this
+  removeAllListeners(eventName?: string): this
+  off: OnEvent<this>
+  on: OnEvent<this>
+  once: OnEvent<this>
+  removeListener: OnEvent<this>
 
   functions: {
-    BORROW_FEE_RATE(overrides?: CallOverrides): Promise<[BigNumber]>;
+    BORROW_FEE_RATE(overrides?: CallOverrides): Promise<[BigNumber]>
 
     confirmLiquidation(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     depositMargin(
       marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     depositToInsurancePool(
       depositAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     execLiquidationCall(
       positionId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     insurancePools(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, string, BigNumber, BigNumber, BigNumber, BigNumber] & {
-        pairId: BigNumber;
-        fillerAddress: string;
-        marginAmount: BigNumber;
-        fillercumulativeFundingRates: BigNumber;
-        fundingRateGrobalGrowth: BigNumber;
-        lastFundingRateCalculationTime: BigNumber;
+        pairId: BigNumber
+        fillerAddress: string
+        marginAmount: BigNumber
+        fillercumulativeFundingRates: BigNumber
+        fundingRateGrobalGrowth: BigNumber
+        lastFundingRateCalculationTime: BigNumber
       }
-    >;
+    >
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     updateQuoteTokenMap(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
@@ -352,81 +352,81 @@ export interface LeveragedGammaMarket extends BaseContract {
         BigNumber,
         BigNumber
       ] & {
-        id: BigNumber;
-        filler: string;
-        owner: string;
-        positionAmount: BigNumber;
-        positionAmountSqrt: BigNumber;
-        assuranceMargin: BigNumber;
-        marginAmount: BigNumber;
-        lastBorrowFeeCalculationTime: BigNumber;
+        id: BigNumber
+        filler: string
+        owner: string
+        positionAmount: BigNumber
+        positionAmountSqrt: BigNumber
+        assuranceMargin: BigNumber
+        marginAmount: BigNumber
+        lastBorrowFeeCalculationTime: BigNumber
       }
-    >;
+    >
 
     withdrawFromInsurancePool(
       withdrawAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     withdrawMargin(
       marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-  };
+    ): Promise<ContractTransaction>
+  }
 
-  BORROW_FEE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+  BORROW_FEE_RATE(overrides?: CallOverrides): Promise<BigNumber>
 
   confirmLiquidation(
     vaultId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   depositMargin(
     marginAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   depositToInsurancePool(
     depositAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   execLiquidationCall(
     positionId: PromiseOrValue<BigNumberish>,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   executeOrder(
     order: IFillerMarket.SignedOrderStruct,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   insurancePools(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<
     [BigNumber, string, BigNumber, BigNumber, BigNumber, BigNumber] & {
-      pairId: BigNumber;
-      fillerAddress: string;
-      marginAmount: BigNumber;
-      fillercumulativeFundingRates: BigNumber;
-      fundingRateGrobalGrowth: BigNumber;
-      lastFundingRateCalculationTime: BigNumber;
+      pairId: BigNumber
+      fillerAddress: string
+      marginAmount: BigNumber
+      fillercumulativeFundingRates: BigNumber
+      fundingRateGrobalGrowth: BigNumber
+      lastFundingRateCalculationTime: BigNumber
     }
-  >;
+  >
 
   predyTradeAfterCallback(
     tradeParams: IPredyPool.TradeParamsStruct,
     tradeResult: IPredyPool.TradeResultStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   updateQuoteTokenMap(
     pairId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   userPositions(
     vaultId: PromiseOrValue<BigNumberish>,
@@ -442,81 +442,81 @@ export interface LeveragedGammaMarket extends BaseContract {
       BigNumber,
       BigNumber
     ] & {
-      id: BigNumber;
-      filler: string;
-      owner: string;
-      positionAmount: BigNumber;
-      positionAmountSqrt: BigNumber;
-      assuranceMargin: BigNumber;
-      marginAmount: BigNumber;
-      lastBorrowFeeCalculationTime: BigNumber;
+      id: BigNumber
+      filler: string
+      owner: string
+      positionAmount: BigNumber
+      positionAmountSqrt: BigNumber
+      assuranceMargin: BigNumber
+      marginAmount: BigNumber
+      lastBorrowFeeCalculationTime: BigNumber
     }
-  >;
+  >
 
   withdrawFromInsurancePool(
     withdrawAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   withdrawMargin(
     marginAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   callStatic: {
-    BORROW_FEE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+    BORROW_FEE_RATE(overrides?: CallOverrides): Promise<BigNumber>
 
     confirmLiquidation(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     depositMargin(
       marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     depositToInsurancePool(
       depositAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     execLiquidationCall(
       positionId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<IPredyPool.TradeResultStructOutput>;
+    ): Promise<IPredyPool.TradeResultStructOutput>
 
     insurancePools(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, string, BigNumber, BigNumber, BigNumber, BigNumber] & {
-        pairId: BigNumber;
-        fillerAddress: string;
-        marginAmount: BigNumber;
-        fillercumulativeFundingRates: BigNumber;
-        fundingRateGrobalGrowth: BigNumber;
-        lastFundingRateCalculationTime: BigNumber;
+        pairId: BigNumber
+        fillerAddress: string
+        marginAmount: BigNumber
+        fillercumulativeFundingRates: BigNumber
+        fundingRateGrobalGrowth: BigNumber
+        lastFundingRateCalculationTime: BigNumber
       }
-    >;
+    >
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     updateQuoteTokenMap(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
@@ -532,151 +532,151 @@ export interface LeveragedGammaMarket extends BaseContract {
         BigNumber,
         BigNumber
       ] & {
-        id: BigNumber;
-        filler: string;
-        owner: string;
-        positionAmount: BigNumber;
-        positionAmountSqrt: BigNumber;
-        assuranceMargin: BigNumber;
-        marginAmount: BigNumber;
-        lastBorrowFeeCalculationTime: BigNumber;
+        id: BigNumber
+        filler: string
+        owner: string
+        positionAmount: BigNumber
+        positionAmountSqrt: BigNumber
+        assuranceMargin: BigNumber
+        marginAmount: BigNumber
+        lastBorrowFeeCalculationTime: BigNumber
       }
-    >;
+    >
 
     withdrawFromInsurancePool(
       withdrawAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     withdrawMargin(
       marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
-  };
+    ): Promise<void>
+  }
 
-  filters: {};
+  filters: {}
 
   estimateGas: {
-    BORROW_FEE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+    BORROW_FEE_RATE(overrides?: CallOverrides): Promise<BigNumber>
 
     confirmLiquidation(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     depositMargin(
       marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     depositToInsurancePool(
       depositAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     execLiquidationCall(
       positionId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     insurancePools(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     updateQuoteTokenMap(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     withdrawFromInsurancePool(
       withdrawAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     withdrawMargin(
       marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-  };
+    ): Promise<BigNumber>
+  }
 
   populateTransaction: {
-    BORROW_FEE_RATE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    BORROW_FEE_RATE(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     confirmLiquidation(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     depositMargin(
       marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     depositToInsurancePool(
       depositAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     execLiquidationCall(
       positionId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     insurancePools(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     updateQuoteTokenMap(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     withdrawFromInsurancePool(
       withdrawAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     withdrawMargin(
       marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-  };
+    ): Promise<PopulatedTransaction>
+  }
 }

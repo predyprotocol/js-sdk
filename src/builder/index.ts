@@ -1,51 +1,51 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers } from 'ethers'
 
-import { PerpDutchOrderValidationData, PerpOrder } from "../order/PerpOrder";
-import { PerpOrderParams } from "../order/types";
+import { PerpDutchOrderValidationData, PerpOrder } from '../order/PerpOrder'
+import { PerpOrderParams } from '../order/types'
 
 export class OrderBuilder {
-  protected perpOrder: Partial<PerpOrderParams>;
+  protected perpOrder: Partial<PerpOrderParams>
 
   constructor(private chainId: number, private permit2Address: string) {
     // set defaults
     this.perpOrder = {
       validatorAddress: ethers.constants.AddressZero,
-      validationData: "0x",
+      validationData: '0x',
       orderInfo: {
         market: ethers.constants.AddressZero,
         trader: ethers.constants.AddressZero,
         deadline: 0,
         nonce: BigNumber.from(0),
       },
-    };
+    }
   }
 
   deadline(deadline: number): OrderBuilder {
     if (this.perpOrder.orderInfo) {
-      this.perpOrder.orderInfo.deadline = deadline;
+      this.perpOrder.orderInfo.deadline = deadline
     }
 
-    return this;
+    return this
   }
 
   nonce(nonce: BigNumber): OrderBuilder {
     if (this.perpOrder.orderInfo) {
-      this.perpOrder.orderInfo.nonce = nonce;
+      this.perpOrder.orderInfo.nonce = nonce
     }
 
-    return this;
+    return this
   }
 
   tradeAmount(tradeAmount: BigNumber): OrderBuilder {
-    this.perpOrder.tradeAmount = tradeAmount;
+    this.perpOrder.tradeAmount = tradeAmount
 
-    return this;
+    return this
   }
 
   entryTokenAddress(entryTokenAddress: string): OrderBuilder {
-    this.perpOrder.entryTokenAddress = entryTokenAddress;
+    this.perpOrder.entryTokenAddress = entryTokenAddress
 
-    return this;
+    return this
   }
 
   build(): PerpOrder {
@@ -53,15 +53,15 @@ export class OrderBuilder {
       Object.assign(this.perpOrder),
       this.chainId,
       this.permit2Address
-    );
+    )
   }
 }
 
 export class DutchOrderBuilder extends OrderBuilder {
   constructor(chainId: number, permit2Address: string) {
-    super(chainId, permit2Address);
+    super(chainId, permit2Address)
 
-    this.perpOrder.validatorAddress = "";
+    this.perpOrder.validatorAddress = ''
   }
   validationData(
     startPrice: number,
@@ -74,10 +74,10 @@ export class DutchOrderBuilder extends OrderBuilder {
       endPrice,
       startTime,
       endTime
-    );
+    )
 
-    this.perpOrder.validationData = validationData.serialize();
+    this.perpOrder.validationData = validationData.serialize()
 
-    return this;
+    return this
   }
 }

@@ -11,51 +11,51 @@ import type {
   Overrides,
   PopulatedTransaction,
   Signer,
-  utils,
-} from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  utils
+} from 'ethers'
+import type { FunctionFragment, Result } from '@ethersproject/abi'
+import type { Listener, Provider } from '@ethersproject/providers'
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
-} from "./common";
+  PromiseOrValue
+} from './common'
 
 export declare namespace IFillerMarket {
   export type SignedOrderStruct = {
-    order: PromiseOrValue<BytesLike>;
-    sig: PromiseOrValue<BytesLike>;
-  };
+    order: PromiseOrValue<BytesLike>
+    sig: PromiseOrValue<BytesLike>
+  }
 
   export type SignedOrderStructOutput = [string, string] & {
-    order: string;
-    sig: string;
-  };
+    order: string
+    sig: string
+  }
 }
 
 export declare namespace ISettlement {
   export type SettlementDataStruct = {
-    settlementContractAddress: PromiseOrValue<string>;
-    encodedData: PromiseOrValue<BytesLike>;
-  };
+    settlementContractAddress: PromiseOrValue<string>
+    encodedData: PromiseOrValue<BytesLike>
+  }
 
   export type SettlementDataStructOutput = [string, string] & {
-    settlementContractAddress: string;
-    encodedData: string;
-  };
+    settlementContractAddress: string
+    encodedData: string
+  }
 }
 
 export declare namespace IPredyPool {
   export type PayoffStruct = {
-    perpEntryUpdate: PromiseOrValue<BigNumberish>;
-    sqrtEntryUpdate: PromiseOrValue<BigNumberish>;
-    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>;
-    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>;
-    perpPayoff: PromiseOrValue<BigNumberish>;
-    sqrtPayoff: PromiseOrValue<BigNumberish>;
-  };
+    perpEntryUpdate: PromiseOrValue<BigNumberish>
+    sqrtEntryUpdate: PromiseOrValue<BigNumberish>
+    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>
+    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>
+    perpPayoff: PromiseOrValue<BigNumberish>
+    sqrtPayoff: PromiseOrValue<BigNumberish>
+  }
 
   export type PayoffStructOutput = [
     BigNumber,
@@ -65,23 +65,23 @@ export declare namespace IPredyPool {
     BigNumber,
     BigNumber
   ] & {
-    perpEntryUpdate: BigNumber;
-    sqrtEntryUpdate: BigNumber;
-    sqrtRebalanceEntryUpdateUnderlying: BigNumber;
-    sqrtRebalanceEntryUpdateStable: BigNumber;
-    perpPayoff: BigNumber;
-    sqrtPayoff: BigNumber;
-  };
+    perpEntryUpdate: BigNumber
+    sqrtEntryUpdate: BigNumber
+    sqrtRebalanceEntryUpdateUnderlying: BigNumber
+    sqrtRebalanceEntryUpdateStable: BigNumber
+    perpPayoff: BigNumber
+    sqrtPayoff: BigNumber
+  }
 
   export type TradeResultStruct = {
-    payoff: IPredyPool.PayoffStruct;
-    vaultId: PromiseOrValue<BigNumberish>;
-    fee: PromiseOrValue<BigNumberish>;
-    minMargin: PromiseOrValue<BigNumberish>;
-    averagePrice: PromiseOrValue<BigNumberish>;
-    sqrtTwap: PromiseOrValue<BigNumberish>;
-    sqrtPrice: PromiseOrValue<BigNumberish>;
-  };
+    payoff: IPredyPool.PayoffStruct
+    vaultId: PromiseOrValue<BigNumberish>
+    fee: PromiseOrValue<BigNumberish>
+    minMargin: PromiseOrValue<BigNumberish>
+    averagePrice: PromiseOrValue<BigNumberish>
+    sqrtTwap: PromiseOrValue<BigNumberish>
+    sqrtPrice: PromiseOrValue<BigNumberish>
+  }
 
   export type TradeResultStructOutput = [
     IPredyPool.PayoffStructOutput,
@@ -92,22 +92,22 @@ export declare namespace IPredyPool {
     BigNumber,
     BigNumber
   ] & {
-    payoff: IPredyPool.PayoffStructOutput;
-    vaultId: BigNumber;
-    fee: BigNumber;
-    minMargin: BigNumber;
-    averagePrice: BigNumber;
-    sqrtTwap: BigNumber;
-    sqrtPrice: BigNumber;
-  };
+    payoff: IPredyPool.PayoffStructOutput
+    vaultId: BigNumber
+    fee: BigNumber
+    minMargin: BigNumber
+    averagePrice: BigNumber
+    sqrtTwap: BigNumber
+    sqrtPrice: BigNumber
+  }
 
   export type TradeParamsStruct = {
-    pairId: PromiseOrValue<BigNumberish>;
-    vaultId: PromiseOrValue<BigNumberish>;
-    tradeAmount: PromiseOrValue<BigNumberish>;
-    tradeAmountSqrt: PromiseOrValue<BigNumberish>;
-    extraData: PromiseOrValue<BytesLike>;
-  };
+    pairId: PromiseOrValue<BigNumberish>
+    vaultId: PromiseOrValue<BigNumberish>
+    tradeAmount: PromiseOrValue<BigNumberish>
+    tradeAmountSqrt: PromiseOrValue<BigNumberish>
+    extraData: PromiseOrValue<BytesLike>
+  }
 
   export type TradeParamsStructOutput = [
     BigNumber,
@@ -116,215 +116,215 @@ export declare namespace IPredyPool {
     BigNumber,
     string
   ] & {
-    pairId: BigNumber;
-    vaultId: BigNumber;
-    tradeAmount: BigNumber;
-    tradeAmountSqrt: BigNumber;
-    extraData: string;
-  };
+    pairId: BigNumber
+    vaultId: BigNumber
+    tradeAmount: BigNumber
+    tradeAmountSqrt: BigNumber
+    extraData: string
+  }
 }
 
 export interface GammaTradeMarketInterface extends utils.Interface {
   functions: {
-    "execLiquidationCall(uint256,bytes)": FunctionFragment;
-    "executeOrder((bytes,bytes),(address,bytes))": FunctionFragment;
-    "predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))": FunctionFragment;
-    "userPositions(uint256)": FunctionFragment;
-  };
+    'execLiquidationCall(uint256,bytes)': FunctionFragment
+    'executeOrder((bytes,bytes),(address,bytes))': FunctionFragment
+    'predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))': FunctionFragment
+    'userPositions(uint256)': FunctionFragment
+  }
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "execLiquidationCall"
-      | "executeOrder"
-      | "predyTradeAfterCallback"
-      | "userPositions"
-  ): FunctionFragment;
+      | 'execLiquidationCall'
+      | 'executeOrder'
+      | 'predyTradeAfterCallback'
+      | 'userPositions'
+  ): FunctionFragment
 
   encodeFunctionData(
-    functionFragment: "execLiquidationCall",
+    functionFragment: 'execLiquidationCall',
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "executeOrder",
+    functionFragment: 'executeOrder',
     values: [IFillerMarket.SignedOrderStruct, ISettlement.SettlementDataStruct]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "predyTradeAfterCallback",
+    functionFragment: 'predyTradeAfterCallback',
     values: [IPredyPool.TradeParamsStruct, IPredyPool.TradeResultStruct]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "userPositions",
+    functionFragment: 'userPositions',
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
 
   decodeFunctionResult(
-    functionFragment: "execLiquidationCall",
+    functionFragment: 'execLiquidationCall',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "executeOrder",
+    functionFragment: 'executeOrder',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "predyTradeAfterCallback",
+    functionFragment: 'predyTradeAfterCallback',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "userPositions",
+    functionFragment: 'userPositions',
     data: BytesLike
-  ): Result;
+  ): Result
 
-  events: {};
+  events: {}
 }
 
 export interface GammaTradeMarket extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
-  interface: GammaTradeMarketInterface;
+  interface: GammaTradeMarketInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TEvent>>
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
+  ): Array<TypedListener<TEvent>>
+  listeners(eventName?: string): Array<Listener>
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  ): this
+  removeAllListeners(eventName?: string): this
+  off: OnEvent<this>
+  on: OnEvent<this>
+  once: OnEvent<this>
+  removeListener: OnEvent<this>
 
   functions: {
     execLiquidationCall(
       vaultId: PromiseOrValue<BigNumberish>,
       settlementData: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       arg1: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[string]>;
-  };
+    ): Promise<[string]>
+  }
 
   execLiquidationCall(
     vaultId: PromiseOrValue<BigNumberish>,
     settlementData: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   executeOrder(
     order: IFillerMarket.SignedOrderStruct,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   predyTradeAfterCallback(
     tradeParams: IPredyPool.TradeParamsStruct,
     arg1: IPredyPool.TradeResultStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   userPositions(
     vaultId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<string>;
+  ): Promise<string>
 
   callStatic: {
     execLiquidationCall(
       vaultId: PromiseOrValue<BigNumberish>,
       settlementData: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<IPredyPool.TradeResultStructOutput>;
+    ): Promise<IPredyPool.TradeResultStructOutput>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       arg1: IPredyPool.TradeResultStruct,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<string>;
-  };
+    ): Promise<string>
+  }
 
-  filters: {};
+  filters: {}
 
   estimateGas: {
     execLiquidationCall(
       vaultId: PromiseOrValue<BigNumberish>,
       settlementData: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       arg1: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-  };
+    ): Promise<BigNumber>
+  }
 
   populateTransaction: {
     execLiquidationCall(
       vaultId: PromiseOrValue<BigNumberish>,
       settlementData: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       arg1: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-  };
+    ): Promise<PopulatedTransaction>
+  }
 }

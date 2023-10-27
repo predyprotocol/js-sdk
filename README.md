@@ -7,7 +7,7 @@ A JavaScript SDK for the Predy Protocol.
 
 ### Sign order
 
-```
+```ts
 const builder = new DutchOrderBuilder(network.chainId, permit2Address);
 
 const order = builder
@@ -17,17 +17,17 @@ const order = builder
     .tradeAmount(BigNumber.from(100))
     .build();
 
-const { domain } = order.permitData()
+const { domain, types, value} = order.permitData()
 const signature = wallet._signTypedData(domain, types, values)
 
 ```
 
 ### settlement
 
-```
+```ts
 const LeveragedGammaMarket = LeveragedGammaMarket__factory.connect('0x00...', signer)
 
 const settlement = new UniswapSettlement(/*...*/)
 
-await LeveragedGammaMarket.executeOrder(order, settlement.serialize());
+await LeveragedGammaMarket.executeOrder({order, sig: signature}, settlement.serialize());
 ```

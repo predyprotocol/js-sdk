@@ -9,8 +9,8 @@ import { ethers } from 'ethers'
 
 import { BaseValidationData, PerpOrderParams } from './types'
 
-const PERP_ORDER_TYPES = {
-  GeneralOrderParams: [
+export const PERP_ORDER_TYPES = {
+  PerpOrder: [
     { name: 'info', type: 'OrderInfo' },
     { name: 'pairId', type: 'uint256' },
     { name: 'positionId', type: 'uint256' },

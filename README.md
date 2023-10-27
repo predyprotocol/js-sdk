@@ -1,6 +1,8 @@
 js-sdk
 =====
 
+![](https://github.com/predyprotocol/js-sdk/workflows/main/badge.svg)
+
 A JavaScript SDK for the Predy Protocol.
 
 ## Example

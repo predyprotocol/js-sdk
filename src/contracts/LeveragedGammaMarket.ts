@@ -127,24 +127,23 @@ export declare namespace IPredyPool {
 export interface LeveragedGammaMarketInterface extends utils.Interface {
   functions: {
     'BORROW_FEE_RATE()': FunctionFragment
-    'confirmLiquidation(uint256)': FunctionFragment
-    'depositMargin(uint256)': FunctionFragment
-    'depositToInsurancePool(uint256)': FunctionFragment
+    'addFillerPool(uint256)': FunctionFragment
+    'confirmLiquidation(uint256,(address,bytes))': FunctionFragment
+    'depositToInsurancePool(uint256,uint256)': FunctionFragment
     'execLiquidationCall(uint64,(address,bytes))': FunctionFragment
     'executeOrder((bytes,bytes),(address,bytes))': FunctionFragment
-    'insurancePools(address)': FunctionFragment
+    'insurancePools(address,uint256)': FunctionFragment
     'predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))': FunctionFragment
     'updateQuoteTokenMap(uint256)': FunctionFragment
     'userPositions(uint256)': FunctionFragment
-    'withdrawFromInsurancePool(uint256)': FunctionFragment
-    'withdrawMargin(uint256)': FunctionFragment
+    'withdrawFromInsurancePool(uint256,uint256)': FunctionFragment
   }
 
   getFunction(
     nameOrSignatureOrTopic:
       | 'BORROW_FEE_RATE'
+      | 'addFillerPool'
       | 'confirmLiquidation'
-      | 'depositMargin'
       | 'depositToInsurancePool'
       | 'execLiquidationCall'
       | 'executeOrder'
@@ -153,7 +152,6 @@ export interface LeveragedGammaMarketInterface extends utils.Interface {
       | 'updateQuoteTokenMap'
       | 'userPositions'
       | 'withdrawFromInsurancePool'
-      | 'withdrawMargin'
   ): FunctionFragment
 
   encodeFunctionData(
@@ -161,16 +159,16 @@ export interface LeveragedGammaMarketInterface extends utils.Interface {
     values?: undefined
   ): string
   encodeFunctionData(
-    functionFragment: 'confirmLiquidation',
+    functionFragment: 'addFillerPool',
     values: [PromiseOrValue<BigNumberish>]
   ): string
   encodeFunctionData(
-    functionFragment: 'depositMargin',
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: 'confirmLiquidation',
+    values: [PromiseOrValue<BigNumberish>, ISettlement.SettlementDataStruct]
   ): string
   encodeFunctionData(
     functionFragment: 'depositToInsurancePool',
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string
   encodeFunctionData(
     functionFragment: 'execLiquidationCall',
@@ -182,7 +180,7 @@ export interface LeveragedGammaMarketInterface extends utils.Interface {
   ): string
   encodeFunctionData(
     functionFragment: 'insurancePools',
-    values: [PromiseOrValue<string>]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string
   encodeFunctionData(
     functionFragment: 'predyTradeAfterCallback',
@@ -198,11 +196,7 @@ export interface LeveragedGammaMarketInterface extends utils.Interface {
   ): string
   encodeFunctionData(
     functionFragment: 'withdrawFromInsurancePool',
-    values: [PromiseOrValue<BigNumberish>]
-  ): string
-  encodeFunctionData(
-    functionFragment: 'withdrawMargin',
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string
 
   decodeFunctionResult(
@@ -210,11 +204,11 @@ export interface LeveragedGammaMarketInterface extends utils.Interface {
     data: BytesLike
   ): Result
   decodeFunctionResult(
-    functionFragment: 'confirmLiquidation',
+    functionFragment: 'addFillerPool',
     data: BytesLike
   ): Result
   decodeFunctionResult(
-    functionFragment: 'depositMargin',
+    functionFragment: 'confirmLiquidation',
     data: BytesLike
   ): Result
   decodeFunctionResult(
@@ -247,10 +241,6 @@ export interface LeveragedGammaMarketInterface extends utils.Interface {
   ): Result
   decodeFunctionResult(
     functionFragment: 'withdrawFromInsurancePool',
-    data: BytesLike
-  ): Result
-  decodeFunctionResult(
-    functionFragment: 'withdrawMargin',
     data: BytesLike
   ): Result
 
@@ -286,17 +276,19 @@ export interface LeveragedGammaMarket extends BaseContract {
   functions: {
     BORROW_FEE_RATE(overrides?: CallOverrides): Promise<[BigNumber]>
 
-    confirmLiquidation(
-      vaultId: PromiseOrValue<BigNumberish>,
+    addFillerPool(
+      pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
 
-    depositMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
+    confirmLiquidation(
+      positionId: PromiseOrValue<BigNumberish>,
+      settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
 
     depositToInsurancePool(
+      pairId: PromiseOrValue<BigNumberish>,
       depositAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
@@ -314,16 +306,14 @@ export interface LeveragedGammaMarket extends BaseContract {
     ): Promise<ContractTransaction>
 
     insurancePools(
-      arg0: PromiseOrValue<string>,
+      filler: PromiseOrValue<string>,
+      pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, string, BigNumber, BigNumber, BigNumber, BigNumber] & {
+      [BigNumber, string, BigNumber] & {
         pairId: BigNumber
         fillerAddress: string
         marginAmount: BigNumber
-        fillercumulativeFundingRates: BigNumber
-        fundingRateGrobalGrowth: BigNumber
-        lastFundingRateCalculationTime: BigNumber
       }
     >
 
@@ -344,6 +334,7 @@ export interface LeveragedGammaMarket extends BaseContract {
     ): Promise<
       [
         BigNumber,
+        BigNumber,
         string,
         string,
         BigNumber,
@@ -353,6 +344,7 @@ export interface LeveragedGammaMarket extends BaseContract {
         BigNumber
       ] & {
         id: BigNumber
+        pairId: BigNumber
         filler: string
         owner: string
         positionAmount: BigNumber
@@ -364,29 +356,27 @@ export interface LeveragedGammaMarket extends BaseContract {
     >
 
     withdrawFromInsurancePool(
+      pairId: PromiseOrValue<BigNumberish>,
       withdrawAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
-
-    withdrawMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
   }
 
   BORROW_FEE_RATE(overrides?: CallOverrides): Promise<BigNumber>
 
-  confirmLiquidation(
-    vaultId: PromiseOrValue<BigNumberish>,
+  addFillerPool(
+    pairId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
 
-  depositMargin(
-    marginAmount: PromiseOrValue<BigNumberish>,
+  confirmLiquidation(
+    positionId: PromiseOrValue<BigNumberish>,
+    settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
 
   depositToInsurancePool(
+    pairId: PromiseOrValue<BigNumberish>,
     depositAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
@@ -404,16 +394,14 @@ export interface LeveragedGammaMarket extends BaseContract {
   ): Promise<ContractTransaction>
 
   insurancePools(
-    arg0: PromiseOrValue<string>,
+    filler: PromiseOrValue<string>,
+    pairId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, string, BigNumber, BigNumber, BigNumber, BigNumber] & {
+    [BigNumber, string, BigNumber] & {
       pairId: BigNumber
       fillerAddress: string
       marginAmount: BigNumber
-      fillercumulativeFundingRates: BigNumber
-      fundingRateGrobalGrowth: BigNumber
-      lastFundingRateCalculationTime: BigNumber
     }
   >
 
@@ -434,6 +422,7 @@ export interface LeveragedGammaMarket extends BaseContract {
   ): Promise<
     [
       BigNumber,
+      BigNumber,
       string,
       string,
       BigNumber,
@@ -443,6 +432,7 @@ export interface LeveragedGammaMarket extends BaseContract {
       BigNumber
     ] & {
       id: BigNumber
+      pairId: BigNumber
       filler: string
       owner: string
       positionAmount: BigNumber
@@ -454,29 +444,27 @@ export interface LeveragedGammaMarket extends BaseContract {
   >
 
   withdrawFromInsurancePool(
+    pairId: PromiseOrValue<BigNumberish>,
     withdrawAmount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
-
-  withdrawMargin(
-    marginAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
 
   callStatic: {
     BORROW_FEE_RATE(overrides?: CallOverrides): Promise<BigNumber>
 
-    confirmLiquidation(
-      vaultId: PromiseOrValue<BigNumberish>,
+    addFillerPool(
+      pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<string>
 
-    depositMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
+    confirmLiquidation(
+      positionId: PromiseOrValue<BigNumberish>,
+      settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
     ): Promise<void>
 
     depositToInsurancePool(
+      pairId: PromiseOrValue<BigNumberish>,
       depositAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>
@@ -494,16 +482,14 @@ export interface LeveragedGammaMarket extends BaseContract {
     ): Promise<IPredyPool.TradeResultStructOutput>
 
     insurancePools(
-      arg0: PromiseOrValue<string>,
+      filler: PromiseOrValue<string>,
+      pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, string, BigNumber, BigNumber, BigNumber, BigNumber] & {
+      [BigNumber, string, BigNumber] & {
         pairId: BigNumber
         fillerAddress: string
         marginAmount: BigNumber
-        fillercumulativeFundingRates: BigNumber
-        fundingRateGrobalGrowth: BigNumber
-        lastFundingRateCalculationTime: BigNumber
       }
     >
 
@@ -524,6 +510,7 @@ export interface LeveragedGammaMarket extends BaseContract {
     ): Promise<
       [
         BigNumber,
+        BigNumber,
         string,
         string,
         BigNumber,
@@ -533,6 +520,7 @@ export interface LeveragedGammaMarket extends BaseContract {
         BigNumber
       ] & {
         id: BigNumber
+        pairId: BigNumber
         filler: string
         owner: string
         positionAmount: BigNumber
@@ -544,12 +532,8 @@ export interface LeveragedGammaMarket extends BaseContract {
     >
 
     withdrawFromInsurancePool(
+      pairId: PromiseOrValue<BigNumberish>,
       withdrawAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>
-
-    withdrawMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>
   }
@@ -559,17 +543,19 @@ export interface LeveragedGammaMarket extends BaseContract {
   estimateGas: {
     BORROW_FEE_RATE(overrides?: CallOverrides): Promise<BigNumber>
 
-    confirmLiquidation(
-      vaultId: PromiseOrValue<BigNumberish>,
+    addFillerPool(
+      pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
 
-    depositMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
+    confirmLiquidation(
+      positionId: PromiseOrValue<BigNumberish>,
+      settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
 
     depositToInsurancePool(
+      pairId: PromiseOrValue<BigNumberish>,
       depositAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
@@ -587,7 +573,8 @@ export interface LeveragedGammaMarket extends BaseContract {
     ): Promise<BigNumber>
 
     insurancePools(
-      arg0: PromiseOrValue<string>,
+      filler: PromiseOrValue<string>,
+      pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>
 
@@ -608,12 +595,8 @@ export interface LeveragedGammaMarket extends BaseContract {
     ): Promise<BigNumber>
 
     withdrawFromInsurancePool(
+      pairId: PromiseOrValue<BigNumberish>,
       withdrawAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
-
-    withdrawMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
   }
@@ -621,17 +604,19 @@ export interface LeveragedGammaMarket extends BaseContract {
   populateTransaction: {
     BORROW_FEE_RATE(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    confirmLiquidation(
-      vaultId: PromiseOrValue<BigNumberish>,
+    addFillerPool(
+      pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
 
-    depositMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
+    confirmLiquidation(
+      positionId: PromiseOrValue<BigNumberish>,
+      settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
 
     depositToInsurancePool(
+      pairId: PromiseOrValue<BigNumberish>,
       depositAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
@@ -649,7 +634,8 @@ export interface LeveragedGammaMarket extends BaseContract {
     ): Promise<PopulatedTransaction>
 
     insurancePools(
-      arg0: PromiseOrValue<string>,
+      filler: PromiseOrValue<string>,
+      pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>
 
@@ -670,12 +656,8 @@ export interface LeveragedGammaMarket extends BaseContract {
     ): Promise<PopulatedTransaction>
 
     withdrawFromInsurancePool(
+      pairId: PromiseOrValue<BigNumberish>,
       withdrawAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
-
-    withdrawMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
   }

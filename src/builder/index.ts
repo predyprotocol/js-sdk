@@ -14,10 +14,35 @@ export class OrderBuilder {
       orderInfo: {
         market: ethers.constants.AddressZero,
         trader: ethers.constants.AddressZero,
+        filler: ethers.constants.AddressZero,
         deadline: 0,
         nonce: BigNumber.from(0),
       },
     }
+  }
+
+  market(market: string): OrderBuilder {
+    if (this.perpOrder.orderInfo) {
+      this.perpOrder.orderInfo.market = market
+    }
+
+    return this
+  }
+
+  trader(trader: string): OrderBuilder {
+    if (this.perpOrder.orderInfo) {
+      this.perpOrder.orderInfo.trader = trader
+    }
+
+    return this
+  }
+
+  filler(filler: string): OrderBuilder {
+    if (this.perpOrder.orderInfo) {
+      this.perpOrder.orderInfo.filler = filler
+    }
+
+    return this
   }
 
   deadline(deadline: number): OrderBuilder {

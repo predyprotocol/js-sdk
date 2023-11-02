@@ -24,6 +24,7 @@ const GAMMA_ORDER_TYPES = {
   OrderInfo: [
     { name: 'market', type: 'address' },
     { name: 'trader', type: 'address' },
+    { name: 'filler', type: 'address' },
     { name: 'nonce', type: 'uint256' },
     { name: 'deadline', type: 'uint256' },
   ],
@@ -32,7 +33,7 @@ const GAMMA_ORDER_TYPES = {
 const GAMMA_ORDER_ABI = [
   'tuple(' +
     [
-      'tuple(address,address,uint256,uint256)',
+      'tuple(address,address,address,uint256,uint256)',
       'uint256',
       'address',
       'uint256',
@@ -68,6 +69,7 @@ export class GammaOrder {
         [
           this.generalOrder.orderInfo.market,
           this.generalOrder.orderInfo.trader,
+          this.generalOrder.orderInfo.filler,
           this.generalOrder.orderInfo.nonce,
           this.generalOrder.orderInfo.deadline,
         ],
@@ -89,7 +91,7 @@ export class GammaOrder {
 
     const [
       [
-        [market, trader, nonce, deadline],
+        [market, trader, filler, nonce, deadline],
         pairId,
         entryTokenAddress,
         positionId,
@@ -103,7 +105,13 @@ export class GammaOrder {
 
     return new GammaOrder(
       {
-        orderInfo: { market, trader, nonce, deadline: deadline.toNumber() },
+        orderInfo: {
+          market,
+          trader,
+          filler,
+          nonce,
+          deadline: deadline.toNumber(),
+        },
         pairId: pairId.toNumber(),
         positionId: positionId.toNumber(),
         tradeAmount,
@@ -122,8 +130,9 @@ export class GammaOrder {
   private witnessInfo() {
     return {
       info: {
-        reactor: this.generalOrder.orderInfo.market,
-        swapper: this.generalOrder.orderInfo.trader,
+        market: this.generalOrder.orderInfo.market,
+        trader: this.generalOrder.orderInfo.trader,
+        filler: this.generalOrder.orderInfo.filler,
         nonce: this.generalOrder.orderInfo.nonce,
         deadline: this.generalOrder.orderInfo.deadline,
       },

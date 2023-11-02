@@ -26,13 +26,21 @@ import type {
 export type OrderInfoStruct = {
   market: PromiseOrValue<string>
   trader: PromiseOrValue<string>
+  filler: PromiseOrValue<string>
   nonce: PromiseOrValue<BigNumberish>
   deadline: PromiseOrValue<BigNumberish>
 }
 
-export type OrderInfoStructOutput = [string, string, BigNumber, BigNumber] & {
+export type OrderInfoStructOutput = [
+  string,
+  string,
+  string,
+  BigNumber,
+  BigNumber
+] & {
   market: string
   trader: string
+  filler: string
   nonce: BigNumber
   deadline: BigNumber
 }
@@ -41,6 +49,7 @@ export type PerpOrderStruct = {
   info: OrderInfoStruct
   positionId: PromiseOrValue<BigNumberish>
   pairId: PromiseOrValue<BigNumberish>
+  entryTokenAddress: PromiseOrValue<string>
   tradeAmount: PromiseOrValue<BigNumberish>
   marginAmount: PromiseOrValue<BigNumberish>
   validatorAddress: PromiseOrValue<string>
@@ -51,6 +60,7 @@ export type PerpOrderStructOutput = [
   OrderInfoStructOutput,
   BigNumber,
   BigNumber,
+  string,
   BigNumber,
   BigNumber,
   string,
@@ -59,6 +69,7 @@ export type PerpOrderStructOutput = [
   info: OrderInfoStructOutput
   positionId: BigNumber
   pairId: BigNumber
+  entryTokenAddress: string
   tradeAmount: BigNumber
   marginAmount: BigNumber
   validatorAddress: string
@@ -90,7 +101,8 @@ export declare namespace PerpMarket {
 
   export type UserPositionStruct = {
     id: PromiseOrValue<BigNumberish>
-    fillerMarketId: PromiseOrValue<BigNumberish>
+    pairId: PromiseOrValue<BigNumberish>
+    filler: PromiseOrValue<string>
     owner: PromiseOrValue<string>
     positionAmount: PromiseOrValue<BigNumberish>
     entryValue: PromiseOrValue<BigNumberish>
@@ -102,13 +114,15 @@ export declare namespace PerpMarket {
     BigNumber,
     BigNumber,
     string,
+    string,
     BigNumber,
     BigNumber,
     BigNumber,
     BigNumber
   ] & {
     id: BigNumber
-    fillerMarketId: BigNumber
+    pairId: BigNumber
+    filler: string
     owner: string
     positionAmount: BigNumber
     entryValue: BigNumber
@@ -121,7 +135,7 @@ export interface PerpMarketQuoterInterface extends utils.Interface {
   functions: {
     'perpMarket()': FunctionFragment
     'predyPoolQuoter()': FunctionFragment
-    'quoteExecuteOrder(((address,address,uint256,uint256),uint256,uint64,int256,int256,address,bytes),(address,bytes))': FunctionFragment
+    'quoteExecuteOrder(((address,address,address,uint256,uint256),uint256,uint64,address,int256,int256,address,bytes),(address,bytes))': FunctionFragment
     'quoteUserPosition(uint256)': FunctionFragment
   }
 

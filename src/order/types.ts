@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers'
 export interface OrderInfo {
   market: string
   trader: string
+  filler: string
   nonce: BigNumber
   deadline: number
 }

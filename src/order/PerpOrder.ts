@@ -23,6 +23,7 @@ export const PERP_ORDER_TYPES = {
   OrderInfo: [
     { name: 'market', type: 'address' },
     { name: 'trader', type: 'address' },
+    { name: 'filler', type: 'address' },
     { name: 'nonce', type: 'uint256' },
     { name: 'deadline', type: 'uint256' },
   ],
@@ -31,7 +32,7 @@ export const PERP_ORDER_TYPES = {
 const PERP_ORDER_ABI = [
   'tuple(' +
     [
-      'tuple(address,address,uint256,uint256)',
+      'tuple(address,address,address,uint256,uint256)',
       'uint256',
       'address',
       'uint256',
@@ -66,6 +67,7 @@ export class PerpOrder {
         [
           this.perpOrder.orderInfo.market,
           this.perpOrder.orderInfo.trader,
+          this.perpOrder.orderInfo.filler,
           this.perpOrder.orderInfo.nonce,
           this.perpOrder.orderInfo.deadline,
         ],
@@ -86,7 +88,7 @@ export class PerpOrder {
 
     const [
       [
-        [market, trader, nonce, deadline],
+        [market, trader, filler, nonce, deadline],
         pairId,
         entryTokenAddress,
         positionId,
@@ -99,7 +101,13 @@ export class PerpOrder {
 
     return new PerpOrder(
       {
-        orderInfo: { market, trader, nonce, deadline: deadline.toNumber() },
+        orderInfo: {
+          market,
+          trader,
+          filler,
+          nonce,
+          deadline: deadline.toNumber(),
+        },
         pairId: pairId.toNumber(),
         positionId: positionId.toNumber(),
         tradeAmount,
@@ -117,8 +125,9 @@ export class PerpOrder {
   private witnessInfo() {
     return {
       info: {
-        reactor: this.perpOrder.orderInfo.market,
-        swapper: this.perpOrder.orderInfo.trader,
+        market: this.perpOrder.orderInfo.market,
+        trader: this.perpOrder.orderInfo.trader,
+        filler: this.perpOrder.orderInfo.filler,
         nonce: this.perpOrder.orderInfo.nonce,
         deadline: this.perpOrder.orderInfo.deadline,
       },

@@ -129,6 +129,7 @@ export interface GammaTradeMarketInterface extends utils.Interface {
     'execLiquidationCall(uint256,bytes)': FunctionFragment
     'executeOrder((bytes,bytes),(address,bytes))': FunctionFragment
     'predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))': FunctionFragment
+    'updateQuoteTokenMap(uint256)': FunctionFragment
     'userPositions(uint256)': FunctionFragment
   }
 
@@ -137,6 +138,7 @@ export interface GammaTradeMarketInterface extends utils.Interface {
       | 'execLiquidationCall'
       | 'executeOrder'
       | 'predyTradeAfterCallback'
+      | 'updateQuoteTokenMap'
       | 'userPositions'
   ): FunctionFragment
 
@@ -153,6 +155,10 @@ export interface GammaTradeMarketInterface extends utils.Interface {
     values: [IPredyPool.TradeParamsStruct, IPredyPool.TradeResultStruct]
   ): string
   encodeFunctionData(
+    functionFragment: 'updateQuoteTokenMap',
+    values: [PromiseOrValue<BigNumberish>]
+  ): string
+  encodeFunctionData(
     functionFragment: 'userPositions',
     values: [PromiseOrValue<BigNumberish>]
   ): string
@@ -167,6 +173,10 @@ export interface GammaTradeMarketInterface extends utils.Interface {
   ): Result
   decodeFunctionResult(
     functionFragment: 'predyTradeAfterCallback',
+    data: BytesLike
+  ): Result
+  decodeFunctionResult(
+    functionFragment: 'updateQuoteTokenMap',
     data: BytesLike
   ): Result
   decodeFunctionResult(
@@ -222,6 +232,11 @@ export interface GammaTradeMarket extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
 
+    updateQuoteTokenMap(
+      pairId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>
+
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -246,6 +261,11 @@ export interface GammaTradeMarket extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
 
+  updateQuoteTokenMap(
+    pairId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>
+
   userPositions(
     vaultId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -267,6 +287,11 @@ export interface GammaTradeMarket extends BaseContract {
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       arg1: IPredyPool.TradeResultStruct,
+      overrides?: CallOverrides
+    ): Promise<void>
+
+    updateQuoteTokenMap(
+      pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>
 
@@ -297,6 +322,11 @@ export interface GammaTradeMarket extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
 
+    updateQuoteTokenMap(
+      pairId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>
+
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -319,6 +349,11 @@ export interface GammaTradeMarket extends BaseContract {
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       arg1: IPredyPool.TradeResultStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>
+
+    updateQuoteTokenMap(
+      pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
 

@@ -17,7 +17,13 @@ describe('PerpOrder', () => {
           validatorAddress: '',
           validationData: '',
           chainId: 1,
-          orderInfo: { trader: '', market: '', nonce: ZERO, deadline: 0 },
+          orderInfo: {
+            trader: '',
+            market: '',
+            filler: '',
+            nonce: ZERO,
+            deadline: 0,
+          },
         },
         1,
         ''
@@ -49,6 +55,7 @@ describe('PerpOrder', () => {
           orderInfo: {
             trader: constants.AddressZero,
             market: constants.AddressZero,
+            filler: constants.AddressZero,
             nonce: ZERO,
             deadline: 0,
           },

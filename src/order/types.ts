@@ -23,7 +23,6 @@ export interface GammaOrderParams {
 
 export interface PredictOrderParams {
   orderInfo: OrderInfo
-  positionId: number
   pairId: number
   duration: number
   entryTokenAddress: string

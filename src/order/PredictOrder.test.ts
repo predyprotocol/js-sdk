@@ -11,7 +11,6 @@ describe('PredictOrder', () => {
         {
           pairId: 1,
           entryTokenAddress: constants.AddressZero,
-          positionId: 1,
           duration: 60,
           tradeAmount: ZERO,
           tradeAmountSqrt: ZERO,
@@ -46,7 +45,6 @@ describe('PredictOrder', () => {
     it('succeeds to serialize', () => {
       const order = new PredictOrder(
         {
-          positionId: 1,
           pairId: 1,
           duration: 60,
           entryTokenAddress: constants.AddressZero,

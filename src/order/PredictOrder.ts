@@ -12,7 +12,6 @@ import { BaseValidationData, PredictOrderParams } from './types'
 export const PREDICT_ORDER_TYPES = {
   PredictOrder: [
     { name: 'info', type: 'OrderInfo' },
-    { name: 'positionId', type: 'uint256' },
     { name: 'pairId', type: 'uint64' },
     { name: 'duration', type: 'uint64' },
     { name: 'entryTokenAddress', type: 'address' },
@@ -35,7 +34,6 @@ const PREDICT_ORDER_ABI = [
   'tuple(' +
     [
       'tuple(address,address,address,uint256,uint256)',
-      'uint256',
       'uint64',
       'uint64',
       'address',
@@ -75,7 +73,6 @@ export class PredictOrder {
           this.predictOrder.orderInfo.nonce,
           this.predictOrder.orderInfo.deadline,
         ],
-        this.predictOrder.positionId,
         this.predictOrder.pairId,
         this.predictOrder.duration,
         this.predictOrder.entryTokenAddress,
@@ -99,7 +96,6 @@ export class PredictOrder {
     const [
       [
         [market, trader, filler, nonce, deadline],
-        positionId,
         pairId,
         duration,
         entryTokenAddress,
@@ -120,7 +116,6 @@ export class PredictOrder {
           nonce,
           deadline: deadline.toNumber(),
         },
-        positionId: positionId.toNumber(),
         pairId: pairId.toNumber(),
         duration: duration.toNumber(),
         tradeAmount,
@@ -145,7 +140,6 @@ export class PredictOrder {
         nonce: this.predictOrder.orderInfo.nonce,
         deadline: this.predictOrder.orderInfo.deadline,
       },
-      positionId: this.predictOrder.positionId,
       pairId: this.predictOrder.pairId,
       duration: this.predictOrder.duration,
       entryTokenAddress: this.predictOrder.entryTokenAddress,

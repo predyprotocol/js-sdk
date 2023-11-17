@@ -49,10 +49,11 @@ export type OrderInfoStructOutput = [
   deadline: BigNumber
 }
 
-export type GammaOrderStruct = {
+export type PredictOrderStruct = {
   info: OrderInfoStruct
   positionId: PromiseOrValue<BigNumberish>
   pairId: PromiseOrValue<BigNumberish>
+  duration: PromiseOrValue<BigNumberish>
   entryTokenAddress: PromiseOrValue<string>
   tradeAmount: PromiseOrValue<BigNumberish>
   tradeAmountSqrt: PromiseOrValue<BigNumberish>
@@ -61,8 +62,9 @@ export type GammaOrderStruct = {
   validationData: PromiseOrValue<BytesLike>
 }
 
-export type GammaOrderStructOutput = [
+export type PredictOrderStructOutput = [
   OrderInfoStructOutput,
+  BigNumber,
   BigNumber,
   BigNumber,
   string,
@@ -75,24 +77,13 @@ export type GammaOrderStructOutput = [
   info: OrderInfoStructOutput
   positionId: BigNumber
   pairId: BigNumber
+  duration: BigNumber
   entryTokenAddress: string
   tradeAmount: BigNumber
   tradeAmountSqrt: BigNumber
   marginAmount: BigNumber
   validatorAddress: string
   validationData: string
-}
-
-export declare namespace IFillerMarket {
-  export type SignedOrderStruct = {
-    order: PromiseOrValue<BytesLike>
-    sig: PromiseOrValue<BytesLike>
-  }
-
-  export type SignedOrderStructOutput = [string, string] & {
-    order: string
-    sig: string
-  }
 }
 
 export declare namespace ISettlement {
@@ -184,19 +175,31 @@ export declare namespace IPredyPool {
   }
 }
 
-export interface GammaTradeMarketInterface extends utils.Interface {
+export declare namespace IFillerMarket {
+  export type SignedOrderStruct = {
+    order: PromiseOrValue<BytesLike>
+    sig: PromiseOrValue<BytesLike>
+  }
+
+  export type SignedOrderStructOutput = [string, string] & {
+    order: string
+    sig: string
+  }
+}
+
+export interface PredictMarketInterface extends utils.Interface {
   functions: {
-    'execLiquidationCall(uint256,bytes)': FunctionFragment
+    'close(uint256,(address,bytes))': FunctionFragment
     'executeOrder((bytes,bytes),(address,bytes))': FunctionFragment
     'predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))': FunctionFragment
-    'quoteExecuteOrder(((address,address,address,uint256,uint256),uint256,uint64,address,int256,int256,int256,address,bytes),(address,bytes),address)': FunctionFragment
+    'quoteExecuteOrder(((address,address,address,uint256,uint256),uint256,uint64,uint64,address,int256,int256,uint256,address,bytes),(address,bytes),address)': FunctionFragment
     'updateQuoteTokenMap(uint256)': FunctionFragment
     'userPositions(uint256)': FunctionFragment
   }
 
   getFunction(
     nameOrSignatureOrTopic:
-      | 'execLiquidationCall'
+      | 'close'
       | 'executeOrder'
       | 'predyTradeAfterCallback'
       | 'quoteExecuteOrder'
@@ -205,8 +208,8 @@ export interface GammaTradeMarketInterface extends utils.Interface {
   ): FunctionFragment
 
   encodeFunctionData(
-    functionFragment: 'execLiquidationCall',
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
+    functionFragment: 'close',
+    values: [PromiseOrValue<BigNumberish>, ISettlement.SettlementDataStruct]
   ): string
   encodeFunctionData(
     functionFragment: 'executeOrder',
@@ -219,7 +222,7 @@ export interface GammaTradeMarketInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: 'quoteExecuteOrder',
     values: [
-      GammaOrderStruct,
+      PredictOrderStruct,
       ISettlement.SettlementDataStruct,
       PromiseOrValue<string>
     ]
@@ -233,10 +236,7 @@ export interface GammaTradeMarketInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string
 
-  decodeFunctionResult(
-    functionFragment: 'execLiquidationCall',
-    data: BytesLike
-  ): Result
+  decodeFunctionResult(functionFragment: 'close', data: BytesLike): Result
   decodeFunctionResult(
     functionFragment: 'executeOrder',
     data: BytesLike
@@ -273,12 +273,12 @@ export type TradedEvent = TypedEvent<[string, BigNumber], TradedEventObject>
 
 export type TradedEventFilter = TypedEventFilter<TradedEvent>
 
-export interface GammaTradeMarket extends BaseContract {
+export interface PredictMarket extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this
   attach(addressOrName: string): this
   deployed(): Promise<this>
 
-  interface: GammaTradeMarketInterface
+  interface: PredictMarketInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -300,9 +300,9 @@ export interface GammaTradeMarket extends BaseContract {
   removeListener: OnEvent<this>
 
   functions: {
-    execLiquidationCall(
-      vaultId: PromiseOrValue<BigNumberish>,
-      settlementData: PromiseOrValue<BytesLike>,
+    close(
+      positionId: PromiseOrValue<BigNumberish>,
+      settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
 
@@ -314,12 +314,12 @@ export interface GammaTradeMarket extends BaseContract {
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
-      tradeResult: IPredyPool.TradeResultStruct,
+      arg1: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
 
     quoteExecuteOrder(
-      gammaOrder: GammaOrderStruct,
+      predictOrder: PredictOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       quoter: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -333,12 +333,12 @@ export interface GammaTradeMarket extends BaseContract {
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[string]>
+    ): Promise<[string, BigNumber] & { owner: string; expiration: BigNumber }>
   }
 
-  execLiquidationCall(
-    vaultId: PromiseOrValue<BigNumberish>,
-    settlementData: PromiseOrValue<BytesLike>,
+  close(
+    positionId: PromiseOrValue<BigNumberish>,
+    settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
 
@@ -350,12 +350,12 @@ export interface GammaTradeMarket extends BaseContract {
 
   predyTradeAfterCallback(
     tradeParams: IPredyPool.TradeParamsStruct,
-    tradeResult: IPredyPool.TradeResultStruct,
+    arg1: IPredyPool.TradeResultStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
 
   quoteExecuteOrder(
-    gammaOrder: GammaOrderStruct,
+    predictOrder: PredictOrderStruct,
     settlementData: ISettlement.SettlementDataStruct,
     quoter: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -369,14 +369,14 @@ export interface GammaTradeMarket extends BaseContract {
   userPositions(
     vaultId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<string>
+  ): Promise<[string, BigNumber] & { owner: string; expiration: BigNumber }>
 
   callStatic: {
-    execLiquidationCall(
-      vaultId: PromiseOrValue<BigNumberish>,
-      settlementData: PromiseOrValue<BytesLike>,
+    close(
+      positionId: PromiseOrValue<BigNumberish>,
+      settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<IPredyPool.TradeResultStructOutput>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
@@ -386,12 +386,12 @@ export interface GammaTradeMarket extends BaseContract {
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
-      tradeResult: IPredyPool.TradeResultStruct,
+      arg1: IPredyPool.TradeResultStruct,
       overrides?: CallOverrides
     ): Promise<void>
 
     quoteExecuteOrder(
-      gammaOrder: GammaOrderStruct,
+      predictOrder: PredictOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       quoter: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -405,7 +405,7 @@ export interface GammaTradeMarket extends BaseContract {
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<string>
+    ): Promise<[string, BigNumber] & { owner: string; expiration: BigNumber }>
   }
 
   filters: {
@@ -414,9 +414,9 @@ export interface GammaTradeMarket extends BaseContract {
   }
 
   estimateGas: {
-    execLiquidationCall(
-      vaultId: PromiseOrValue<BigNumberish>,
-      settlementData: PromiseOrValue<BytesLike>,
+    close(
+      positionId: PromiseOrValue<BigNumberish>,
+      settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
 
@@ -428,12 +428,12 @@ export interface GammaTradeMarket extends BaseContract {
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
-      tradeResult: IPredyPool.TradeResultStruct,
+      arg1: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
 
     quoteExecuteOrder(
-      gammaOrder: GammaOrderStruct,
+      predictOrder: PredictOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       quoter: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -451,9 +451,9 @@ export interface GammaTradeMarket extends BaseContract {
   }
 
   populateTransaction: {
-    execLiquidationCall(
-      vaultId: PromiseOrValue<BigNumberish>,
-      settlementData: PromiseOrValue<BytesLike>,
+    close(
+      positionId: PromiseOrValue<BigNumberish>,
+      settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
 
@@ -465,12 +465,12 @@ export interface GammaTradeMarket extends BaseContract {
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
-      tradeResult: IPredyPool.TradeResultStruct,
+      arg1: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
 
     quoteExecuteOrder(
-      gammaOrder: GammaOrderStruct,
+      predictOrder: PredictOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       quoter: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }

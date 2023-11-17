@@ -7,16 +7,18 @@ import {
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
 import { ethers } from 'ethers'
 
-import { BaseValidationData, PerpOrderParams } from './types'
+import { BaseValidationData, PredictOrderParams } from './types'
 
-export const PERP_ORDER_TYPES = {
-  PerpOrder: [
+export const PREDICT_ORDER_TYPES = {
+  PredictOrder: [
     { name: 'info', type: 'OrderInfo' },
-    { name: 'pairId', type: 'uint256' },
     { name: 'positionId', type: 'uint256' },
+    { name: 'pairId', type: 'uint64' },
+    { name: 'duration', type: 'uint64' },
     { name: 'entryTokenAddress', type: 'address' },
     { name: 'tradeAmount', type: 'int256' },
-    { name: 'marginAmount', type: 'int256' },
+    { name: 'tradeAmountSqrt', type: 'int256' },
+    { name: 'marginAmount', type: 'uint256' },
     { name: 'validatorAddress', type: 'address' },
     { name: 'validationData', type: 'bytes' },
   ],
@@ -29,26 +31,28 @@ export const PERP_ORDER_TYPES = {
   ],
 }
 
-const PERP_ORDER_ABI = [
+const PREDICT_ORDER_ABI = [
   'tuple(' +
     [
       'tuple(address,address,address,uint256,uint256)',
       'uint256',
+      'uint64',
+      'uint64',
       'address',
+      'int256',
+      'int256',
       'uint256',
-      'int256',
-      'int256',
       'address',
       'bytes',
     ].join(',') +
     ')',
 ]
 
-export class PerpOrder {
+export class PredictOrder {
   public permit2Address: string
 
   constructor(
-    public readonly perpOrder: PerpOrderParams,
+    public readonly predictOrder: PredictOrderParams,
     readonly chainId: number,
     readonly _permit2Address?: string
   ) {
@@ -62,44 +66,52 @@ export class PerpOrder {
   serialize(): string {
     const abiCoder = new ethers.utils.AbiCoder()
 
-    return abiCoder.encode(PERP_ORDER_ABI, [
+    return abiCoder.encode(PREDICT_ORDER_ABI, [
       [
         [
-          this.perpOrder.orderInfo.market,
-          this.perpOrder.orderInfo.trader,
-          this.perpOrder.orderInfo.filler,
-          this.perpOrder.orderInfo.nonce,
-          this.perpOrder.orderInfo.deadline,
+          this.predictOrder.orderInfo.market,
+          this.predictOrder.orderInfo.trader,
+          this.predictOrder.orderInfo.filler,
+          this.predictOrder.orderInfo.nonce,
+          this.predictOrder.orderInfo.deadline,
         ],
-        this.perpOrder.pairId,
-        this.perpOrder.entryTokenAddress,
-        this.perpOrder.positionId,
-        this.perpOrder.tradeAmount,
-        this.perpOrder.marginAmount,
-        this.perpOrder.validatorAddress,
-        this.perpOrder.validationData,
+        this.predictOrder.positionId,
+        this.predictOrder.pairId,
+        this.predictOrder.duration,
+        this.predictOrder.entryTokenAddress,
+        this.predictOrder.tradeAmount,
+        this.predictOrder.tradeAmountSqrt,
+        this.predictOrder.marginAmount,
+        this.predictOrder.validatorAddress,
+        this.predictOrder.validationData,
       ],
     ])
   }
 
-  static parse(encoded: string, chainId: number, permit2?: string): PerpOrder {
+  static parse(
+    encoded: string,
+    chainId: number,
+    permit2?: string
+  ): PredictOrder {
     const abiCoder = new ethers.utils.AbiCoder()
-    const decoded = abiCoder.decode(PERP_ORDER_ABI, encoded)
+    const decoded = abiCoder.decode(PREDICT_ORDER_ABI, encoded)
 
     const [
       [
         [market, trader, filler, nonce, deadline],
-        pairId,
-        entryTokenAddress,
         positionId,
+        pairId,
+        duration,
+        entryTokenAddress,
         tradeAmount,
+        tradeAmountSqrt,
         marginAmount,
         validatorAddress,
         validationData,
       ],
     ] = decoded
 
-    return new PerpOrder(
+    return new PredictOrder(
       {
         orderInfo: {
           market,
@@ -108,9 +120,11 @@ export class PerpOrder {
           nonce,
           deadline: deadline.toNumber(),
         },
-        pairId: pairId.toNumber(),
         positionId: positionId.toNumber(),
+        pairId: pairId.toNumber(),
+        duration: duration.toNumber(),
         tradeAmount,
+        tradeAmountSqrt,
         marginAmount,
         entryTokenAddress,
         validatorAddress,
@@ -125,19 +139,21 @@ export class PerpOrder {
   private witnessInfo() {
     return {
       info: {
-        market: this.perpOrder.orderInfo.market,
-        trader: this.perpOrder.orderInfo.trader,
-        filler: this.perpOrder.orderInfo.filler,
-        nonce: this.perpOrder.orderInfo.nonce,
-        deadline: this.perpOrder.orderInfo.deadline,
+        market: this.predictOrder.orderInfo.market,
+        trader: this.predictOrder.orderInfo.trader,
+        filler: this.predictOrder.orderInfo.filler,
+        nonce: this.predictOrder.orderInfo.nonce,
+        deadline: this.predictOrder.orderInfo.deadline,
       },
-      positionId: this.perpOrder.positionId,
-      pairId: this.perpOrder.pairId,
-      entryTokenAddress: this.perpOrder.entryTokenAddress,
-      tradeAmount: this.perpOrder.tradeAmount,
-      marginAmount: this.perpOrder.marginAmount,
-      validatorAddress: this.perpOrder.validatorAddress,
-      validationData: this.perpOrder.validationData,
+      positionId: this.predictOrder.positionId,
+      pairId: this.predictOrder.pairId,
+      duration: this.predictOrder.duration,
+      entryTokenAddress: this.predictOrder.entryTokenAddress,
+      tradeAmount: this.predictOrder.tradeAmount,
+      tradeAmountSqrt: this.predictOrder.tradeAmountSqrt,
+      marginAmount: this.predictOrder.marginAmount,
+      validatorAddress: this.predictOrder.validatorAddress,
+      validationData: this.predictOrder.validationData,
     }
   }
 
@@ -153,26 +169,26 @@ export class PerpOrder {
   toPermit(): PermitTransferFrom {
     return {
       permitted: {
-        token: this.perpOrder.entryTokenAddress,
-        amount: this.perpOrder.marginAmount,
+        token: this.predictOrder.entryTokenAddress,
+        amount: this.predictOrder.marginAmount,
       },
-      spender: this.perpOrder.orderInfo.market,
-      nonce: this.perpOrder.orderInfo.nonce,
-      deadline: this.perpOrder.orderInfo.deadline,
+      spender: this.predictOrder.orderInfo.market,
+      nonce: this.predictOrder.orderInfo.nonce,
+      deadline: this.predictOrder.orderInfo.deadline,
     }
   }
 
   private witness(): Witness {
     return {
       witness: this.witnessInfo(),
-      witnessTypeName: 'PerpOrder',
-      witnessType: PERP_ORDER_TYPES,
+      witnessTypeName: 'PredictOrder',
+      witnessType: PREDICT_ORDER_TYPES,
     }
   }
 
   hash(): string {
     return ethers.utils._TypedDataEncoder
-      .from(PERP_ORDER_TYPES)
+      .from(PREDICT_ORDER_TYPES)
       .hash(this.witnessInfo())
   }
 }
@@ -181,7 +197,7 @@ const DUTCH_ORDER_VALIDATION_ABI = [
   'tuple(' + ['uint256', 'uint256', 'uint256', 'uint256'].join(',') + ')',
 ]
 
-export class PerpDutchOrderValidationData extends BaseValidationData {
+export class PredictDutchOrderValidationData extends BaseValidationData {
   constructor(
     public startPrice: number,
     public endPrice: number,

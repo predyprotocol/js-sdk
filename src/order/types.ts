@@ -21,12 +21,14 @@ export interface GammaOrderParams {
   chainId: number
 }
 
-export interface PerpOrderParams {
+export interface PredictOrderParams {
   orderInfo: OrderInfo
   positionId: number
   pairId: number
+  duration: number
   entryTokenAddress: string
   tradeAmount: BigNumber
+  tradeAmountSqrt: BigNumber
   marginAmount: BigNumber
   validatorAddress: string
   validationData: string

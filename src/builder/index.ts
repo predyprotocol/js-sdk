@@ -1,14 +1,17 @@
 import { BigNumber, ethers } from 'ethers'
 
-import { PerpDutchOrderValidationData, PerpOrder } from '../order/PerpOrder'
-import { PerpOrderParams } from '../order/types'
+import {
+  PredictDutchOrderValidationData,
+  PredictOrder,
+} from '../order/PredictOrder'
+import { PredictOrderParams } from '../order/types'
 
 export class OrderBuilder {
-  protected perpOrder: Partial<PerpOrderParams>
+  protected predictOrder: Partial<PredictOrderParams>
 
   constructor(private chainId: number, private permit2Address: string) {
     // set defaults
-    this.perpOrder = {
+    this.predictOrder = {
       validatorAddress: ethers.constants.AddressZero,
       validationData: '0x',
       orderInfo: {
@@ -22,60 +25,60 @@ export class OrderBuilder {
   }
 
   market(market: string): OrderBuilder {
-    if (this.perpOrder.orderInfo) {
-      this.perpOrder.orderInfo.market = market
+    if (this.predictOrder.orderInfo) {
+      this.predictOrder.orderInfo.market = market
     }
 
     return this
   }
 
   trader(trader: string): OrderBuilder {
-    if (this.perpOrder.orderInfo) {
-      this.perpOrder.orderInfo.trader = trader
+    if (this.predictOrder.orderInfo) {
+      this.predictOrder.orderInfo.trader = trader
     }
 
     return this
   }
 
   filler(filler: string): OrderBuilder {
-    if (this.perpOrder.orderInfo) {
-      this.perpOrder.orderInfo.filler = filler
+    if (this.predictOrder.orderInfo) {
+      this.predictOrder.orderInfo.filler = filler
     }
 
     return this
   }
 
   deadline(deadline: number): OrderBuilder {
-    if (this.perpOrder.orderInfo) {
-      this.perpOrder.orderInfo.deadline = deadline
+    if (this.predictOrder.orderInfo) {
+      this.predictOrder.orderInfo.deadline = deadline
     }
 
     return this
   }
 
   nonce(nonce: BigNumber): OrderBuilder {
-    if (this.perpOrder.orderInfo) {
-      this.perpOrder.orderInfo.nonce = nonce
+    if (this.predictOrder.orderInfo) {
+      this.predictOrder.orderInfo.nonce = nonce
     }
 
     return this
   }
 
   tradeAmount(tradeAmount: BigNumber): OrderBuilder {
-    this.perpOrder.tradeAmount = tradeAmount
+    this.predictOrder.tradeAmount = tradeAmount
 
     return this
   }
 
   entryTokenAddress(entryTokenAddress: string): OrderBuilder {
-    this.perpOrder.entryTokenAddress = entryTokenAddress
+    this.predictOrder.entryTokenAddress = entryTokenAddress
 
     return this
   }
 
-  build(): PerpOrder {
-    return new PerpOrder(
-      Object.assign(this.perpOrder),
+  build(): PredictOrder {
+    return new PredictOrder(
+      Object.assign(this.predictOrder),
       this.chainId,
       this.permit2Address
     )
@@ -86,7 +89,7 @@ export class DutchOrderBuilder extends OrderBuilder {
   constructor(chainId: number, permit2Address: string) {
     super(chainId, permit2Address)
 
-    this.perpOrder.validatorAddress = ''
+    this.predictOrder.validatorAddress = ''
   }
   validationData(
     startPrice: number,
@@ -94,14 +97,14 @@ export class DutchOrderBuilder extends OrderBuilder {
     startTime: number,
     endTime: number
   ): DutchOrderBuilder {
-    const validationData = new PerpDutchOrderValidationData(
+    const validationData = new PredictDutchOrderValidationData(
       startPrice,
       endPrice,
       startTime,
       endTime
     )
 
-    this.perpOrder.validationData = validationData.serialize()
+    this.predictOrder.validationData = validationData.serialize()
 
     return this
   }

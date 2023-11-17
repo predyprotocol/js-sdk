@@ -1,18 +1,20 @@
 import { BigNumber, constants } from 'ethers'
 
-import { PerpOrder } from './PerpOrder'
+import { PredictOrder } from './PredictOrder'
 
 const ZERO = BigNumber.from(0)
 
-describe('PerpOrder', () => {
+describe('PredictOrder', () => {
   describe('permitData', () => {
     it('succeeds to generate permit data', () => {
-      const order = new PerpOrder(
+      const order = new PredictOrder(
         {
           pairId: 1,
           entryTokenAddress: constants.AddressZero,
           positionId: 1,
+          duration: 60,
           tradeAmount: ZERO,
+          tradeAmountSqrt: ZERO,
           marginAmount: ZERO,
           validatorAddress: '',
           validationData: '',
@@ -42,12 +44,14 @@ describe('PerpOrder', () => {
 
   describe('serialize', () => {
     it('succeeds to serialize', () => {
-      const order = new PerpOrder(
+      const order = new PredictOrder(
         {
-          pairId: 1,
-          entryTokenAddress: constants.AddressZero,
           positionId: 1,
+          pairId: 1,
+          duration: 60,
+          entryTokenAddress: constants.AddressZero,
           tradeAmount: ZERO,
+          tradeAmountSqrt: ZERO,
           marginAmount: ZERO,
           validatorAddress: constants.AddressZero,
           validationData: '0x',
@@ -66,9 +70,9 @@ describe('PerpOrder', () => {
 
       const encoded = order.serialize()
 
-      const decoded = PerpOrder.parse(encoded, 1)
+      const decoded = PredictOrder.parse(encoded, 1)
 
-      expect(decoded.perpOrder.pairId).toEqual(order.perpOrder.pairId)
+      expect(decoded.predictOrder.pairId).toEqual(order.predictOrder.pairId)
     })
   })
 })

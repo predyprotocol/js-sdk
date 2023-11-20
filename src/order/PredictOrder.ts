@@ -24,7 +24,6 @@ export const PREDICT_ORDER_TYPES = {
   OrderInfo: [
     { name: 'market', type: 'address' },
     { name: 'trader', type: 'address' },
-    { name: 'filler', type: 'address' },
     { name: 'nonce', type: 'uint256' },
     { name: 'deadline', type: 'uint256' },
   ],
@@ -32,18 +31,18 @@ export const PREDICT_ORDER_TYPES = {
 
 const PREDICT_ORDER_ABI = [
   'tuple(' +
-    [
-      'tuple(address,address,address,uint256,uint256)',
-      'uint64',
-      'uint64',
-      'address',
-      'int256',
-      'int256',
-      'uint256',
-      'address',
-      'bytes',
-    ].join(',') +
-    ')',
+  [
+    'tuple(address,address,uint256,uint256)',
+    'uint64',
+    'uint64',
+    'address',
+    'int256',
+    'int256',
+    'uint256',
+    'address',
+    'bytes',
+  ].join(',') +
+  ')',
 ]
 
 export class PredictOrder {
@@ -69,7 +68,6 @@ export class PredictOrder {
         [
           this.predictOrder.orderInfo.market,
           this.predictOrder.orderInfo.trader,
-          this.predictOrder.orderInfo.filler,
           this.predictOrder.orderInfo.nonce,
           this.predictOrder.orderInfo.deadline,
         ],
@@ -95,7 +93,7 @@ export class PredictOrder {
 
     const [
       [
-        [market, trader, filler, nonce, deadline],
+        [market, trader, nonce, deadline],
         pairId,
         duration,
         entryTokenAddress,
@@ -112,7 +110,6 @@ export class PredictOrder {
         orderInfo: {
           market,
           trader,
-          filler,
           nonce,
           deadline: deadline.toNumber(),
         },
@@ -136,7 +133,6 @@ export class PredictOrder {
       info: {
         market: this.predictOrder.orderInfo.market,
         trader: this.predictOrder.orderInfo.trader,
-        filler: this.predictOrder.orderInfo.filler,
         nonce: this.predictOrder.orderInfo.nonce,
         deadline: this.predictOrder.orderInfo.deadline,
       },

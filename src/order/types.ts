@@ -3,7 +3,6 @@ import { BigNumber } from 'ethers'
 export interface OrderInfo {
   market: string
   trader: string
-  filler: string
   nonce: BigNumber
   deadline: number
 }
@@ -16,6 +15,10 @@ export interface GammaOrderParams {
   tradeAmount: BigNumber
   tradeAmountSqrt: BigNumber
   marginAmount: BigNumber
+  canceler: string
+  takeProfitPrice: BigNumber
+  stopLossPrice: BigNumber
+  slippageTolerance: number
   validatorAddress: string
   validationData: string
   chainId: number

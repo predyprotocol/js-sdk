@@ -21,7 +21,6 @@ describe('PredictOrder', () => {
           orderInfo: {
             trader: '',
             market: '',
-            filler: '',
             nonce: ZERO,
             deadline: 0,
           },
@@ -57,7 +56,6 @@ describe('PredictOrder', () => {
           orderInfo: {
             trader: constants.AddressZero,
             market: constants.AddressZero,
-            filler: constants.AddressZero,
             nonce: ZERO,
             deadline: 0,
           },

@@ -1,5 +1,4 @@
 import { BigNumber, constants } from 'ethers'
-
 import { GammaOrder } from './GammaOrder'
 
 const ZERO = BigNumber.from(0)
@@ -15,13 +14,16 @@ describe('GammaOrder', () => {
           tradeAmount: ZERO,
           tradeAmountSqrt: ZERO,
           marginAmount: ZERO,
+          canceler: '',
+          takeProfitPrice: ZERO,
+          stopLossPrice: ZERO,
+          slippageTolerance: 0,
           validatorAddress: '',
           validationData: '',
           chainId: 1,
           orderInfo: {
             trader: '',
             market: '',
-            filler: '',
             nonce: ZERO,
             deadline: 0,
           },
@@ -51,13 +53,16 @@ describe('GammaOrder', () => {
           tradeAmount: ZERO,
           tradeAmountSqrt: ZERO,
           marginAmount: ZERO,
+          canceler: constants.AddressZero,
+          takeProfitPrice: ZERO,
+          stopLossPrice: ZERO,
+          slippageTolerance: 0,
           validatorAddress: constants.AddressZero,
           validationData: '0x',
           chainId: 1,
           orderInfo: {
             trader: constants.AddressZero,
             market: constants.AddressZero,
-            filler: constants.AddressZero,
             nonce: ZERO,
             deadline: 0,
           },
@@ -70,7 +75,7 @@ describe('GammaOrder', () => {
 
       const decoded = GammaOrder.parse(encoded, 1)
 
-      expect(decoded.generalOrder.pairId).toEqual(order.generalOrder.pairId)
+      expect(decoded.gammaOrder.pairId).toEqual(order.gammaOrder.pairId)
     })
   })
 })

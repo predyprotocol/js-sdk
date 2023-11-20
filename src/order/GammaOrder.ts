@@ -18,13 +18,16 @@ const GAMMA_ORDER_TYPES = {
     { name: 'tradeAmount', type: 'int256' },
     { name: 'tradeAmountSqrt', type: 'int256' },
     { name: 'marginAmount', type: 'int256' },
+    { name: 'canceler', type: 'address' },
+    { name: 'takeProfitPrice', type: 'uint256' },
+    { name: 'stopLossPrice', type: 'uint256' },
+    { name: 'slippageTolerance', type: 'uint64' },
     { name: 'validatorAddress', type: 'address' },
     { name: 'validationData', type: 'bytes' },
   ],
   OrderInfo: [
     { name: 'market', type: 'address' },
     { name: 'trader', type: 'address' },
-    { name: 'filler', type: 'address' },
     { name: 'nonce', type: 'uint256' },
     { name: 'deadline', type: 'uint256' },
   ],
@@ -32,25 +35,29 @@ const GAMMA_ORDER_TYPES = {
 
 const GAMMA_ORDER_ABI = [
   'tuple(' +
-    [
-      'tuple(address,address,address,uint256,uint256)',
-      'uint256',
-      'address',
-      'uint256',
-      'int256',
-      'int256',
-      'int256',
-      'address',
-      'bytes',
-    ].join(',') +
-    ')',
+  [
+    'tuple(address,address,uint256,uint256)',
+    'uint256',
+    'address',
+    'uint256',
+    'int256',
+    'int256',
+    'int256',
+    'address',
+    'uint256',
+    'uint256',
+    'uint64',
+    'address',
+    'bytes',
+  ].join(',') +
+  ')',
 ]
 
 export class GammaOrder {
   public permit2Address: string
 
   constructor(
-    public readonly generalOrder: GammaOrderParams,
+    public readonly gammaOrder: GammaOrderParams,
     readonly chainId: number,
     readonly _permit2Address?: string
   ) {
@@ -67,20 +74,23 @@ export class GammaOrder {
     return abiCoder.encode(GAMMA_ORDER_ABI, [
       [
         [
-          this.generalOrder.orderInfo.market,
-          this.generalOrder.orderInfo.trader,
-          this.generalOrder.orderInfo.filler,
-          this.generalOrder.orderInfo.nonce,
-          this.generalOrder.orderInfo.deadline,
+          this.gammaOrder.orderInfo.market,
+          this.gammaOrder.orderInfo.trader,
+          this.gammaOrder.orderInfo.nonce,
+          this.gammaOrder.orderInfo.deadline,
         ],
-        this.generalOrder.pairId,
-        this.generalOrder.entryTokenAddress,
-        this.generalOrder.positionId,
-        this.generalOrder.tradeAmount,
-        this.generalOrder.tradeAmountSqrt,
-        this.generalOrder.marginAmount,
-        this.generalOrder.validatorAddress,
-        this.generalOrder.validationData,
+        this.gammaOrder.pairId,
+        this.gammaOrder.entryTokenAddress,
+        this.gammaOrder.positionId,
+        this.gammaOrder.tradeAmount,
+        this.gammaOrder.tradeAmountSqrt,
+        this.gammaOrder.marginAmount,
+        this.gammaOrder.canceler,
+        this.gammaOrder.takeProfitPrice,
+        this.gammaOrder.stopLossPrice,
+        this.gammaOrder.slippageTolerance,
+        this.gammaOrder.validatorAddress,
+        this.gammaOrder.validationData,
       ],
     ])
   }
@@ -91,13 +101,17 @@ export class GammaOrder {
 
     const [
       [
-        [market, trader, filler, nonce, deadline],
+        [market, trader, nonce, deadline],
         pairId,
         entryTokenAddress,
         positionId,
         tradeAmount,
         tradeAmountSqrt,
         marginAmount,
+        canceler,
+        takeProfitPrice,
+        stopLossPrice,
+        slippageTolerance,
         validatorAddress,
         validationData,
       ],
@@ -108,7 +122,6 @@ export class GammaOrder {
         orderInfo: {
           market,
           trader,
-          filler,
           nonce,
           deadline: deadline.toNumber(),
         },
@@ -118,6 +131,10 @@ export class GammaOrder {
         tradeAmountSqrt,
         marginAmount,
         entryTokenAddress,
+        canceler,
+        takeProfitPrice,
+        stopLossPrice,
+        slippageTolerance: slippageTolerance.toNumber(),
         validatorAddress,
         validationData,
         chainId,
@@ -130,20 +147,23 @@ export class GammaOrder {
   private witnessInfo() {
     return {
       info: {
-        market: this.generalOrder.orderInfo.market,
-        trader: this.generalOrder.orderInfo.trader,
-        filler: this.generalOrder.orderInfo.filler,
-        nonce: this.generalOrder.orderInfo.nonce,
-        deadline: this.generalOrder.orderInfo.deadline,
+        market: this.gammaOrder.orderInfo.market,
+        trader: this.gammaOrder.orderInfo.trader,
+        nonce: this.gammaOrder.orderInfo.nonce,
+        deadline: this.gammaOrder.orderInfo.deadline,
       },
-      positionId: this.generalOrder.positionId,
-      pairId: this.generalOrder.pairId,
-      entryTokenAddress: this.generalOrder.entryTokenAddress,
-      tradeAmount: this.generalOrder.tradeAmount,
-      tradeAmountSqrt: this.generalOrder.tradeAmountSqrt,
-      marginAmount: this.generalOrder.marginAmount,
-      validatorAddress: this.generalOrder.validatorAddress,
-      validationData: this.generalOrder.validationData,
+      positionId: this.gammaOrder.positionId,
+      pairId: this.gammaOrder.pairId,
+      entryTokenAddress: this.gammaOrder.entryTokenAddress,
+      tradeAmount: this.gammaOrder.tradeAmount,
+      tradeAmountSqrt: this.gammaOrder.tradeAmountSqrt,
+      marginAmount: this.gammaOrder.marginAmount,
+      canceler: this.gammaOrder.canceler,
+      takeProfitPrice: this.gammaOrder.takeProfitPrice,
+      stopLossPrice: this.gammaOrder.stopLossPrice,
+      slippageTolerance: this.gammaOrder.slippageTolerance,
+      validatorAddress: this.gammaOrder.validatorAddress,
+      validationData: this.gammaOrder.validationData,
     }
   }
 
@@ -159,12 +179,12 @@ export class GammaOrder {
   toPermit(): PermitTransferFrom {
     return {
       permitted: {
-        token: this.generalOrder.entryTokenAddress,
-        amount: this.generalOrder.marginAmount,
+        token: this.gammaOrder.entryTokenAddress,
+        amount: this.gammaOrder.marginAmount,
       },
-      spender: this.generalOrder.orderInfo.market,
-      nonce: this.generalOrder.orderInfo.nonce,
-      deadline: this.generalOrder.orderInfo.deadline,
+      spender: this.gammaOrder.orderInfo.market,
+      nonce: this.gammaOrder.orderInfo.nonce,
+      deadline: this.gammaOrder.orderInfo.deadline,
     }
   }
 

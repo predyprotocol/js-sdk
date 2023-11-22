@@ -1,5 +1,4 @@
 export * from './builder'
 export * from './contracts'
-export * from './order/GammaOrder'
-export * from './trade'
+export * from './order'
 export * from './settlement'

@@ -1,4 +1,5 @@
 import { BigNumber, constants } from 'ethers'
+
 import { GammaOrder } from './GammaOrder'
 
 const ZERO = BigNumber.from(0)

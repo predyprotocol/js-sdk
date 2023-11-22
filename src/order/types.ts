@@ -37,6 +37,17 @@ export interface PredictOrderParams {
   chainId: number
 }
 
+export interface SpotOrderParams {
+  orderInfo: OrderInfo
+  quoteToken: string
+  baseToken: string
+  baseTokenAmount: BigNumber
+  quoteTokenAmount: BigNumber
+  validatorAddress: string
+  validationData: string
+  chainId: number
+}
+
 export abstract class BaseValidationData {
   abstract serialize(): string
 }

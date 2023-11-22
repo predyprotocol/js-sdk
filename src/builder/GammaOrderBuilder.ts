@@ -122,7 +122,7 @@ export class OrderBuilder {
   }
 }
 
-export class DutchOrderBuilder extends OrderBuilder {
+export class GammaDutchOrderBuilder extends OrderBuilder {
   constructor(chainId: number, permit2Address: string) {
     super(chainId, permit2Address)
 
@@ -134,7 +134,7 @@ export class DutchOrderBuilder extends OrderBuilder {
     endPrice: number,
     startTime: number,
     endTime: number
-  ): DutchOrderBuilder {
+  ): GammaDutchOrderBuilder {
     const validationData = new DutchOrderValidationData(
       startPrice,
       endPrice,
@@ -148,7 +148,7 @@ export class DutchOrderBuilder extends OrderBuilder {
   }
 }
 
-export class LimitOrderBuilder extends OrderBuilder {
+export class GammaLimitOrderBuilder extends OrderBuilder {
   constructor(chainId: number, permit2Address: string) {
     super(chainId, permit2Address)
 
@@ -159,8 +159,8 @@ export class LimitOrderBuilder extends OrderBuilder {
     triggerPrice: number,
     triggerPriceSqrt: number,
     limitPrice: number,
-    limitPriceSqrt: number,
-  ): DutchOrderBuilder {
+    limitPriceSqrt: number
+  ): GammaLimitOrderBuilder {
     const validationData = new LimitOrderValidationData(
       triggerPrice,
       triggerPriceSqrt,
@@ -173,5 +173,3 @@ export class LimitOrderBuilder extends OrderBuilder {
     return this
   }
 }
-
-

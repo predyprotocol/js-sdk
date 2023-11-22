@@ -35,22 +35,22 @@ const GAMMA_ORDER_TYPES = {
 
 const GAMMA_ORDER_ABI = [
   'tuple(' +
-  [
-    'tuple(address,address,uint256,uint256)',
-    'uint256',
-    'address',
-    'uint256',
-    'int256',
-    'int256',
-    'int256',
-    'address',
-    'uint256',
-    'uint256',
-    'uint64',
-    'address',
-    'bytes',
-  ].join(',') +
-  ')',
+    [
+      'tuple(address,address,uint256,uint256)',
+      'uint256',
+      'address',
+      'uint256',
+      'int256',
+      'int256',
+      'int256',
+      'address',
+      'uint256',
+      'uint256',
+      'uint64',
+      'address',
+      'bytes',
+    ].join(',') +
+    ')',
 ]
 
 export class GammaOrder {

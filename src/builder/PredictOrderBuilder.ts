@@ -100,7 +100,7 @@ export class PredictOrderBuilder {
   }
 }
 
-export class DutchOrderBuilder extends PredictOrderBuilder {
+export class PredictDutchOrderBuilder extends PredictOrderBuilder {
   constructor(chainId: number, permit2Address: string) {
     super(chainId, permit2Address)
 
@@ -112,7 +112,7 @@ export class DutchOrderBuilder extends PredictOrderBuilder {
     endPrice: number,
     startTime: number,
     endTime: number
-  ): DutchOrderBuilder {
+  ): PredictDutchOrderBuilder {
     const validationData = new PredictDutchOrderValidationData(
       startPrice,
       endPrice,

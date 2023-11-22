@@ -31,18 +31,18 @@ export const PREDICT_ORDER_TYPES = {
 
 const PREDICT_ORDER_ABI = [
   'tuple(' +
-  [
-    'tuple(address,address,uint256,uint256)',
-    'uint64',
-    'uint64',
-    'address',
-    'int256',
-    'int256',
-    'uint256',
-    'address',
-    'bytes',
-  ].join(',') +
-  ')',
+    [
+      'tuple(address,address,uint256,uint256)',
+      'uint64',
+      'uint64',
+      'address',
+      'int256',
+      'int256',
+      'uint256',
+      'address',
+      'bytes',
+    ].join(',') +
+    ')',
 ]
 
 export class PredictOrder {

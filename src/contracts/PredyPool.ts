@@ -11,39 +11,39 @@ import type {
   Overrides,
   PopulatedTransaction,
   Signer,
-  utils
-} from 'ethers'
-import type { FunctionFragment, Result } from '@ethersproject/abi'
-import type { Listener, Provider } from '@ethersproject/providers'
+  utils,
+} from "ethers";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue
-} from './common'
+  PromiseOrValue,
+} from "./common";
 
 export declare namespace ISettlement {
   export type SettlementDataStruct = {
-    settlementContractAddress: PromiseOrValue<string>
-    encodedData: PromiseOrValue<BytesLike>
-  }
+    settlementContractAddress: PromiseOrValue<string>;
+    encodedData: PromiseOrValue<BytesLike>;
+  };
 
   export type SettlementDataStructOutput = [string, string] & {
-    settlementContractAddress: string
-    encodedData: string
-  }
+    settlementContractAddress: string;
+    encodedData: string;
+  };
 }
 
 export declare namespace IPredyPool {
   export type PayoffStruct = {
-    perpEntryUpdate: PromiseOrValue<BigNumberish>
-    sqrtEntryUpdate: PromiseOrValue<BigNumberish>
-    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>
-    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>
-    perpPayoff: PromiseOrValue<BigNumberish>
-    sqrtPayoff: PromiseOrValue<BigNumberish>
-  }
+    perpEntryUpdate: PromiseOrValue<BigNumberish>;
+    sqrtEntryUpdate: PromiseOrValue<BigNumberish>;
+    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>;
+    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>;
+    perpPayoff: PromiseOrValue<BigNumberish>;
+    sqrtPayoff: PromiseOrValue<BigNumberish>;
+  };
 
   export type PayoffStructOutput = [
     BigNumber,
@@ -53,23 +53,23 @@ export declare namespace IPredyPool {
     BigNumber,
     BigNumber
   ] & {
-    perpEntryUpdate: BigNumber
-    sqrtEntryUpdate: BigNumber
-    sqrtRebalanceEntryUpdateUnderlying: BigNumber
-    sqrtRebalanceEntryUpdateStable: BigNumber
-    perpPayoff: BigNumber
-    sqrtPayoff: BigNumber
-  }
+    perpEntryUpdate: BigNumber;
+    sqrtEntryUpdate: BigNumber;
+    sqrtRebalanceEntryUpdateUnderlying: BigNumber;
+    sqrtRebalanceEntryUpdateStable: BigNumber;
+    perpPayoff: BigNumber;
+    sqrtPayoff: BigNumber;
+  };
 
   export type TradeResultStruct = {
-    payoff: IPredyPool.PayoffStruct
-    vaultId: PromiseOrValue<BigNumberish>
-    fee: PromiseOrValue<BigNumberish>
-    minMargin: PromiseOrValue<BigNumberish>
-    averagePrice: PromiseOrValue<BigNumberish>
-    sqrtTwap: PromiseOrValue<BigNumberish>
-    sqrtPrice: PromiseOrValue<BigNumberish>
-  }
+    payoff: IPredyPool.PayoffStruct;
+    vaultId: PromiseOrValue<BigNumberish>;
+    fee: PromiseOrValue<BigNumberish>;
+    minMargin: PromiseOrValue<BigNumberish>;
+    averagePrice: PromiseOrValue<BigNumberish>;
+    sqrtTwap: PromiseOrValue<BigNumberish>;
+    sqrtPrice: PromiseOrValue<BigNumberish>;
+  };
 
   export type TradeResultStructOutput = [
     IPredyPool.PayoffStructOutput,
@@ -80,34 +80,34 @@ export declare namespace IPredyPool {
     BigNumber,
     BigNumber
   ] & {
-    payoff: IPredyPool.PayoffStructOutput
-    vaultId: BigNumber
-    fee: BigNumber
-    minMargin: BigNumber
-    averagePrice: BigNumber
-    sqrtTwap: BigNumber
-    sqrtPrice: BigNumber
-  }
+    payoff: IPredyPool.PayoffStructOutput;
+    vaultId: BigNumber;
+    fee: BigNumber;
+    minMargin: BigNumber;
+    averagePrice: BigNumber;
+    sqrtTwap: BigNumber;
+    sqrtPrice: BigNumber;
+  };
 
   export type VaultStatusStruct = {
-    id: PromiseOrValue<BigNumberish>
-    vaultValue: PromiseOrValue<BigNumberish>
-    minMargin: PromiseOrValue<BigNumberish>
-  }
+    id: PromiseOrValue<BigNumberish>;
+    vaultValue: PromiseOrValue<BigNumberish>;
+    minMargin: PromiseOrValue<BigNumberish>;
+  };
 
   export type VaultStatusStructOutput = [BigNumber, BigNumber, BigNumber] & {
-    id: BigNumber
-    vaultValue: BigNumber
-    minMargin: BigNumber
-  }
+    id: BigNumber;
+    vaultValue: BigNumber;
+    minMargin: BigNumber;
+  };
 
   export type TradeParamsStruct = {
-    pairId: PromiseOrValue<BigNumberish>
-    vaultId: PromiseOrValue<BigNumberish>
-    tradeAmount: PromiseOrValue<BigNumberish>
-    tradeAmountSqrt: PromiseOrValue<BigNumberish>
-    extraData: PromiseOrValue<BytesLike>
-  }
+    pairId: PromiseOrValue<BigNumberish>;
+    vaultId: PromiseOrValue<BigNumberish>;
+    tradeAmount: PromiseOrValue<BigNumberish>;
+    tradeAmountSqrt: PromiseOrValue<BigNumberish>;
+    extraData: PromiseOrValue<BytesLike>;
+  };
 
   export type TradeParamsStructOutput = [
     BigNumber,
@@ -116,23 +116,23 @@ export declare namespace IPredyPool {
     BigNumber,
     string
   ] & {
-    pairId: BigNumber
-    vaultId: BigNumber
-    tradeAmount: BigNumber
-    tradeAmountSqrt: BigNumber
-    extraData: string
-  }
+    pairId: BigNumber;
+    vaultId: BigNumber;
+    tradeAmount: BigNumber;
+    tradeAmountSqrt: BigNumber;
+    extraData: string;
+  };
 }
 
 export declare namespace ScaledAsset {
   export type AssetStatusStruct = {
-    totalCompoundDeposited: PromiseOrValue<BigNumberish>
-    totalNormalDeposited: PromiseOrValue<BigNumberish>
-    totalNormalBorrowed: PromiseOrValue<BigNumberish>
-    assetScaler: PromiseOrValue<BigNumberish>
-    assetGrowth: PromiseOrValue<BigNumberish>
-    debtGrowth: PromiseOrValue<BigNumberish>
-  }
+    totalCompoundDeposited: PromiseOrValue<BigNumberish>;
+    totalNormalDeposited: PromiseOrValue<BigNumberish>;
+    totalNormalBorrowed: PromiseOrValue<BigNumberish>;
+    assetScaler: PromiseOrValue<BigNumberish>;
+    assetGrowth: PromiseOrValue<BigNumberish>;
+    debtGrowth: PromiseOrValue<BigNumberish>;
+  };
 
   export type AssetStatusStructOutput = [
     BigNumber,
@@ -142,32 +142,32 @@ export declare namespace ScaledAsset {
     BigNumber,
     BigNumber
   ] & {
-    totalCompoundDeposited: BigNumber
-    totalNormalDeposited: BigNumber
-    totalNormalBorrowed: BigNumber
-    assetScaler: BigNumber
-    assetGrowth: BigNumber
-    debtGrowth: BigNumber
-  }
+    totalCompoundDeposited: BigNumber;
+    totalNormalDeposited: BigNumber;
+    totalNormalBorrowed: BigNumber;
+    assetScaler: BigNumber;
+    assetGrowth: BigNumber;
+    debtGrowth: BigNumber;
+  };
 
   export type UserStatusStruct = {
-    positionAmount: PromiseOrValue<BigNumberish>
-    lastFeeGrowth: PromiseOrValue<BigNumberish>
-  }
+    positionAmount: PromiseOrValue<BigNumberish>;
+    lastFeeGrowth: PromiseOrValue<BigNumberish>;
+  };
 
   export type UserStatusStructOutput = [BigNumber, BigNumber] & {
-    positionAmount: BigNumber
-    lastFeeGrowth: BigNumber
-  }
+    positionAmount: BigNumber;
+    lastFeeGrowth: BigNumber;
+  };
 }
 
 export declare namespace InterestRateModel {
   export type IRMParamsStruct = {
-    baseRate: PromiseOrValue<BigNumberish>
-    kinkRate: PromiseOrValue<BigNumberish>
-    slope1: PromiseOrValue<BigNumberish>
-    slope2: PromiseOrValue<BigNumberish>
-  }
+    baseRate: PromiseOrValue<BigNumberish>;
+    kinkRate: PromiseOrValue<BigNumberish>;
+    slope1: PromiseOrValue<BigNumberish>;
+    slope2: PromiseOrValue<BigNumberish>;
+  };
 
   export type IRMParamsStructOutput = [
     BigNumber,
@@ -175,22 +175,22 @@ export declare namespace InterestRateModel {
     BigNumber,
     BigNumber
   ] & {
-    baseRate: BigNumber
-    kinkRate: BigNumber
-    slope1: BigNumber
-    slope2: BigNumber
-  }
+    baseRate: BigNumber;
+    kinkRate: BigNumber;
+    slope1: BigNumber;
+    slope2: BigNumber;
+  };
 }
 
 export declare namespace Perp {
   export type AssetPoolStatusStruct = {
-    token: PromiseOrValue<string>
-    supplyTokenAddress: PromiseOrValue<string>
-    tokenStatus: ScaledAsset.AssetStatusStruct
-    irmParams: InterestRateModel.IRMParamsStruct
-    accumulatedProtocolRevenue: PromiseOrValue<BigNumberish>
-    accumulatedCreatorRevenue: PromiseOrValue<BigNumberish>
-  }
+    token: PromiseOrValue<string>;
+    supplyTokenAddress: PromiseOrValue<string>;
+    tokenStatus: ScaledAsset.AssetStatusStruct;
+    irmParams: InterestRateModel.IRMParamsStruct;
+    accumulatedProtocolRevenue: PromiseOrValue<BigNumberish>;
+    accumulatedCreatorRevenue: PromiseOrValue<BigNumberish>;
+  };
 
   export type AssetPoolStatusStructOutput = [
     string,
@@ -200,45 +200,45 @@ export declare namespace Perp {
     BigNumber,
     BigNumber
   ] & {
-    token: string
-    supplyTokenAddress: string
-    tokenStatus: ScaledAsset.AssetStatusStructOutput
-    irmParams: InterestRateModel.IRMParamsStructOutput
-    accumulatedProtocolRevenue: BigNumber
-    accumulatedCreatorRevenue: BigNumber
-  }
+    token: string;
+    supplyTokenAddress: string;
+    tokenStatus: ScaledAsset.AssetStatusStructOutput;
+    irmParams: InterestRateModel.IRMParamsStructOutput;
+    accumulatedProtocolRevenue: BigNumber;
+    accumulatedCreatorRevenue: BigNumber;
+  };
 
   export type AssetRiskParamsStruct = {
-    riskRatio: PromiseOrValue<BigNumberish>
-    rangeSize: PromiseOrValue<BigNumberish>
-    rebalanceThreshold: PromiseOrValue<BigNumberish>
-  }
+    riskRatio: PromiseOrValue<BigNumberish>;
+    rangeSize: PromiseOrValue<BigNumberish>;
+    rebalanceThreshold: PromiseOrValue<BigNumberish>;
+  };
 
   export type AssetRiskParamsStructOutput = [BigNumber, number, number] & {
-    riskRatio: BigNumber
-    rangeSize: number
-    rebalanceThreshold: number
-  }
+    riskRatio: BigNumber;
+    rangeSize: number;
+    rebalanceThreshold: number;
+  };
 
   export type SqrtPerpAssetStatusStruct = {
-    uniswapPool: PromiseOrValue<string>
-    tickLower: PromiseOrValue<BigNumberish>
-    tickUpper: PromiseOrValue<BigNumberish>
-    numRebalance: PromiseOrValue<BigNumberish>
-    totalAmount: PromiseOrValue<BigNumberish>
-    borrowedAmount: PromiseOrValue<BigNumberish>
-    lastRebalanceTotalSquartAmount: PromiseOrValue<BigNumberish>
-    lastFee0Growth: PromiseOrValue<BigNumberish>
-    lastFee1Growth: PromiseOrValue<BigNumberish>
-    borrowPremium0Growth: PromiseOrValue<BigNumberish>
-    borrowPremium1Growth: PromiseOrValue<BigNumberish>
-    fee0Growth: PromiseOrValue<BigNumberish>
-    fee1Growth: PromiseOrValue<BigNumberish>
-    rebalancePositionUnderlying: ScaledAsset.UserStatusStruct
-    rebalancePositionStable: ScaledAsset.UserStatusStruct
-    rebalanceFeeGrowthUnderlying: PromiseOrValue<BigNumberish>
-    rebalanceFeeGrowthStable: PromiseOrValue<BigNumberish>
-  }
+    uniswapPool: PromiseOrValue<string>;
+    tickLower: PromiseOrValue<BigNumberish>;
+    tickUpper: PromiseOrValue<BigNumberish>;
+    numRebalance: PromiseOrValue<BigNumberish>;
+    totalAmount: PromiseOrValue<BigNumberish>;
+    borrowedAmount: PromiseOrValue<BigNumberish>;
+    lastRebalanceTotalSquartAmount: PromiseOrValue<BigNumberish>;
+    lastFee0Growth: PromiseOrValue<BigNumberish>;
+    lastFee1Growth: PromiseOrValue<BigNumberish>;
+    borrowPremium0Growth: PromiseOrValue<BigNumberish>;
+    borrowPremium1Growth: PromiseOrValue<BigNumberish>;
+    fee0Growth: PromiseOrValue<BigNumberish>;
+    fee1Growth: PromiseOrValue<BigNumberish>;
+    rebalancePositionUnderlying: ScaledAsset.UserStatusStruct;
+    rebalancePositionStable: ScaledAsset.UserStatusStruct;
+    rebalanceFeeGrowthUnderlying: PromiseOrValue<BigNumberish>;
+    rebalanceFeeGrowthStable: PromiseOrValue<BigNumberish>;
+  };
 
   export type SqrtPerpAssetStatusStructOutput = [
     string,
@@ -259,38 +259,38 @@ export declare namespace Perp {
     BigNumber,
     BigNumber
   ] & {
-    uniswapPool: string
-    tickLower: number
-    tickUpper: number
-    numRebalance: BigNumber
-    totalAmount: BigNumber
-    borrowedAmount: BigNumber
-    lastRebalanceTotalSquartAmount: BigNumber
-    lastFee0Growth: BigNumber
-    lastFee1Growth: BigNumber
-    borrowPremium0Growth: BigNumber
-    borrowPremium1Growth: BigNumber
-    fee0Growth: BigNumber
-    fee1Growth: BigNumber
-    rebalancePositionUnderlying: ScaledAsset.UserStatusStructOutput
-    rebalancePositionStable: ScaledAsset.UserStatusStructOutput
-    rebalanceFeeGrowthUnderlying: BigNumber
-    rebalanceFeeGrowthStable: BigNumber
-  }
+    uniswapPool: string;
+    tickLower: number;
+    tickUpper: number;
+    numRebalance: BigNumber;
+    totalAmount: BigNumber;
+    borrowedAmount: BigNumber;
+    lastRebalanceTotalSquartAmount: BigNumber;
+    lastFee0Growth: BigNumber;
+    lastFee1Growth: BigNumber;
+    borrowPremium0Growth: BigNumber;
+    borrowPremium1Growth: BigNumber;
+    fee0Growth: BigNumber;
+    fee1Growth: BigNumber;
+    rebalancePositionUnderlying: ScaledAsset.UserStatusStructOutput;
+    rebalancePositionStable: ScaledAsset.UserStatusStructOutput;
+    rebalanceFeeGrowthUnderlying: BigNumber;
+    rebalanceFeeGrowthStable: BigNumber;
+  };
 
   export type PairStatusStruct = {
-    id: PromiseOrValue<BigNumberish>
-    marginId: PromiseOrValue<string>
-    poolOwner: PromiseOrValue<string>
-    quotePool: Perp.AssetPoolStatusStruct
-    basePool: Perp.AssetPoolStatusStruct
-    riskParams: Perp.AssetRiskParamsStruct
-    sqrtAssetStatus: Perp.SqrtPerpAssetStatusStruct
-    priceFeed: PromiseOrValue<string>
-    isMarginZero: PromiseOrValue<boolean>
-    feeRatio: PromiseOrValue<BigNumberish>
-    lastUpdateTimestamp: PromiseOrValue<BigNumberish>
-  }
+    id: PromiseOrValue<BigNumberish>;
+    marginId: PromiseOrValue<string>;
+    poolOwner: PromiseOrValue<string>;
+    quotePool: Perp.AssetPoolStatusStruct;
+    basePool: Perp.AssetPoolStatusStruct;
+    riskParams: Perp.AssetRiskParamsStruct;
+    sqrtAssetStatus: Perp.SqrtPerpAssetStatusStruct;
+    priceFeed: PromiseOrValue<string>;
+    isMarginZero: PromiseOrValue<boolean>;
+    feeRatio: PromiseOrValue<BigNumberish>;
+    lastUpdateTimestamp: PromiseOrValue<BigNumberish>;
+  };
 
   export type PairStatusStructOutput = [
     BigNumber,
@@ -305,37 +305,37 @@ export declare namespace Perp {
     number,
     BigNumber
   ] & {
-    id: BigNumber
-    marginId: string
-    poolOwner: string
-    quotePool: Perp.AssetPoolStatusStructOutput
-    basePool: Perp.AssetPoolStatusStructOutput
-    riskParams: Perp.AssetRiskParamsStructOutput
-    sqrtAssetStatus: Perp.SqrtPerpAssetStatusStructOutput
-    priceFeed: string
-    isMarginZero: boolean
-    feeRatio: number
-    lastUpdateTimestamp: BigNumber
-  }
+    id: BigNumber;
+    marginId: string;
+    poolOwner: string;
+    quotePool: Perp.AssetPoolStatusStructOutput;
+    basePool: Perp.AssetPoolStatusStructOutput;
+    riskParams: Perp.AssetRiskParamsStructOutput;
+    sqrtAssetStatus: Perp.SqrtPerpAssetStatusStructOutput;
+    priceFeed: string;
+    isMarginZero: boolean;
+    feeRatio: number;
+    lastUpdateTimestamp: BigNumber;
+  };
 
   export type PositionStatusStruct = {
-    amount: PromiseOrValue<BigNumberish>
-    entryValue: PromiseOrValue<BigNumberish>
-  }
+    amount: PromiseOrValue<BigNumberish>;
+    entryValue: PromiseOrValue<BigNumberish>;
+  };
 
   export type PositionStatusStructOutput = [BigNumber, BigNumber] & {
-    amount: BigNumber
-    entryValue: BigNumber
-  }
+    amount: BigNumber;
+    entryValue: BigNumber;
+  };
 
   export type SqrtPositionStatusStruct = {
-    amount: PromiseOrValue<BigNumberish>
-    entryValue: PromiseOrValue<BigNumberish>
-    quoteRebalanceEntryValue: PromiseOrValue<BigNumberish>
-    baseRebalanceEntryValue: PromiseOrValue<BigNumberish>
-    entryTradeFee0: PromiseOrValue<BigNumberish>
-    entryTradeFee1: PromiseOrValue<BigNumberish>
-  }
+    amount: PromiseOrValue<BigNumberish>;
+    entryValue: PromiseOrValue<BigNumberish>;
+    quoteRebalanceEntryValue: PromiseOrValue<BigNumberish>;
+    baseRebalanceEntryValue: PromiseOrValue<BigNumberish>;
+    entryTradeFee0: PromiseOrValue<BigNumberish>;
+    entryTradeFee1: PromiseOrValue<BigNumberish>;
+  };
 
   export type SqrtPositionStatusStructOutput = [
     BigNumber,
@@ -345,24 +345,24 @@ export declare namespace Perp {
     BigNumber,
     BigNumber
   ] & {
-    amount: BigNumber
-    entryValue: BigNumber
-    quoteRebalanceEntryValue: BigNumber
-    baseRebalanceEntryValue: BigNumber
-    entryTradeFee0: BigNumber
-    entryTradeFee1: BigNumber
-  }
+    amount: BigNumber;
+    entryValue: BigNumber;
+    quoteRebalanceEntryValue: BigNumber;
+    baseRebalanceEntryValue: BigNumber;
+    entryTradeFee0: BigNumber;
+    entryTradeFee1: BigNumber;
+  };
 
   export type UserStatusStruct = {
-    pairId: PromiseOrValue<BigNumberish>
-    rebalanceLastTickLower: PromiseOrValue<BigNumberish>
-    rebalanceLastTickUpper: PromiseOrValue<BigNumberish>
-    lastNumRebalance: PromiseOrValue<BigNumberish>
-    perp: Perp.PositionStatusStruct
-    sqrtPerp: Perp.SqrtPositionStatusStruct
-    underlying: ScaledAsset.UserStatusStruct
-    stable: ScaledAsset.UserStatusStruct
-  }
+    pairId: PromiseOrValue<BigNumberish>;
+    rebalanceLastTickLower: PromiseOrValue<BigNumberish>;
+    rebalanceLastTickUpper: PromiseOrValue<BigNumberish>;
+    lastNumRebalance: PromiseOrValue<BigNumberish>;
+    perp: Perp.PositionStatusStruct;
+    sqrtPerp: Perp.SqrtPositionStatusStruct;
+    underlying: ScaledAsset.UserStatusStruct;
+    stable: ScaledAsset.UserStatusStruct;
+  };
 
   export type UserStatusStructOutput = [
     BigNumber,
@@ -374,40 +374,40 @@ export declare namespace Perp {
     ScaledAsset.UserStatusStructOutput,
     ScaledAsset.UserStatusStructOutput
   ] & {
-    pairId: BigNumber
-    rebalanceLastTickLower: number
-    rebalanceLastTickUpper: number
-    lastNumRebalance: BigNumber
-    perp: Perp.PositionStatusStructOutput
-    sqrtPerp: Perp.SqrtPositionStatusStructOutput
-    underlying: ScaledAsset.UserStatusStructOutput
-    stable: ScaledAsset.UserStatusStructOutput
-  }
+    pairId: BigNumber;
+    rebalanceLastTickLower: number;
+    rebalanceLastTickUpper: number;
+    lastNumRebalance: BigNumber;
+    perp: Perp.PositionStatusStructOutput;
+    sqrtPerp: Perp.SqrtPositionStatusStructOutput;
+    underlying: ScaledAsset.UserStatusStructOutput;
+    stable: ScaledAsset.UserStatusStructOutput;
+  };
 }
 
 export declare namespace PositionCalculator {
   export type PositionParamsStruct = {
-    amountStable: PromiseOrValue<BigNumberish>
-    amountSqrt: PromiseOrValue<BigNumberish>
-    amountUnderlying: PromiseOrValue<BigNumberish>
-  }
+    amountStable: PromiseOrValue<BigNumberish>;
+    amountSqrt: PromiseOrValue<BigNumberish>;
+    amountUnderlying: PromiseOrValue<BigNumberish>;
+  };
 
   export type PositionParamsStructOutput = [BigNumber, BigNumber, BigNumber] & {
-    amountStable: BigNumber
-    amountSqrt: BigNumber
-    amountUnderlying: BigNumber
-  }
+    amountStable: BigNumber;
+    amountSqrt: BigNumber;
+    amountUnderlying: BigNumber;
+  };
 }
 
 export declare namespace DataType {
   export type VaultStruct = {
-    id: PromiseOrValue<BigNumberish>
-    marginId: PromiseOrValue<string>
-    owner: PromiseOrValue<string>
-    recepient: PromiseOrValue<string>
-    margin: PromiseOrValue<BigNumberish>
-    openPosition: Perp.UserStatusStruct
-  }
+    id: PromiseOrValue<BigNumberish>;
+    marginId: PromiseOrValue<string>;
+    owner: PromiseOrValue<string>;
+    recepient: PromiseOrValue<string>;
+    margin: PromiseOrValue<BigNumberish>;
+    openPosition: Perp.UserStatusStruct;
+  };
 
   export type VaultStructOutput = [
     BigNumber,
@@ -417,22 +417,22 @@ export declare namespace DataType {
     BigNumber,
     Perp.UserStatusStructOutput
   ] & {
-    id: BigNumber
-    marginId: string
-    owner: string
-    recepient: string
-    margin: BigNumber
-    openPosition: Perp.UserStatusStructOutput
-  }
+    id: BigNumber;
+    marginId: string;
+    owner: string;
+    recepient: string;
+    margin: BigNumber;
+    openPosition: Perp.UserStatusStructOutput;
+  };
 }
 
 export declare namespace LockDataLibrary {
   export type LockDataStruct = {
-    locker: PromiseOrValue<string>
-    quoteReserve: PromiseOrValue<BigNumberish>
-    baseReserve: PromiseOrValue<BigNumberish>
-    pairId: PromiseOrValue<BigNumberish>
-  }
+    locker: PromiseOrValue<string>;
+    quoteReserve: PromiseOrValue<BigNumberish>;
+    baseReserve: PromiseOrValue<BigNumberish>;
+    pairId: PromiseOrValue<BigNumberish>;
+  };
 
   export type LockDataStructOutput = [
     string,
@@ -440,24 +440,24 @@ export declare namespace LockDataLibrary {
     BigNumber,
     BigNumber
   ] & {
-    locker: string
-    quoteReserve: BigNumber
-    baseReserve: BigNumber
-    pairId: BigNumber
-  }
+    locker: string;
+    quoteReserve: BigNumber;
+    baseReserve: BigNumber;
+    pairId: BigNumber;
+  };
 }
 
 export declare namespace AddPairLogic {
   export type AddPairParamsStruct = {
-    marginId: PromiseOrValue<string>
-    poolOwner: PromiseOrValue<string>
-    uniswapPool: PromiseOrValue<string>
-    priceFeed: PromiseOrValue<string>
-    fee: PromiseOrValue<BigNumberish>
-    assetRiskParams: Perp.AssetRiskParamsStruct
-    stableIrmParams: InterestRateModel.IRMParamsStruct
-    underlyingIrmParams: InterestRateModel.IRMParamsStruct
-  }
+    marginId: PromiseOrValue<string>;
+    poolOwner: PromiseOrValue<string>;
+    uniswapPool: PromiseOrValue<string>;
+    priceFeed: PromiseOrValue<string>;
+    fee: PromiseOrValue<BigNumberish>;
+    assetRiskParams: Perp.AssetRiskParamsStruct;
+    stableIrmParams: InterestRateModel.IRMParamsStruct;
+    underlyingIrmParams: InterestRateModel.IRMParamsStruct;
+  };
 
   export type AddPairParamsStructOutput = [
     string,
@@ -469,623 +469,635 @@ export declare namespace AddPairLogic {
     InterestRateModel.IRMParamsStructOutput,
     InterestRateModel.IRMParamsStructOutput
   ] & {
-    marginId: string
-    poolOwner: string
-    uniswapPool: string
-    priceFeed: string
-    fee: number
-    assetRiskParams: Perp.AssetRiskParamsStructOutput
-    stableIrmParams: InterestRateModel.IRMParamsStructOutput
-    underlyingIrmParams: InterestRateModel.IRMParamsStructOutput
-  }
+    marginId: string;
+    poolOwner: string;
+    uniswapPool: string;
+    priceFeed: string;
+    fee: number;
+    assetRiskParams: Perp.AssetRiskParamsStructOutput;
+    stableIrmParams: InterestRateModel.IRMParamsStructOutput;
+    underlyingIrmParams: InterestRateModel.IRMParamsStructOutput;
+  };
 }
 
 export interface PredyPoolInterface extends utils.Interface {
   functions: {
-    'allowedUniswapPools(address)': FunctionFragment
-    'createVault(uint256)': FunctionFragment
-    'execLiquidationCall(uint256,uint256,(address,bytes))': FunctionFragment
-    'getPairStatus(uint256)': FunctionFragment
-    'getPositionWithUnrealizedFee(uint256)': FunctionFragment
-    'getSqrtIndexPrice(uint256)': FunctionFragment
-    'getSqrtPrice(uint256)': FunctionFragment
-    'getVault(uint256)': FunctionFragment
-    'getVaultStatus(uint256)': FunctionFragment
-    'globalData()': FunctionFragment
-    'reallocate(uint256,(address,bytes))': FunctionFragment
-    'registerPair((address,address,address,address,uint8,(uint256,int24,int24),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256)))': FunctionFragment
-    'revertPairStatus(uint256)': FunctionFragment
-    'revertVaultStatus(uint256)': FunctionFragment
-    'supply(uint256,bool,uint256)': FunctionFragment
-    'take(bool,address,uint256)': FunctionFragment
-    'trade((uint256,uint256,int256,int256,bytes),(address,bytes))': FunctionFragment
-    'uniswapV3MintCallback(uint256,uint256,bytes)': FunctionFragment
-    'updateMargin(uint256,int256)': FunctionFragment
-    'updateRecepient(uint256,address)': FunctionFragment
-    'withdraw(uint256,bool,uint256)': FunctionFragment
-  }
+    "allowedUniswapPools(address)": FunctionFragment;
+    "createVault(uint256)": FunctionFragment;
+    "execLiquidationCall(uint256,uint256,(address,bytes))": FunctionFragment;
+    "getPairStatus(uint256)": FunctionFragment;
+    "getPositionWithUnrealizedFee(uint256)": FunctionFragment;
+    "getSqrtIndexPrice(uint256)": FunctionFragment;
+    "getSqrtPrice(uint256)": FunctionFragment;
+    "getVault(uint256)": FunctionFragment;
+    "getVaultStatus(uint256)": FunctionFragment;
+    "globalData()": FunctionFragment;
+    "reallocate(uint256,(address,bytes))": FunctionFragment;
+    "registerPair((address,address,address,address,uint8,(uint256,int24,int24),(uint256,uint256,uint256,uint256),(uint256,uint256,uint256,uint256)))": FunctionFragment;
+    "revertPairStatus(uint256)": FunctionFragment;
+    "revertVaultStatus(uint256)": FunctionFragment;
+    "supply(uint256,bool,uint256)": FunctionFragment;
+    "take(bool,address,uint256)": FunctionFragment;
+    "trade((uint256,uint256,int256,int256,bytes),(address,bytes))": FunctionFragment;
+    "uniswapV3MintCallback(uint256,uint256,bytes)": FunctionFragment;
+    "updateMargin(uint256,int256)": FunctionFragment;
+    "updateRecepient(uint256,address)": FunctionFragment;
+    "withdraw(uint256,bool,uint256)": FunctionFragment;
+  };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | 'allowedUniswapPools'
-      | 'createVault'
-      | 'execLiquidationCall'
-      | 'getPairStatus'
-      | 'getPositionWithUnrealizedFee'
-      | 'getSqrtIndexPrice'
-      | 'getSqrtPrice'
-      | 'getVault'
-      | 'getVaultStatus'
-      | 'globalData'
-      | 'reallocate'
-      | 'registerPair'
-      | 'revertPairStatus'
-      | 'revertVaultStatus'
-      | 'supply'
-      | 'take'
-      | 'trade'
-      | 'uniswapV3MintCallback'
-      | 'updateMargin'
-      | 'updateRecepient'
-      | 'withdraw'
-  ): FunctionFragment
+      | "allowedUniswapPools"
+      | "createVault"
+      | "execLiquidationCall"
+      | "getPairStatus"
+      | "getPositionWithUnrealizedFee"
+      | "getSqrtIndexPrice"
+      | "getSqrtPrice"
+      | "getVault"
+      | "getVaultStatus"
+      | "globalData"
+      | "reallocate"
+      | "registerPair"
+      | "revertPairStatus"
+      | "revertVaultStatus"
+      | "supply"
+      | "take"
+      | "trade"
+      | "uniswapV3MintCallback"
+      | "updateMargin"
+      | "updateRecepient"
+      | "withdraw"
+  ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: 'allowedUniswapPools',
+    functionFragment: "allowedUniswapPools",
     values: [PromiseOrValue<string>]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'createVault',
+    functionFragment: "createVault",
     values: [PromiseOrValue<BigNumberish>]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'execLiquidationCall',
+    functionFragment: "execLiquidationCall",
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       ISettlement.SettlementDataStruct
     ]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'getPairStatus',
+    functionFragment: "getPairStatus",
     values: [PromiseOrValue<BigNumberish>]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'getPositionWithUnrealizedFee',
+    functionFragment: "getPositionWithUnrealizedFee",
     values: [PromiseOrValue<BigNumberish>]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'getSqrtIndexPrice',
+    functionFragment: "getSqrtIndexPrice",
     values: [PromiseOrValue<BigNumberish>]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'getSqrtPrice',
+    functionFragment: "getSqrtPrice",
     values: [PromiseOrValue<BigNumberish>]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'getVault',
+    functionFragment: "getVault",
     values: [PromiseOrValue<BigNumberish>]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'getVaultStatus',
+    functionFragment: "getVaultStatus",
     values: [PromiseOrValue<BigNumberish>]
-  ): string
-  encodeFunctionData(functionFragment: 'globalData', values?: undefined): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'reallocate',
+    functionFragment: "globalData",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "reallocate",
     values: [PromiseOrValue<BigNumberish>, ISettlement.SettlementDataStruct]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'registerPair',
+    functionFragment: "registerPair",
     values: [AddPairLogic.AddPairParamsStruct]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'revertPairStatus',
+    functionFragment: "revertPairStatus",
     values: [PromiseOrValue<BigNumberish>]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'revertVaultStatus',
+    functionFragment: "revertVaultStatus",
     values: [PromiseOrValue<BigNumberish>]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'supply',
+    functionFragment: "supply",
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<boolean>,
       PromiseOrValue<BigNumberish>
     ]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'take',
+    functionFragment: "take",
     values: [
       PromiseOrValue<boolean>,
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>
     ]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'trade',
+    functionFragment: "trade",
     values: [IPredyPool.TradeParamsStruct, ISettlement.SettlementDataStruct]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'uniswapV3MintCallback',
+    functionFragment: "uniswapV3MintCallback",
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BytesLike>
     ]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'updateMargin',
+    functionFragment: "updateMargin",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'updateRecepient',
+    functionFragment: "updateRecepient",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
-  ): string
+  ): string;
   encodeFunctionData(
-    functionFragment: 'withdraw',
+    functionFragment: "withdraw",
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<boolean>,
       PromiseOrValue<BigNumberish>
     ]
-  ): string
+  ): string;
 
   decodeFunctionResult(
-    functionFragment: 'allowedUniswapPools',
+    functionFragment: "allowedUniswapPools",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: 'createVault', data: BytesLike): Result
+  ): Result;
   decodeFunctionResult(
-    functionFragment: 'execLiquidationCall',
+    functionFragment: "createVault",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
-    functionFragment: 'getPairStatus',
+    functionFragment: "execLiquidationCall",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
-    functionFragment: 'getPositionWithUnrealizedFee',
+    functionFragment: "getPairStatus",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
-    functionFragment: 'getSqrtIndexPrice',
+    functionFragment: "getPositionWithUnrealizedFee",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
-    functionFragment: 'getSqrtPrice',
+    functionFragment: "getSqrtIndexPrice",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: 'getVault', data: BytesLike): Result
+  ): Result;
   decodeFunctionResult(
-    functionFragment: 'getVaultStatus',
+    functionFragment: "getSqrtPrice",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: 'globalData', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'reallocate', data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "getVault", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'registerPair',
+    functionFragment: "getVaultStatus",
     data: BytesLike
-  ): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "globalData", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "reallocate", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'revertPairStatus',
+    functionFragment: "registerPair",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
-    functionFragment: 'revertVaultStatus',
+    functionFragment: "revertPairStatus",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: 'supply', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'take', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'trade', data: BytesLike): Result
+  ): Result;
   decodeFunctionResult(
-    functionFragment: 'uniswapV3MintCallback',
+    functionFragment: "revertVaultStatus",
     data: BytesLike
-  ): Result
+  ): Result;
+  decodeFunctionResult(functionFragment: "supply", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "take", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "trade", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'updateMargin',
+    functionFragment: "uniswapV3MintCallback",
     data: BytesLike
-  ): Result
+  ): Result;
   decodeFunctionResult(
-    functionFragment: 'updateRecepient',
+    functionFragment: "updateMargin",
     data: BytesLike
-  ): Result
-  decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateRecepient",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
-  events: {}
+  events: {};
 }
 
 export interface PredyPool extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: PredyPoolInterface
+  interface: PredyPoolInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     allowedUniswapPools(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<[boolean]>
+    ): Promise<[boolean]>;
 
     createVault(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     execLiquidationCall(
       vaultId: PromiseOrValue<BigNumberish>,
       closeRatio: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     getPairStatus(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[Perp.PairStatusStructOutput]>
+    ): Promise<[Perp.PairStatusStructOutput]>;
 
     getPositionWithUnrealizedFee(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[PositionCalculator.PositionParamsStructOutput]>
+    ): Promise<[PositionCalculator.PositionParamsStructOutput]>;
 
     getSqrtIndexPrice(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>
+    ): Promise<[BigNumber]>;
 
     getSqrtPrice(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>
+    ): Promise<[BigNumber]>;
 
     getVault(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[DataType.VaultStructOutput]>
+    ): Promise<[DataType.VaultStructOutput]>;
 
     getVaultStatus(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[IPredyPool.VaultStatusStructOutput]>
+    ): Promise<[IPredyPool.VaultStatusStructOutput]>;
 
-    globalData(overrides?: CallOverrides): Promise<
+    globalData(
+      overrides?: CallOverrides
+    ): Promise<
       [BigNumber, BigNumber, string, LockDataLibrary.LockDataStructOutput] & {
-        pairsCount: BigNumber
-        vaultCount: BigNumber
-        uniswapFactory: string
-        lockData: LockDataLibrary.LockDataStructOutput
+        pairsCount: BigNumber;
+        vaultCount: BigNumber;
+        uniswapFactory: string;
+        lockData: LockDataLibrary.LockDataStructOutput;
       }
-    >
+    >;
 
     reallocate(
       pairId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     registerPair(
       addPairParam: AddPairLogic.AddPairParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     revertPairStatus(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     revertVaultStatus(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     supply(
       pairId: PromiseOrValue<BigNumberish>,
       isQuoteAsset: PromiseOrValue<boolean>,
       supplyAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     take(
       isQuoteAsset: PromiseOrValue<boolean>,
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     trade(
       tradeParams: IPredyPool.TradeParamsStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     uniswapV3MintCallback(
       amount0: PromiseOrValue<BigNumberish>,
       amount1: PromiseOrValue<BigNumberish>,
       arg2: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     updateMargin(
       vaultId: PromiseOrValue<BigNumberish>,
       marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     updateRecepient(
       vaultId: PromiseOrValue<BigNumberish>,
       recepient: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
+    ): Promise<ContractTransaction>;
 
     withdraw(
       pairId: PromiseOrValue<BigNumberish>,
       isQuoteAsset: PromiseOrValue<boolean>,
       withdrawAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
-  }
+    ): Promise<ContractTransaction>;
+  };
 
   allowedUniswapPools(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
-  ): Promise<boolean>
+  ): Promise<boolean>;
 
   createVault(
     pairId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   execLiquidationCall(
     vaultId: PromiseOrValue<BigNumberish>,
     closeRatio: PromiseOrValue<BigNumberish>,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   getPairStatus(
     pairId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<Perp.PairStatusStructOutput>
+  ): Promise<Perp.PairStatusStructOutput>;
 
   getPositionWithUnrealizedFee(
     vaultId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<PositionCalculator.PositionParamsStructOutput>
+  ): Promise<PositionCalculator.PositionParamsStructOutput>;
 
   getSqrtIndexPrice(
     pairId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<BigNumber>
+  ): Promise<BigNumber>;
 
   getSqrtPrice(
     pairId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<BigNumber>
+  ): Promise<BigNumber>;
 
   getVault(
     vaultId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<DataType.VaultStructOutput>
+  ): Promise<DataType.VaultStructOutput>;
 
   getVaultStatus(
     vaultId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<IPredyPool.VaultStatusStructOutput>
+  ): Promise<IPredyPool.VaultStatusStructOutput>;
 
-  globalData(overrides?: CallOverrides): Promise<
+  globalData(
+    overrides?: CallOverrides
+  ): Promise<
     [BigNumber, BigNumber, string, LockDataLibrary.LockDataStructOutput] & {
-      pairsCount: BigNumber
-      vaultCount: BigNumber
-      uniswapFactory: string
-      lockData: LockDataLibrary.LockDataStructOutput
+      pairsCount: BigNumber;
+      vaultCount: BigNumber;
+      uniswapFactory: string;
+      lockData: LockDataLibrary.LockDataStructOutput;
     }
-  >
+  >;
 
   reallocate(
     pairId: PromiseOrValue<BigNumberish>,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   registerPair(
     addPairParam: AddPairLogic.AddPairParamsStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   revertPairStatus(
     pairId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   revertVaultStatus(
     vaultId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   supply(
     pairId: PromiseOrValue<BigNumberish>,
     isQuoteAsset: PromiseOrValue<boolean>,
     supplyAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   take(
     isQuoteAsset: PromiseOrValue<boolean>,
     to: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   trade(
     tradeParams: IPredyPool.TradeParamsStruct,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   uniswapV3MintCallback(
     amount0: PromiseOrValue<BigNumberish>,
     amount1: PromiseOrValue<BigNumberish>,
     arg2: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   updateMargin(
     vaultId: PromiseOrValue<BigNumberish>,
     marginAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   updateRecepient(
     vaultId: PromiseOrValue<BigNumberish>,
     recepient: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   withdraw(
     pairId: PromiseOrValue<BigNumberish>,
     isQuoteAsset: PromiseOrValue<boolean>,
     withdrawAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   callStatic: {
     allowedUniswapPools(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     createVault(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     execLiquidationCall(
       vaultId: PromiseOrValue<BigNumberish>,
       closeRatio: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<IPredyPool.TradeResultStructOutput>
+    ): Promise<IPredyPool.TradeResultStructOutput>;
 
     getPairStatus(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<Perp.PairStatusStructOutput>
+    ): Promise<Perp.PairStatusStructOutput>;
 
     getPositionWithUnrealizedFee(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PositionCalculator.PositionParamsStructOutput>
+    ): Promise<PositionCalculator.PositionParamsStructOutput>;
 
     getSqrtIndexPrice(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getSqrtPrice(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getVault(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<DataType.VaultStructOutput>
+    ): Promise<DataType.VaultStructOutput>;
 
     getVaultStatus(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<IPredyPool.VaultStatusStructOutput>
+    ): Promise<IPredyPool.VaultStatusStructOutput>;
 
-    globalData(overrides?: CallOverrides): Promise<
+    globalData(
+      overrides?: CallOverrides
+    ): Promise<
       [BigNumber, BigNumber, string, LockDataLibrary.LockDataStructOutput] & {
-        pairsCount: BigNumber
-        vaultCount: BigNumber
-        uniswapFactory: string
-        lockData: LockDataLibrary.LockDataStructOutput
+        pairsCount: BigNumber;
+        vaultCount: BigNumber;
+        uniswapFactory: string;
+        lockData: LockDataLibrary.LockDataStructOutput;
       }
-    >
+    >;
 
     reallocate(
       pairId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<boolean>
+    ): Promise<boolean>;
 
     registerPair(
       addPairParam: AddPairLogic.AddPairParamsStruct,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     revertPairStatus(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     revertVaultStatus(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     supply(
       pairId: PromiseOrValue<BigNumberish>,
       isQuoteAsset: PromiseOrValue<boolean>,
       supplyAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     take(
       isQuoteAsset: PromiseOrValue<boolean>,
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     trade(
       tradeParams: IPredyPool.TradeParamsStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<IPredyPool.TradeResultStructOutput>
+    ): Promise<IPredyPool.TradeResultStructOutput>;
 
     uniswapV3MintCallback(
       amount0: PromiseOrValue<BigNumberish>,
       amount1: PromiseOrValue<BigNumberish>,
       arg2: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     updateMargin(
       vaultId: PromiseOrValue<BigNumberish>,
       marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     updateRecepient(
       vaultId: PromiseOrValue<BigNumberish>,
       recepient: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<void>;
 
     withdraw(
       pairId: PromiseOrValue<BigNumberish>,
@@ -1094,247 +1106,247 @@ export interface PredyPool extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & {
-        finalBurnAmount: BigNumber
-        finalWithdrawAmount: BigNumber
+        finalBurnAmount: BigNumber;
+        finalWithdrawAmount: BigNumber;
       }
-    >
-  }
+    >;
+  };
 
-  filters: {}
+  filters: {};
 
   estimateGas: {
     allowedUniswapPools(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     createVault(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     execLiquidationCall(
       vaultId: PromiseOrValue<BigNumberish>,
       closeRatio: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getPairStatus(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getPositionWithUnrealizedFee(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getSqrtIndexPrice(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getSqrtPrice(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getVault(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     getVaultStatus(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
-    globalData(overrides?: CallOverrides): Promise<BigNumber>
+    globalData(overrides?: CallOverrides): Promise<BigNumber>;
 
     reallocate(
       pairId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     registerPair(
       addPairParam: AddPairLogic.AddPairParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     revertPairStatus(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     revertVaultStatus(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     supply(
       pairId: PromiseOrValue<BigNumberish>,
       isQuoteAsset: PromiseOrValue<boolean>,
       supplyAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     take(
       isQuoteAsset: PromiseOrValue<boolean>,
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     trade(
       tradeParams: IPredyPool.TradeParamsStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     uniswapV3MintCallback(
       amount0: PromiseOrValue<BigNumberish>,
       amount1: PromiseOrValue<BigNumberish>,
       arg2: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     updateMargin(
       vaultId: PromiseOrValue<BigNumberish>,
       marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     updateRecepient(
       vaultId: PromiseOrValue<BigNumberish>,
       recepient: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
+    ): Promise<BigNumber>;
 
     withdraw(
       pairId: PromiseOrValue<BigNumberish>,
       isQuoteAsset: PromiseOrValue<boolean>,
       withdrawAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
     allowedUniswapPools(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     createVault(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     execLiquidationCall(
       vaultId: PromiseOrValue<BigNumberish>,
       closeRatio: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     getPairStatus(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     getPositionWithUnrealizedFee(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     getSqrtIndexPrice(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     getSqrtPrice(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     getVault(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     getVaultStatus(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
-    globalData(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    globalData(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     reallocate(
       pairId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     registerPair(
       addPairParam: AddPairLogic.AddPairParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     revertPairStatus(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     revertVaultStatus(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     supply(
       pairId: PromiseOrValue<BigNumberish>,
       isQuoteAsset: PromiseOrValue<boolean>,
       supplyAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     take(
       isQuoteAsset: PromiseOrValue<boolean>,
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     trade(
       tradeParams: IPredyPool.TradeParamsStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     uniswapV3MintCallback(
       amount0: PromiseOrValue<BigNumberish>,
       amount1: PromiseOrValue<BigNumberish>,
       arg2: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     updateMargin(
       vaultId: PromiseOrValue<BigNumberish>,
       marginAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     updateRecepient(
       vaultId: PromiseOrValue<BigNumberish>,
       recepient: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
+    ): Promise<PopulatedTransaction>;
 
     withdraw(
       pairId: PromiseOrValue<BigNumberish>,
       isQuoteAsset: PromiseOrValue<boolean>,
       withdrawAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
-  }
+    ): Promise<PopulatedTransaction>;
+  };
 }

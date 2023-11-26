@@ -1,17 +1,16 @@
 import { BigNumber, constants } from 'ethers'
 
-import { GammaOrder } from './GammaOrder'
+import { PerpOrder } from './PerpOrder'
 
 const ZERO = BigNumber.from(0)
 
-describe('GammaOrder', () => {
+describe('PerpOrder', () => {
   describe('permitData', () => {
     it('succeeds to generate permit data', () => {
-      const order = new GammaOrder(
+      const order = new PerpOrder(
         {
           pairId: 1,
           entryTokenAddress: constants.AddressZero,
-          positionId: 1,
           tradeAmount: ZERO,
           tradeAmountSqrt: ZERO,
           marginAmount: ZERO,
@@ -46,11 +45,10 @@ describe('GammaOrder', () => {
 
   describe('serialize', () => {
     it('succeeds to serialize', () => {
-      const order = new GammaOrder(
+      const order = new PerpOrder(
         {
           pairId: 1,
           entryTokenAddress: constants.AddressZero,
-          positionId: 1,
           tradeAmount: ZERO,
           tradeAmountSqrt: ZERO,
           marginAmount: ZERO,
@@ -74,9 +72,9 @@ describe('GammaOrder', () => {
 
       const encoded = order.serialize()
 
-      const decoded = GammaOrder.parse(encoded, 1)
+      const decoded = PerpOrder.parse(encoded, 1)
 
-      expect(decoded.gammaOrder.pairId).toEqual(order.gammaOrder.pairId)
+      expect(decoded.perpOrder.pairId).toEqual(order.perpOrder.pairId)
     })
   })
 })

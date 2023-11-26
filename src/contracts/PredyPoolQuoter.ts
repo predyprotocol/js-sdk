@@ -11,26 +11,26 @@ import type {
   Overrides,
   PopulatedTransaction,
   Signer,
-  utils,
-} from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  utils
+} from 'ethers'
+import type { FunctionFragment, Result } from '@ethersproject/abi'
+import type { Listener, Provider } from '@ethersproject/providers'
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
-} from "./common";
+  PromiseOrValue
+} from './common'
 
 export declare namespace IPredyPool {
   export type TradeParamsStruct = {
-    pairId: PromiseOrValue<BigNumberish>;
-    vaultId: PromiseOrValue<BigNumberish>;
-    tradeAmount: PromiseOrValue<BigNumberish>;
-    tradeAmountSqrt: PromiseOrValue<BigNumberish>;
-    extraData: PromiseOrValue<BytesLike>;
-  };
+    pairId: PromiseOrValue<BigNumberish>
+    vaultId: PromiseOrValue<BigNumberish>
+    tradeAmount: PromiseOrValue<BigNumberish>
+    tradeAmountSqrt: PromiseOrValue<BigNumberish>
+    extraData: PromiseOrValue<BytesLike>
+  }
 
   export type TradeParamsStructOutput = [
     BigNumber,
@@ -39,21 +39,21 @@ export declare namespace IPredyPool {
     BigNumber,
     string
   ] & {
-    pairId: BigNumber;
-    vaultId: BigNumber;
-    tradeAmount: BigNumber;
-    tradeAmountSqrt: BigNumber;
-    extraData: string;
-  };
+    pairId: BigNumber
+    vaultId: BigNumber
+    tradeAmount: BigNumber
+    tradeAmountSqrt: BigNumber
+    extraData: string
+  }
 
   export type PayoffStruct = {
-    perpEntryUpdate: PromiseOrValue<BigNumberish>;
-    sqrtEntryUpdate: PromiseOrValue<BigNumberish>;
-    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>;
-    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>;
-    perpPayoff: PromiseOrValue<BigNumberish>;
-    sqrtPayoff: PromiseOrValue<BigNumberish>;
-  };
+    perpEntryUpdate: PromiseOrValue<BigNumberish>
+    sqrtEntryUpdate: PromiseOrValue<BigNumberish>
+    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>
+    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>
+    perpPayoff: PromiseOrValue<BigNumberish>
+    sqrtPayoff: PromiseOrValue<BigNumberish>
+  }
 
   export type PayoffStructOutput = [
     BigNumber,
@@ -63,23 +63,23 @@ export declare namespace IPredyPool {
     BigNumber,
     BigNumber
   ] & {
-    perpEntryUpdate: BigNumber;
-    sqrtEntryUpdate: BigNumber;
-    sqrtRebalanceEntryUpdateUnderlying: BigNumber;
-    sqrtRebalanceEntryUpdateStable: BigNumber;
-    perpPayoff: BigNumber;
-    sqrtPayoff: BigNumber;
-  };
+    perpEntryUpdate: BigNumber
+    sqrtEntryUpdate: BigNumber
+    sqrtRebalanceEntryUpdateUnderlying: BigNumber
+    sqrtRebalanceEntryUpdateStable: BigNumber
+    perpPayoff: BigNumber
+    sqrtPayoff: BigNumber
+  }
 
   export type TradeResultStruct = {
-    payoff: IPredyPool.PayoffStruct;
-    vaultId: PromiseOrValue<BigNumberish>;
-    fee: PromiseOrValue<BigNumberish>;
-    minMargin: PromiseOrValue<BigNumberish>;
-    averagePrice: PromiseOrValue<BigNumberish>;
-    sqrtTwap: PromiseOrValue<BigNumberish>;
-    sqrtPrice: PromiseOrValue<BigNumberish>;
-  };
+    payoff: IPredyPool.PayoffStruct
+    vaultId: PromiseOrValue<BigNumberish>
+    fee: PromiseOrValue<BigNumberish>
+    minMargin: PromiseOrValue<BigNumberish>
+    averagePrice: PromiseOrValue<BigNumberish>
+    sqrtTwap: PromiseOrValue<BigNumberish>
+    sqrtPrice: PromiseOrValue<BigNumberish>
+  }
 
   export type TradeResultStructOutput = [
     IPredyPool.PayoffStructOutput,
@@ -90,37 +90,37 @@ export declare namespace IPredyPool {
     BigNumber,
     BigNumber
   ] & {
-    payoff: IPredyPool.PayoffStructOutput;
-    vaultId: BigNumber;
-    fee: BigNumber;
-    minMargin: BigNumber;
-    averagePrice: BigNumber;
-    sqrtTwap: BigNumber;
-    sqrtPrice: BigNumber;
-  };
+    payoff: IPredyPool.PayoffStructOutput
+    vaultId: BigNumber
+    fee: BigNumber
+    minMargin: BigNumber
+    averagePrice: BigNumber
+    sqrtTwap: BigNumber
+    sqrtPrice: BigNumber
+  }
 
   export type VaultStatusStruct = {
-    id: PromiseOrValue<BigNumberish>;
-    vaultValue: PromiseOrValue<BigNumberish>;
-    minMargin: PromiseOrValue<BigNumberish>;
-  };
+    id: PromiseOrValue<BigNumberish>
+    vaultValue: PromiseOrValue<BigNumberish>
+    minMargin: PromiseOrValue<BigNumberish>
+  }
 
   export type VaultStatusStructOutput = [BigNumber, BigNumber, BigNumber] & {
-    id: BigNumber;
-    vaultValue: BigNumber;
-    minMargin: BigNumber;
-  };
+    id: BigNumber
+    vaultValue: BigNumber
+    minMargin: BigNumber
+  }
 }
 
 export declare namespace ScaledAsset {
   export type AssetStatusStruct = {
-    totalCompoundDeposited: PromiseOrValue<BigNumberish>;
-    totalNormalDeposited: PromiseOrValue<BigNumberish>;
-    totalNormalBorrowed: PromiseOrValue<BigNumberish>;
-    assetScaler: PromiseOrValue<BigNumberish>;
-    assetGrowth: PromiseOrValue<BigNumberish>;
-    debtGrowth: PromiseOrValue<BigNumberish>;
-  };
+    totalCompoundDeposited: PromiseOrValue<BigNumberish>
+    totalNormalDeposited: PromiseOrValue<BigNumberish>
+    totalNormalBorrowed: PromiseOrValue<BigNumberish>
+    assetScaler: PromiseOrValue<BigNumberish>
+    assetGrowth: PromiseOrValue<BigNumberish>
+    debtGrowth: PromiseOrValue<BigNumberish>
+  }
 
   export type AssetStatusStructOutput = [
     BigNumber,
@@ -130,32 +130,32 @@ export declare namespace ScaledAsset {
     BigNumber,
     BigNumber
   ] & {
-    totalCompoundDeposited: BigNumber;
-    totalNormalDeposited: BigNumber;
-    totalNormalBorrowed: BigNumber;
-    assetScaler: BigNumber;
-    assetGrowth: BigNumber;
-    debtGrowth: BigNumber;
-  };
+    totalCompoundDeposited: BigNumber
+    totalNormalDeposited: BigNumber
+    totalNormalBorrowed: BigNumber
+    assetScaler: BigNumber
+    assetGrowth: BigNumber
+    debtGrowth: BigNumber
+  }
 
   export type UserStatusStruct = {
-    positionAmount: PromiseOrValue<BigNumberish>;
-    lastFeeGrowth: PromiseOrValue<BigNumberish>;
-  };
+    positionAmount: PromiseOrValue<BigNumberish>
+    lastFeeGrowth: PromiseOrValue<BigNumberish>
+  }
 
   export type UserStatusStructOutput = [BigNumber, BigNumber] & {
-    positionAmount: BigNumber;
-    lastFeeGrowth: BigNumber;
-  };
+    positionAmount: BigNumber
+    lastFeeGrowth: BigNumber
+  }
 }
 
 export declare namespace InterestRateModel {
   export type IRMParamsStruct = {
-    baseRate: PromiseOrValue<BigNumberish>;
-    kinkRate: PromiseOrValue<BigNumberish>;
-    slope1: PromiseOrValue<BigNumberish>;
-    slope2: PromiseOrValue<BigNumberish>;
-  };
+    baseRate: PromiseOrValue<BigNumberish>
+    kinkRate: PromiseOrValue<BigNumberish>
+    slope1: PromiseOrValue<BigNumberish>
+    slope2: PromiseOrValue<BigNumberish>
+  }
 
   export type IRMParamsStructOutput = [
     BigNumber,
@@ -163,22 +163,22 @@ export declare namespace InterestRateModel {
     BigNumber,
     BigNumber
   ] & {
-    baseRate: BigNumber;
-    kinkRate: BigNumber;
-    slope1: BigNumber;
-    slope2: BigNumber;
-  };
+    baseRate: BigNumber
+    kinkRate: BigNumber
+    slope1: BigNumber
+    slope2: BigNumber
+  }
 }
 
 export declare namespace Perp {
   export type AssetPoolStatusStruct = {
-    token: PromiseOrValue<string>;
-    supplyTokenAddress: PromiseOrValue<string>;
-    tokenStatus: ScaledAsset.AssetStatusStruct;
-    irmParams: InterestRateModel.IRMParamsStruct;
-    accumulatedProtocolRevenue: PromiseOrValue<BigNumberish>;
-    accumulatedCreatorRevenue: PromiseOrValue<BigNumberish>;
-  };
+    token: PromiseOrValue<string>
+    supplyTokenAddress: PromiseOrValue<string>
+    tokenStatus: ScaledAsset.AssetStatusStruct
+    irmParams: InterestRateModel.IRMParamsStruct
+    accumulatedProtocolRevenue: PromiseOrValue<BigNumberish>
+    accumulatedCreatorRevenue: PromiseOrValue<BigNumberish>
+  }
 
   export type AssetPoolStatusStructOutput = [
     string,
@@ -188,45 +188,45 @@ export declare namespace Perp {
     BigNumber,
     BigNumber
   ] & {
-    token: string;
-    supplyTokenAddress: string;
-    tokenStatus: ScaledAsset.AssetStatusStructOutput;
-    irmParams: InterestRateModel.IRMParamsStructOutput;
-    accumulatedProtocolRevenue: BigNumber;
-    accumulatedCreatorRevenue: BigNumber;
-  };
+    token: string
+    supplyTokenAddress: string
+    tokenStatus: ScaledAsset.AssetStatusStructOutput
+    irmParams: InterestRateModel.IRMParamsStructOutput
+    accumulatedProtocolRevenue: BigNumber
+    accumulatedCreatorRevenue: BigNumber
+  }
 
   export type AssetRiskParamsStruct = {
-    riskRatio: PromiseOrValue<BigNumberish>;
-    rangeSize: PromiseOrValue<BigNumberish>;
-    rebalanceThreshold: PromiseOrValue<BigNumberish>;
-  };
+    riskRatio: PromiseOrValue<BigNumberish>
+    rangeSize: PromiseOrValue<BigNumberish>
+    rebalanceThreshold: PromiseOrValue<BigNumberish>
+  }
 
   export type AssetRiskParamsStructOutput = [BigNumber, number, number] & {
-    riskRatio: BigNumber;
-    rangeSize: number;
-    rebalanceThreshold: number;
-  };
+    riskRatio: BigNumber
+    rangeSize: number
+    rebalanceThreshold: number
+  }
 
   export type SqrtPerpAssetStatusStruct = {
-    uniswapPool: PromiseOrValue<string>;
-    tickLower: PromiseOrValue<BigNumberish>;
-    tickUpper: PromiseOrValue<BigNumberish>;
-    numRebalance: PromiseOrValue<BigNumberish>;
-    totalAmount: PromiseOrValue<BigNumberish>;
-    borrowedAmount: PromiseOrValue<BigNumberish>;
-    lastRebalanceTotalSquartAmount: PromiseOrValue<BigNumberish>;
-    lastFee0Growth: PromiseOrValue<BigNumberish>;
-    lastFee1Growth: PromiseOrValue<BigNumberish>;
-    borrowPremium0Growth: PromiseOrValue<BigNumberish>;
-    borrowPremium1Growth: PromiseOrValue<BigNumberish>;
-    fee0Growth: PromiseOrValue<BigNumberish>;
-    fee1Growth: PromiseOrValue<BigNumberish>;
-    rebalancePositionUnderlying: ScaledAsset.UserStatusStruct;
-    rebalancePositionStable: ScaledAsset.UserStatusStruct;
-    rebalanceFeeGrowthUnderlying: PromiseOrValue<BigNumberish>;
-    rebalanceFeeGrowthStable: PromiseOrValue<BigNumberish>;
-  };
+    uniswapPool: PromiseOrValue<string>
+    tickLower: PromiseOrValue<BigNumberish>
+    tickUpper: PromiseOrValue<BigNumberish>
+    numRebalance: PromiseOrValue<BigNumberish>
+    totalAmount: PromiseOrValue<BigNumberish>
+    borrowedAmount: PromiseOrValue<BigNumberish>
+    lastRebalanceTotalSquartAmount: PromiseOrValue<BigNumberish>
+    lastFee0Growth: PromiseOrValue<BigNumberish>
+    lastFee1Growth: PromiseOrValue<BigNumberish>
+    borrowPremium0Growth: PromiseOrValue<BigNumberish>
+    borrowPremium1Growth: PromiseOrValue<BigNumberish>
+    fee0Growth: PromiseOrValue<BigNumberish>
+    fee1Growth: PromiseOrValue<BigNumberish>
+    rebalancePositionUnderlying: ScaledAsset.UserStatusStruct
+    rebalancePositionStable: ScaledAsset.UserStatusStruct
+    rebalanceFeeGrowthUnderlying: PromiseOrValue<BigNumberish>
+    rebalanceFeeGrowthStable: PromiseOrValue<BigNumberish>
+  }
 
   export type SqrtPerpAssetStatusStructOutput = [
     string,
@@ -247,38 +247,38 @@ export declare namespace Perp {
     BigNumber,
     BigNumber
   ] & {
-    uniswapPool: string;
-    tickLower: number;
-    tickUpper: number;
-    numRebalance: BigNumber;
-    totalAmount: BigNumber;
-    borrowedAmount: BigNumber;
-    lastRebalanceTotalSquartAmount: BigNumber;
-    lastFee0Growth: BigNumber;
-    lastFee1Growth: BigNumber;
-    borrowPremium0Growth: BigNumber;
-    borrowPremium1Growth: BigNumber;
-    fee0Growth: BigNumber;
-    fee1Growth: BigNumber;
-    rebalancePositionUnderlying: ScaledAsset.UserStatusStructOutput;
-    rebalancePositionStable: ScaledAsset.UserStatusStructOutput;
-    rebalanceFeeGrowthUnderlying: BigNumber;
-    rebalanceFeeGrowthStable: BigNumber;
-  };
+    uniswapPool: string
+    tickLower: number
+    tickUpper: number
+    numRebalance: BigNumber
+    totalAmount: BigNumber
+    borrowedAmount: BigNumber
+    lastRebalanceTotalSquartAmount: BigNumber
+    lastFee0Growth: BigNumber
+    lastFee1Growth: BigNumber
+    borrowPremium0Growth: BigNumber
+    borrowPremium1Growth: BigNumber
+    fee0Growth: BigNumber
+    fee1Growth: BigNumber
+    rebalancePositionUnderlying: ScaledAsset.UserStatusStructOutput
+    rebalancePositionStable: ScaledAsset.UserStatusStructOutput
+    rebalanceFeeGrowthUnderlying: BigNumber
+    rebalanceFeeGrowthStable: BigNumber
+  }
 
   export type PairStatusStruct = {
-    id: PromiseOrValue<BigNumberish>;
-    marginId: PromiseOrValue<string>;
-    poolOwner: PromiseOrValue<string>;
-    quotePool: Perp.AssetPoolStatusStruct;
-    basePool: Perp.AssetPoolStatusStruct;
-    riskParams: Perp.AssetRiskParamsStruct;
-    sqrtAssetStatus: Perp.SqrtPerpAssetStatusStruct;
-    priceFeed: PromiseOrValue<string>;
-    isMarginZero: PromiseOrValue<boolean>;
-    feeRatio: PromiseOrValue<BigNumberish>;
-    lastUpdateTimestamp: PromiseOrValue<BigNumberish>;
-  };
+    id: PromiseOrValue<BigNumberish>
+    marginId: PromiseOrValue<string>
+    poolOwner: PromiseOrValue<string>
+    quotePool: Perp.AssetPoolStatusStruct
+    basePool: Perp.AssetPoolStatusStruct
+    riskParams: Perp.AssetRiskParamsStruct
+    sqrtAssetStatus: Perp.SqrtPerpAssetStatusStruct
+    priceFeed: PromiseOrValue<string>
+    isMarginZero: PromiseOrValue<boolean>
+    feeRatio: PromiseOrValue<BigNumberish>
+    lastUpdateTimestamp: PromiseOrValue<BigNumberish>
+  }
 
   export type PairStatusStructOutput = [
     BigNumber,
@@ -293,260 +293,260 @@ export declare namespace Perp {
     number,
     BigNumber
   ] & {
-    id: BigNumber;
-    marginId: string;
-    poolOwner: string;
-    quotePool: Perp.AssetPoolStatusStructOutput;
-    basePool: Perp.AssetPoolStatusStructOutput;
-    riskParams: Perp.AssetRiskParamsStructOutput;
-    sqrtAssetStatus: Perp.SqrtPerpAssetStatusStructOutput;
-    priceFeed: string;
-    isMarginZero: boolean;
-    feeRatio: number;
-    lastUpdateTimestamp: BigNumber;
-  };
+    id: BigNumber
+    marginId: string
+    poolOwner: string
+    quotePool: Perp.AssetPoolStatusStructOutput
+    basePool: Perp.AssetPoolStatusStructOutput
+    riskParams: Perp.AssetRiskParamsStructOutput
+    sqrtAssetStatus: Perp.SqrtPerpAssetStatusStructOutput
+    priceFeed: string
+    isMarginZero: boolean
+    feeRatio: number
+    lastUpdateTimestamp: BigNumber
+  }
 }
 
 export declare namespace ISettlement {
   export type SettlementDataStruct = {
-    settlementContractAddress: PromiseOrValue<string>;
-    encodedData: PromiseOrValue<BytesLike>;
-  };
+    settlementContractAddress: PromiseOrValue<string>
+    encodedData: PromiseOrValue<BytesLike>
+  }
 
   export type SettlementDataStructOutput = [string, string] & {
-    settlementContractAddress: string;
-    encodedData: string;
-  };
+    settlementContractAddress: string
+    encodedData: string
+  }
 }
 
 export interface PredyPoolQuoterInterface extends utils.Interface {
   functions: {
-    "predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))": FunctionFragment;
-    "quoteBaseAmountDelta((uint256,uint256,int256,int256,bytes))": FunctionFragment;
-    "quotePairStatus(uint256)": FunctionFragment;
-    "quoteTrade((uint256,uint256,int256,int256,bytes),(address,bytes))": FunctionFragment;
-    "quoteVaultStatus(uint256)": FunctionFragment;
-  };
+    'predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))': FunctionFragment
+    'quoteBaseAmountDelta((uint256,uint256,int256,int256,bytes))': FunctionFragment
+    'quotePairStatus(uint256)': FunctionFragment
+    'quoteTrade((uint256,uint256,int256,int256,bytes),(address,bytes))': FunctionFragment
+    'quoteVaultStatus(uint256)': FunctionFragment
+  }
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "predyTradeAfterCallback"
-      | "quoteBaseAmountDelta"
-      | "quotePairStatus"
-      | "quoteTrade"
-      | "quoteVaultStatus"
-  ): FunctionFragment;
+      | 'predyTradeAfterCallback'
+      | 'quoteBaseAmountDelta'
+      | 'quotePairStatus'
+      | 'quoteTrade'
+      | 'quoteVaultStatus'
+  ): FunctionFragment
 
   encodeFunctionData(
-    functionFragment: "predyTradeAfterCallback",
+    functionFragment: 'predyTradeAfterCallback',
     values: [IPredyPool.TradeParamsStruct, IPredyPool.TradeResultStruct]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "quoteBaseAmountDelta",
+    functionFragment: 'quoteBaseAmountDelta',
     values: [IPredyPool.TradeParamsStruct]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "quotePairStatus",
+    functionFragment: 'quotePairStatus',
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "quoteTrade",
+    functionFragment: 'quoteTrade',
     values: [IPredyPool.TradeParamsStruct, ISettlement.SettlementDataStruct]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "quoteVaultStatus",
+    functionFragment: 'quoteVaultStatus',
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
 
   decodeFunctionResult(
-    functionFragment: "predyTradeAfterCallback",
+    functionFragment: 'predyTradeAfterCallback',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "quoteBaseAmountDelta",
+    functionFragment: 'quoteBaseAmountDelta',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "quotePairStatus",
+    functionFragment: 'quotePairStatus',
     data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "quoteTrade", data: BytesLike): Result;
+  ): Result
+  decodeFunctionResult(functionFragment: 'quoteTrade', data: BytesLike): Result
   decodeFunctionResult(
-    functionFragment: "quoteVaultStatus",
+    functionFragment: 'quoteVaultStatus',
     data: BytesLike
-  ): Result;
+  ): Result
 
-  events: {};
+  events: {}
 }
 
 export interface PredyPoolQuoter extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
-  interface: PredyPoolQuoterInterface;
+  interface: PredyPoolQuoterInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TEvent>>
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
+  ): Array<TypedListener<TEvent>>
+  listeners(eventName?: string): Array<Listener>
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  ): this
+  removeAllListeners(eventName?: string): this
+  off: OnEvent<this>
+  on: OnEvent<this>
+  once: OnEvent<this>
+  removeListener: OnEvent<this>
 
   functions: {
     predyTradeAfterCallback(
       arg0: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     quoteBaseAmountDelta(
       tradeParams: IPredyPool.TradeParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     quotePairStatus(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     quoteTrade(
       tradeParams: IPredyPool.TradeParamsStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     quoteVaultStatus(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-  };
+    ): Promise<ContractTransaction>
+  }
 
   predyTradeAfterCallback(
     arg0: IPredyPool.TradeParamsStruct,
     tradeResult: IPredyPool.TradeResultStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   quoteBaseAmountDelta(
     tradeParams: IPredyPool.TradeParamsStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   quotePairStatus(
     pairId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   quoteTrade(
     tradeParams: IPredyPool.TradeParamsStruct,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   quoteVaultStatus(
     vaultId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   callStatic: {
     predyTradeAfterCallback(
       arg0: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     quoteBaseAmountDelta(
       tradeParams: IPredyPool.TradeParamsStruct,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     quotePairStatus(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<Perp.PairStatusStructOutput>;
+    ): Promise<Perp.PairStatusStructOutput>
 
     quoteTrade(
       tradeParams: IPredyPool.TradeParamsStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<IPredyPool.TradeResultStructOutput>;
+    ): Promise<IPredyPool.TradeResultStructOutput>
 
     quoteVaultStatus(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<IPredyPool.VaultStatusStructOutput>;
-  };
+    ): Promise<IPredyPool.VaultStatusStructOutput>
+  }
 
-  filters: {};
+  filters: {}
 
   estimateGas: {
     predyTradeAfterCallback(
       arg0: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     quoteBaseAmountDelta(
       tradeParams: IPredyPool.TradeParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     quotePairStatus(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     quoteTrade(
       tradeParams: IPredyPool.TradeParamsStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     quoteVaultStatus(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-  };
+    ): Promise<BigNumber>
+  }
 
   populateTransaction: {
     predyTradeAfterCallback(
       arg0: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     quoteBaseAmountDelta(
       tradeParams: IPredyPool.TradeParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     quotePairStatus(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     quoteTrade(
       tradeParams: IPredyPool.TradeParamsStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     quoteVaultStatus(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-  };
+    ): Promise<PopulatedTransaction>
+  }
 }

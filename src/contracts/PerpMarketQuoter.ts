@@ -45,22 +45,24 @@ export type OrderInfoStructOutput = [
   deadline: BigNumber
 }
 
-export type PerpOrderStruct = {
+export type GammaOrderStruct = {
   info: OrderInfoStruct
   positionId: PromiseOrValue<BigNumberish>
   pairId: PromiseOrValue<BigNumberish>
   entryTokenAddress: PromiseOrValue<string>
   tradeAmount: PromiseOrValue<BigNumberish>
+  tradeAmountSqrt: PromiseOrValue<BigNumberish>
   marginAmount: PromiseOrValue<BigNumberish>
   validatorAddress: PromiseOrValue<string>
   validationData: PromiseOrValue<BytesLike>
 }
 
-export type PerpOrderStructOutput = [
+export type GammaOrderStructOutput = [
   OrderInfoStructOutput,
   BigNumber,
   BigNumber,
   string,
+  BigNumber,
   BigNumber,
   BigNumber,
   string,
@@ -71,6 +73,7 @@ export type PerpOrderStructOutput = [
   pairId: BigNumber
   entryTokenAddress: string
   tradeAmount: BigNumber
+  tradeAmountSqrt: BigNumber
   marginAmount: BigNumber
   validatorAddress: string
   validationData: string
@@ -88,90 +91,98 @@ export declare namespace ISettlement {
   }
 }
 
-export declare namespace PerpMarket {
-  export type PerpTradeResultStruct = {
-    entryUpdate: PromiseOrValue<BigNumberish>
-    payoff: PromiseOrValue<BigNumberish>
+export declare namespace IPredyPool {
+  export type PayoffStruct = {
+    perpEntryUpdate: PromiseOrValue<BigNumberish>
+    sqrtEntryUpdate: PromiseOrValue<BigNumberish>
+    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>
+    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>
+    perpPayoff: PromiseOrValue<BigNumberish>
+    sqrtPayoff: PromiseOrValue<BigNumberish>
   }
 
-  export type PerpTradeResultStructOutput = [BigNumber, BigNumber] & {
-    entryUpdate: BigNumber
-    payoff: BigNumber
-  }
-
-  export type UserPositionStruct = {
-    id: PromiseOrValue<BigNumberish>
-    pairId: PromiseOrValue<BigNumberish>
-    filler: PromiseOrValue<string>
-    owner: PromiseOrValue<string>
-    positionAmount: PromiseOrValue<BigNumberish>
-    entryValue: PromiseOrValue<BigNumberish>
-    marginAmount: PromiseOrValue<BigNumberish>
-    cumulativeFundingRates: PromiseOrValue<BigNumberish>
-  }
-
-  export type UserPositionStructOutput = [
+  export type PayoffStructOutput = [
     BigNumber,
     BigNumber,
-    string,
-    string,
     BigNumber,
     BigNumber,
     BigNumber,
     BigNumber
   ] & {
-    id: BigNumber
-    pairId: BigNumber
-    filler: string
-    owner: string
-    positionAmount: BigNumber
-    entryValue: BigNumber
-    marginAmount: BigNumber
-    cumulativeFundingRates: BigNumber
+    perpEntryUpdate: BigNumber
+    sqrtEntryUpdate: BigNumber
+    sqrtRebalanceEntryUpdateUnderlying: BigNumber
+    sqrtRebalanceEntryUpdateStable: BigNumber
+    perpPayoff: BigNumber
+    sqrtPayoff: BigNumber
+  }
+
+  export type TradeResultStruct = {
+    payoff: IPredyPool.PayoffStruct
+    vaultId: PromiseOrValue<BigNumberish>
+    fee: PromiseOrValue<BigNumberish>
+    minMargin: PromiseOrValue<BigNumberish>
+    averagePrice: PromiseOrValue<BigNumberish>
+    sqrtTwap: PromiseOrValue<BigNumberish>
+    sqrtPrice: PromiseOrValue<BigNumberish>
+  }
+
+  export type TradeResultStructOutput = [
+    IPredyPool.PayoffStructOutput,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber
+  ] & {
+    payoff: IPredyPool.PayoffStructOutput
+    vaultId: BigNumber
+    fee: BigNumber
+    minMargin: BigNumber
+    averagePrice: BigNumber
+    sqrtTwap: BigNumber
+    sqrtPrice: BigNumber
   }
 }
 
 export interface PerpMarketQuoterInterface extends utils.Interface {
   functions: {
-    'perpMarket()': FunctionFragment
+    'gammaTradeMarket()': FunctionFragment
     'predyPoolQuoter()': FunctionFragment
-    'quoteExecuteOrder(((address,address,address,uint256,uint256),uint256,uint64,address,int256,int256,address,bytes),(address,bytes))': FunctionFragment
-    'quoteUserPosition(uint256)': FunctionFragment
+    'quoteExecuteOrder(((address,address,address,uint256,uint256),uint256,uint64,address,int256,int256,int256,address,bytes),(address,bytes))': FunctionFragment
   }
 
   getFunction(
     nameOrSignatureOrTopic:
-      | 'perpMarket'
+      | 'gammaTradeMarket'
       | 'predyPoolQuoter'
       | 'quoteExecuteOrder'
-      | 'quoteUserPosition'
   ): FunctionFragment
 
-  encodeFunctionData(functionFragment: 'perpMarket', values?: undefined): string
+  encodeFunctionData(
+    functionFragment: 'gammaTradeMarket',
+    values?: undefined
+  ): string
   encodeFunctionData(
     functionFragment: 'predyPoolQuoter',
     values?: undefined
   ): string
   encodeFunctionData(
     functionFragment: 'quoteExecuteOrder',
-    values: [PerpOrderStruct, ISettlement.SettlementDataStruct]
-  ): string
-  encodeFunctionData(
-    functionFragment: 'quoteUserPosition',
-    values: [PromiseOrValue<BigNumberish>]
+    values: [GammaOrderStruct, ISettlement.SettlementDataStruct]
   ): string
 
-  decodeFunctionResult(functionFragment: 'perpMarket', data: BytesLike): Result
+  decodeFunctionResult(
+    functionFragment: 'gammaTradeMarket',
+    data: BytesLike
+  ): Result
   decodeFunctionResult(
     functionFragment: 'predyPoolQuoter',
     data: BytesLike
   ): Result
   decodeFunctionResult(
     functionFragment: 'quoteExecuteOrder',
-    data: BytesLike
-  ): Result
-  decodeFunctionResult(
-    functionFragment: 'quoteUserPosition',
     data: BytesLike
   ): Result
 
@@ -205,86 +216,61 @@ export interface PerpMarketQuoter extends BaseContract {
   removeListener: OnEvent<this>
 
   functions: {
-    perpMarket(overrides?: CallOverrides): Promise<[string]>
+    gammaTradeMarket(overrides?: CallOverrides): Promise<[string]>
 
     predyPoolQuoter(overrides?: CallOverrides): Promise<[string]>
 
     quoteExecuteOrder(
-      order: PerpOrderStruct,
+      order: GammaOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
-
-    quoteUserPosition(
-      positionId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
   }
 
-  perpMarket(overrides?: CallOverrides): Promise<string>
+  gammaTradeMarket(overrides?: CallOverrides): Promise<string>
 
   predyPoolQuoter(overrides?: CallOverrides): Promise<string>
 
   quoteExecuteOrder(
-    order: PerpOrderStruct,
+    order: GammaOrderStruct,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
 
-  quoteUserPosition(
-    positionId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
-
   callStatic: {
-    perpMarket(overrides?: CallOverrides): Promise<string>
+    gammaTradeMarket(overrides?: CallOverrides): Promise<string>
 
     predyPoolQuoter(overrides?: CallOverrides): Promise<string>
 
     quoteExecuteOrder(
-      order: PerpOrderStruct,
+      order: GammaOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<PerpMarket.PerpTradeResultStructOutput>
-
-    quoteUserPosition(
-      positionId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PerpMarket.UserPositionStructOutput>
+    ): Promise<IPredyPool.TradeResultStructOutput>
   }
 
   filters: {}
 
   estimateGas: {
-    perpMarket(overrides?: CallOverrides): Promise<BigNumber>
+    gammaTradeMarket(overrides?: CallOverrides): Promise<BigNumber>
 
     predyPoolQuoter(overrides?: CallOverrides): Promise<BigNumber>
 
     quoteExecuteOrder(
-      order: PerpOrderStruct,
+      order: GammaOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
-
-    quoteUserPosition(
-      positionId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
   }
 
   populateTransaction: {
-    perpMarket(overrides?: CallOverrides): Promise<PopulatedTransaction>
+    gammaTradeMarket(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     predyPoolQuoter(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     quoteExecuteOrder(
-      order: PerpOrderStruct,
+      order: GammaOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
-
-    quoteUserPosition(
-      positionId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
   }

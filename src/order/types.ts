@@ -7,9 +7,8 @@ export interface OrderInfo {
   deadline: number
 }
 
-export interface GammaOrderParams {
+export interface PerpOrderParams {
   orderInfo: OrderInfo
-  positionId: number
   pairId: number
   entryTokenAddress: string
   tradeAmount: BigNumber
@@ -43,6 +42,21 @@ export interface SpotOrderParams {
   baseToken: string
   baseTokenAmount: BigNumber
   quoteTokenAmount: BigNumber
+  validatorAddress: string
+  validationData: string
+  chainId: number
+}
+
+export interface GammaOrderParams {
+  orderInfo: OrderInfo
+  pairId: number
+  entryTokenAddress: string
+  tradeAmount: BigNumber
+  tradeAmountSqrt: BigNumber
+  marginAmount: BigNumber
+  hedgeInterval: BigNumber
+  sqrtPriceTrigger: BigNumber
+  maxSlippageTolerance: number
   validatorAddress: string
   validationData: string
   chainId: number

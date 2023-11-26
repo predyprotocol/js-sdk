@@ -2,13 +2,13 @@ import { BigNumber, ethers } from 'ethers'
 
 import {
   DutchOrderValidationData,
-  GammaOrder,
   LimitOrderValidationData,
-} from '../order/GammaOrder'
-import { GammaOrderParams } from '../order/types'
+  PerpOrder,
+} from '../order/PerpOrder'
+import { PerpOrderParams } from '../order/types'
 
-export class OrderBuilder {
-  protected gammaOrder: Partial<GammaOrderParams>
+export class PerpOrderBuilder {
+  protected gammaOrder: Partial<PerpOrderParams>
 
   constructor(private chainId: number, private permit2Address: string) {
     // set defaults
@@ -27,7 +27,7 @@ export class OrderBuilder {
     }
   }
 
-  market(market: string): OrderBuilder {
+  market(market: string): PerpOrderBuilder {
     if (this.gammaOrder.orderInfo) {
       this.gammaOrder.orderInfo.market = market
     }
@@ -35,7 +35,7 @@ export class OrderBuilder {
     return this
   }
 
-  trader(trader: string): OrderBuilder {
+  trader(trader: string): PerpOrderBuilder {
     if (this.gammaOrder.orderInfo) {
       this.gammaOrder.orderInfo.trader = trader
     }
@@ -43,7 +43,7 @@ export class OrderBuilder {
     return this
   }
 
-  deadline(deadline: number): OrderBuilder {
+  deadline(deadline: number): PerpOrderBuilder {
     if (this.gammaOrder.orderInfo) {
       this.gammaOrder.orderInfo.deadline = deadline
     }
@@ -51,7 +51,7 @@ export class OrderBuilder {
     return this
   }
 
-  nonce(nonce: BigNumber): OrderBuilder {
+  nonce(nonce: BigNumber): PerpOrderBuilder {
     if (this.gammaOrder.orderInfo) {
       this.gammaOrder.orderInfo.nonce = nonce
     }
@@ -59,62 +59,56 @@ export class OrderBuilder {
     return this
   }
 
-  tradeAmount(tradeAmount: BigNumber): OrderBuilder {
+  tradeAmount(tradeAmount: BigNumber): PerpOrderBuilder {
     this.gammaOrder.tradeAmount = tradeAmount
 
     return this
   }
 
-  entryTokenAddress(entryTokenAddress: string): OrderBuilder {
+  entryTokenAddress(entryTokenAddress: string): PerpOrderBuilder {
     this.gammaOrder.entryTokenAddress = entryTokenAddress
 
     return this
   }
 
-  positionId(positionId: number): OrderBuilder {
-    this.gammaOrder.positionId = positionId
-
-    return this
-  }
-
-  pairId(pairId: number): OrderBuilder {
+  pairId(pairId: number): PerpOrderBuilder {
     this.gammaOrder.pairId = pairId
 
     return this
   }
 
-  marginAmount(marginAmount: BigNumber): OrderBuilder {
+  marginAmount(marginAmount: BigNumber): PerpOrderBuilder {
     this.gammaOrder.marginAmount = marginAmount
 
     return this
   }
 
-  canceler(canceler: string): OrderBuilder {
+  canceler(canceler: string): PerpOrderBuilder {
     this.gammaOrder.canceler = canceler
 
     return this
   }
 
-  takeProfitPrice(takeProfitPrice: BigNumber): OrderBuilder {
+  takeProfitPrice(takeProfitPrice: BigNumber): PerpOrderBuilder {
     this.gammaOrder.takeProfitPrice = takeProfitPrice
 
     return this
   }
 
-  stopLossPrice(stopLossPrice: BigNumber): OrderBuilder {
+  stopLossPrice(stopLossPrice: BigNumber): PerpOrderBuilder {
     this.gammaOrder.stopLossPrice = stopLossPrice
 
     return this
   }
 
-  slippageTolerance(slippageTolerance: number): OrderBuilder {
+  slippageTolerance(slippageTolerance: number): PerpOrderBuilder {
     this.gammaOrder.slippageTolerance = slippageTolerance
 
     return this
   }
 
-  build(): GammaOrder {
-    return new GammaOrder(
+  build(): PerpOrder {
+    return new PerpOrder(
       Object.assign(this.gammaOrder),
       this.chainId,
       this.permit2Address
@@ -122,7 +116,7 @@ export class OrderBuilder {
   }
 }
 
-export class GammaDutchOrderBuilder extends OrderBuilder {
+export class PerpDutchOrderBuilder extends PerpOrderBuilder {
   constructor(chainId: number, permit2Address: string) {
     super(chainId, permit2Address)
 
@@ -134,7 +128,7 @@ export class GammaDutchOrderBuilder extends OrderBuilder {
     endPrice: number,
     startTime: number,
     endTime: number
-  ): GammaDutchOrderBuilder {
+  ): PerpDutchOrderBuilder {
     const validationData = new DutchOrderValidationData(
       startPrice,
       endPrice,
@@ -148,7 +142,7 @@ export class GammaDutchOrderBuilder extends OrderBuilder {
   }
 }
 
-export class GammaLimitOrderBuilder extends OrderBuilder {
+export class PerpLimitOrderBuilder extends PerpOrderBuilder {
   constructor(chainId: number, permit2Address: string) {
     super(chainId, permit2Address)
 
@@ -157,15 +151,11 @@ export class GammaLimitOrderBuilder extends OrderBuilder {
 
   validationData(
     triggerPrice: number,
-    triggerPriceSqrt: number,
-    limitPrice: number,
-    limitPriceSqrt: number
-  ): GammaLimitOrderBuilder {
+    limitPrice: number
+  ): PerpLimitOrderBuilder {
     const validationData = new LimitOrderValidationData(
       triggerPrice,
-      triggerPriceSqrt,
-      limitPrice,
-      limitPriceSqrt
+      limitPrice
     )
 
     this.gammaOrder.validationData = validationData.serialize()

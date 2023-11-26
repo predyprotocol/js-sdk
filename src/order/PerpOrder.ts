@@ -7,9 +7,9 @@ import {
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
 import { ethers } from 'ethers'
 
-import { BaseValidationData, GammaOrderParams } from './types'
+import { BaseValidationData, PerpOrderParams } from './types'
 
-const GAMMA_ORDER_TYPES = {
+const PERP_ORDER_TYPES = {
   GeneralOrderParams: [
     { name: 'info', type: 'OrderInfo' },
     { name: 'pairId', type: 'uint256' },
@@ -17,9 +17,10 @@ const GAMMA_ORDER_TYPES = {
     { name: 'tradeAmount', type: 'int256' },
     { name: 'tradeAmountSqrt', type: 'int256' },
     { name: 'marginAmount', type: 'int256' },
-    { name: 'hedgeInterval', type: 'uint256' },
-    { name: 'sqrtPriceTrigger', type: 'uint256' },
-    { name: 'maxSlippageTolerance', type: 'uint64' },
+    { name: 'canceler', type: 'address' },
+    { name: 'takeProfitPrice', type: 'uint256' },
+    { name: 'stopLossPrice', type: 'uint256' },
+    { name: 'slippageTolerance', type: 'uint64' },
     { name: 'validatorAddress', type: 'address' },
     { name: 'validationData', type: 'bytes' },
   ],
@@ -31,7 +32,7 @@ const GAMMA_ORDER_TYPES = {
   ],
 }
 
-const GAMMA_ORDER_ABI = [
+const PERP_ORDER_ABI = [
   'tuple(' +
     [
       'tuple(address,address,uint256,uint256)',
@@ -40,6 +41,7 @@ const GAMMA_ORDER_ABI = [
       'int256',
       'int256',
       'int256',
+      'address',
       'uint256',
       'uint256',
       'uint64',
@@ -49,11 +51,11 @@ const GAMMA_ORDER_ABI = [
     ')',
 ]
 
-export class GammaOrder {
+export class PerpOrder {
   public permit2Address: string
 
   constructor(
-    public readonly gammaOrder: GammaOrderParams,
+    public readonly perpOrder: PerpOrderParams,
     readonly chainId: number,
     readonly _permit2Address?: string
   ) {
@@ -67,31 +69,32 @@ export class GammaOrder {
   serialize(): string {
     const abiCoder = new ethers.utils.AbiCoder()
 
-    return abiCoder.encode(GAMMA_ORDER_ABI, [
+    return abiCoder.encode(PERP_ORDER_ABI, [
       [
         [
-          this.gammaOrder.orderInfo.market,
-          this.gammaOrder.orderInfo.trader,
-          this.gammaOrder.orderInfo.nonce,
-          this.gammaOrder.orderInfo.deadline,
+          this.perpOrder.orderInfo.market,
+          this.perpOrder.orderInfo.trader,
+          this.perpOrder.orderInfo.nonce,
+          this.perpOrder.orderInfo.deadline,
         ],
-        this.gammaOrder.pairId,
-        this.gammaOrder.entryTokenAddress,
-        this.gammaOrder.tradeAmount,
-        this.gammaOrder.tradeAmountSqrt,
-        this.gammaOrder.marginAmount,
-        this.gammaOrder.hedgeInterval,
-        this.gammaOrder.sqrtPriceTrigger,
-        this.gammaOrder.maxSlippageTolerance,
-        this.gammaOrder.validatorAddress,
-        this.gammaOrder.validationData,
+        this.perpOrder.pairId,
+        this.perpOrder.entryTokenAddress,
+        this.perpOrder.tradeAmount,
+        this.perpOrder.tradeAmountSqrt,
+        this.perpOrder.marginAmount,
+        this.perpOrder.canceler,
+        this.perpOrder.takeProfitPrice,
+        this.perpOrder.stopLossPrice,
+        this.perpOrder.slippageTolerance,
+        this.perpOrder.validatorAddress,
+        this.perpOrder.validationData,
       ],
     ])
   }
 
-  static parse(encoded: string, chainId: number, permit2?: string): GammaOrder {
+  static parse(encoded: string, chainId: number, permit2?: string): PerpOrder {
     const abiCoder = new ethers.utils.AbiCoder()
-    const decoded = abiCoder.decode(GAMMA_ORDER_ABI, encoded)
+    const decoded = abiCoder.decode(PERP_ORDER_ABI, encoded)
 
     const [
       [
@@ -101,15 +104,16 @@ export class GammaOrder {
         tradeAmount,
         tradeAmountSqrt,
         marginAmount,
-        hedgeInterval,
-        sqrtPriceTrigger,
-        maxSlippageTolerance,
+        canceler,
+        takeProfitPrice,
+        stopLossPrice,
+        slippageTolerance,
         validatorAddress,
         validationData,
       ],
     ] = decoded
 
-    return new GammaOrder(
+    return new PerpOrder(
       {
         orderInfo: {
           market,
@@ -122,9 +126,10 @@ export class GammaOrder {
         tradeAmountSqrt,
         marginAmount,
         entryTokenAddress,
-        hedgeInterval,
-        sqrtPriceTrigger,
-        maxSlippageTolerance: maxSlippageTolerance.toNumber(),
+        canceler,
+        takeProfitPrice,
+        stopLossPrice,
+        slippageTolerance: slippageTolerance.toNumber(),
         validatorAddress,
         validationData,
         chainId,
@@ -137,21 +142,22 @@ export class GammaOrder {
   private witnessInfo() {
     return {
       info: {
-        market: this.gammaOrder.orderInfo.market,
-        trader: this.gammaOrder.orderInfo.trader,
-        nonce: this.gammaOrder.orderInfo.nonce,
-        deadline: this.gammaOrder.orderInfo.deadline,
+        market: this.perpOrder.orderInfo.market,
+        trader: this.perpOrder.orderInfo.trader,
+        nonce: this.perpOrder.orderInfo.nonce,
+        deadline: this.perpOrder.orderInfo.deadline,
       },
-      pairId: this.gammaOrder.pairId,
-      entryTokenAddress: this.gammaOrder.entryTokenAddress,
-      tradeAmount: this.gammaOrder.tradeAmount,
-      tradeAmountSqrt: this.gammaOrder.tradeAmountSqrt,
-      marginAmount: this.gammaOrder.marginAmount,
-      hedgeInterval: this.gammaOrder.hedgeInterval,
-      sqrtPriceTrigger: this.gammaOrder.sqrtPriceTrigger,
-      maxSlippageTolerance: this.gammaOrder.maxSlippageTolerance,
-      validatorAddress: this.gammaOrder.validatorAddress,
-      validationData: this.gammaOrder.validationData,
+      pairId: this.perpOrder.pairId,
+      entryTokenAddress: this.perpOrder.entryTokenAddress,
+      tradeAmount: this.perpOrder.tradeAmount,
+      tradeAmountSqrt: this.perpOrder.tradeAmountSqrt,
+      marginAmount: this.perpOrder.marginAmount,
+      canceler: this.perpOrder.canceler,
+      takeProfitPrice: this.perpOrder.takeProfitPrice,
+      stopLossPrice: this.perpOrder.stopLossPrice,
+      slippageTolerance: this.perpOrder.slippageTolerance,
+      validatorAddress: this.perpOrder.validatorAddress,
+      validationData: this.perpOrder.validationData,
     }
   }
 
@@ -167,26 +173,26 @@ export class GammaOrder {
   toPermit(): PermitTransferFrom {
     return {
       permitted: {
-        token: this.gammaOrder.entryTokenAddress,
-        amount: this.gammaOrder.marginAmount,
+        token: this.perpOrder.entryTokenAddress,
+        amount: this.perpOrder.marginAmount,
       },
-      spender: this.gammaOrder.orderInfo.market,
-      nonce: this.gammaOrder.orderInfo.nonce,
-      deadline: this.gammaOrder.orderInfo.deadline,
+      spender: this.perpOrder.orderInfo.market,
+      nonce: this.perpOrder.orderInfo.nonce,
+      deadline: this.perpOrder.orderInfo.deadline,
     }
   }
 
   private witness(): Witness {
     return {
       witness: this.witnessInfo(),
-      witnessTypeName: 'GammaOrder',
-      witnessType: GAMMA_ORDER_TYPES,
+      witnessTypeName: 'PerpOrder',
+      witnessType: PERP_ORDER_TYPES,
     }
   }
 
   hash(): string {
     return ethers.utils._TypedDataEncoder
-      .from(GAMMA_ORDER_TYPES)
+      .from(PERP_ORDER_TYPES)
       .hash(this.witnessInfo())
   }
 }
@@ -218,16 +224,11 @@ export class DutchOrderValidationData extends BaseValidationData {
 }
 
 const LIMIT_ORDER_VALIDATION_ABI = [
-  'tuple(' + ['uint256', 'uint256', 'uint256', 'uint256'].join(',') + ')',
+  'tuple(' + ['uint256', 'uint256'].join(',') + ')',
 ]
 
 export class LimitOrderValidationData extends BaseValidationData {
-  constructor(
-    public triggerPrice: number,
-    public triggerPriceSqrt: number,
-    public limitPrice: number,
-    public limitPriceSqrt: number
-  ) {
+  constructor(public triggerPrice: number, public limitPrice: number) {
     super()
   }
 
@@ -236,9 +237,7 @@ export class LimitOrderValidationData extends BaseValidationData {
 
     return abiCoder.encode(LIMIT_ORDER_VALIDATION_ABI, [
       this.triggerPrice,
-      this.triggerPriceSqrt,
       this.limitPrice,
-      this.limitPriceSqrt,
     ])
   }
 }

@@ -30,32 +30,27 @@ import type {
 export type OrderInfoStruct = {
   market: PromiseOrValue<string>
   trader: PromiseOrValue<string>
-  filler: PromiseOrValue<string>
   nonce: PromiseOrValue<BigNumberish>
   deadline: PromiseOrValue<BigNumberish>
 }
 
-export type OrderInfoStructOutput = [
-  string,
-  string,
-  string,
-  BigNumber,
-  BigNumber
-] & {
+export type OrderInfoStructOutput = [string, string, BigNumber, BigNumber] & {
   market: string
   trader: string
-  filler: string
   nonce: BigNumber
   deadline: BigNumber
 }
 
 export type PerpOrderStruct = {
   info: OrderInfoStruct
-  positionId: PromiseOrValue<BigNumberish>
   pairId: PromiseOrValue<BigNumberish>
   entryTokenAddress: PromiseOrValue<string>
   tradeAmount: PromiseOrValue<BigNumberish>
   marginAmount: PromiseOrValue<BigNumberish>
+  canceler: PromiseOrValue<string>
+  takeProfitPrice: PromiseOrValue<BigNumberish>
+  stopLossPrice: PromiseOrValue<BigNumberish>
+  slippageTolerance: PromiseOrValue<BigNumberish>
   validatorAddress: PromiseOrValue<string>
   validationData: PromiseOrValue<BytesLike>
 }
@@ -63,43 +58,27 @@ export type PerpOrderStruct = {
 export type PerpOrderStructOutput = [
   OrderInfoStructOutput,
   BigNumber,
+  string,
+  BigNumber,
   BigNumber,
   string,
+  BigNumber,
   BigNumber,
   BigNumber,
   string,
   string
 ] & {
   info: OrderInfoStructOutput
-  positionId: BigNumber
   pairId: BigNumber
   entryTokenAddress: string
   tradeAmount: BigNumber
   marginAmount: BigNumber
+  canceler: string
+  takeProfitPrice: BigNumber
+  stopLossPrice: BigNumber
+  slippageTolerance: BigNumber
   validatorAddress: string
   validationData: string
-}
-
-export declare namespace PerpMarket {
-  export type PerpTradeResultStruct = {
-    entryUpdate: PromiseOrValue<BigNumberish>
-    payoff: PromiseOrValue<BigNumberish>
-  }
-
-  export type PerpTradeResultStructOutput = [BigNumber, BigNumber] & {
-    entryUpdate: BigNumber
-    payoff: BigNumber
-  }
-
-  export type TotalPositionStruct = {
-    totalLongAmount: PromiseOrValue<BigNumberish>
-    totalShortAmount: PromiseOrValue<BigNumberish>
-  }
-
-  export type TotalPositionStructOutput = [BigNumber, BigNumber] & {
-    totalLongAmount: BigNumber
-    totalShortAmount: BigNumber
-  }
 }
 
 export declare namespace ISettlement {
@@ -114,41 +93,7 @@ export declare namespace ISettlement {
   }
 }
 
-export declare namespace IFillerMarket {
-  export type SignedOrderStruct = {
-    order: PromiseOrValue<BytesLike>
-    sig: PromiseOrValue<BytesLike>
-  }
-
-  export type SignedOrderStructOutput = [string, string] & {
-    order: string
-    sig: string
-  }
-}
-
 export declare namespace IPredyPool {
-  export type TradeParamsStruct = {
-    pairId: PromiseOrValue<BigNumberish>
-    vaultId: PromiseOrValue<BigNumberish>
-    tradeAmount: PromiseOrValue<BigNumberish>
-    tradeAmountSqrt: PromiseOrValue<BigNumberish>
-    extraData: PromiseOrValue<BytesLike>
-  }
-
-  export type TradeParamsStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    string
-  ] & {
-    pairId: BigNumber
-    vaultId: BigNumber
-    tradeAmount: BigNumber
-    tradeAmountSqrt: BigNumber
-    extraData: string
-  }
-
   export type PayoffStruct = {
     perpEntryUpdate: PromiseOrValue<BigNumberish>
     sqrtEntryUpdate: PromiseOrValue<BigNumberish>
@@ -201,83 +146,79 @@ export declare namespace IPredyPool {
     sqrtTwap: BigNumber
     sqrtPrice: BigNumber
   }
+
+  export type TradeParamsStruct = {
+    pairId: PromiseOrValue<BigNumberish>
+    vaultId: PromiseOrValue<BigNumberish>
+    tradeAmount: PromiseOrValue<BigNumberish>
+    tradeAmountSqrt: PromiseOrValue<BigNumberish>
+    extraData: PromiseOrValue<BytesLike>
+  }
+
+  export type TradeParamsStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    string
+  ] & {
+    pairId: BigNumber
+    vaultId: BigNumber
+    tradeAmount: BigNumber
+    tradeAmountSqrt: BigNumber
+    extraData: string
+  }
+}
+
+export declare namespace IFillerMarket {
+  export type SignedOrderStruct = {
+    order: PromiseOrValue<BytesLike>
+    sig: PromiseOrValue<BytesLike>
+  }
+
+  export type SignedOrderStructOutput = [string, string] & {
+    order: string
+    sig: string
+  }
 }
 
 export interface PerpMarketInterface extends utils.Interface {
   functions: {
-    'addFillerPool(uint256)': FunctionFragment
-    'close(uint256)': FunctionFragment
-    'confirmLiquidation(address,uint256)': FunctionFragment
-    'depositMargin(uint256)': FunctionFragment
-    'depositToInsurancePool(uint256,uint256)': FunctionFragment
-    'execLiquidationCall(uint256,(address,bytes))': FunctionFragment
+    'cancelOrder(address,uint256)': FunctionFragment
+    'close(address,uint256,(address,bytes))': FunctionFragment
     'executeOrder((bytes,bytes),(address,bytes))': FunctionFragment
-    'insurancePools(address,uint256)': FunctionFragment
-    'positionCount()': FunctionFragment
     'predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))': FunctionFragment
-    'quoteExecuteOrder(((address,address,address,uint256,uint256),uint256,uint64,address,int256,int256,address,bytes),(address,bytes),address)': FunctionFragment
-    'quoteUserPosition(uint256)': FunctionFragment
+    'quoteExecuteOrder(((address,address,uint256,uint256),uint64,address,int256,int256,address,uint256,uint256,uint64,address,bytes),(address,bytes),address)': FunctionFragment
     'updateQuoteTokenMap(uint256)': FunctionFragment
-    'userPositions(uint256)': FunctionFragment
-    'withdrawFromInsurancePool(uint256,uint256)': FunctionFragment
-    'withdrawMargin(uint256)': FunctionFragment
+    'userPositions(address,uint256)': FunctionFragment
   }
 
   getFunction(
     nameOrSignatureOrTopic:
-      | 'addFillerPool'
+      | 'cancelOrder'
       | 'close'
-      | 'confirmLiquidation'
-      | 'depositMargin'
-      | 'depositToInsurancePool'
-      | 'execLiquidationCall'
       | 'executeOrder'
-      | 'insurancePools'
-      | 'positionCount'
       | 'predyTradeAfterCallback'
       | 'quoteExecuteOrder'
-      | 'quoteUserPosition'
       | 'updateQuoteTokenMap'
       | 'userPositions'
-      | 'withdrawFromInsurancePool'
-      | 'withdrawMargin'
   ): FunctionFragment
 
   encodeFunctionData(
-    functionFragment: 'addFillerPool',
-    values: [PromiseOrValue<BigNumberish>]
-  ): string
-  encodeFunctionData(
-    functionFragment: 'close',
-    values: [PromiseOrValue<BigNumberish>]
-  ): string
-  encodeFunctionData(
-    functionFragment: 'confirmLiquidation',
+    functionFragment: 'cancelOrder',
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string
   encodeFunctionData(
-    functionFragment: 'depositMargin',
-    values: [PromiseOrValue<BigNumberish>]
-  ): string
-  encodeFunctionData(
-    functionFragment: 'depositToInsurancePool',
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string
-  encodeFunctionData(
-    functionFragment: 'execLiquidationCall',
-    values: [PromiseOrValue<BigNumberish>, ISettlement.SettlementDataStruct]
+    functionFragment: 'close',
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      ISettlement.SettlementDataStruct
+    ]
   ): string
   encodeFunctionData(
     functionFragment: 'executeOrder',
     values: [IFillerMarket.SignedOrderStruct, ISettlement.SettlementDataStruct]
-  ): string
-  encodeFunctionData(
-    functionFragment: 'insurancePools',
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
-  ): string
-  encodeFunctionData(
-    functionFragment: 'positionCount',
-    values?: undefined
   ): string
   encodeFunctionData(
     functionFragment: 'predyTradeAfterCallback',
@@ -292,57 +233,18 @@ export interface PerpMarketInterface extends utils.Interface {
     ]
   ): string
   encodeFunctionData(
-    functionFragment: 'quoteUserPosition',
-    values: [PromiseOrValue<BigNumberish>]
-  ): string
-  encodeFunctionData(
     functionFragment: 'updateQuoteTokenMap',
     values: [PromiseOrValue<BigNumberish>]
   ): string
   encodeFunctionData(
     functionFragment: 'userPositions',
-    values: [PromiseOrValue<BigNumberish>]
-  ): string
-  encodeFunctionData(
-    functionFragment: 'withdrawFromInsurancePool',
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string
-  encodeFunctionData(
-    functionFragment: 'withdrawMargin',
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string
 
-  decodeFunctionResult(
-    functionFragment: 'addFillerPool',
-    data: BytesLike
-  ): Result
+  decodeFunctionResult(functionFragment: 'cancelOrder', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'close', data: BytesLike): Result
   decodeFunctionResult(
-    functionFragment: 'confirmLiquidation',
-    data: BytesLike
-  ): Result
-  decodeFunctionResult(
-    functionFragment: 'depositMargin',
-    data: BytesLike
-  ): Result
-  decodeFunctionResult(
-    functionFragment: 'depositToInsurancePool',
-    data: BytesLike
-  ): Result
-  decodeFunctionResult(
-    functionFragment: 'execLiquidationCall',
-    data: BytesLike
-  ): Result
-  decodeFunctionResult(
     functionFragment: 'executeOrder',
-    data: BytesLike
-  ): Result
-  decodeFunctionResult(
-    functionFragment: 'insurancePools',
-    data: BytesLike
-  ): Result
-  decodeFunctionResult(
-    functionFragment: 'positionCount',
     data: BytesLike
   ): Result
   decodeFunctionResult(
@@ -354,10 +256,6 @@ export interface PerpMarketInterface extends utils.Interface {
     data: BytesLike
   ): Result
   decodeFunctionResult(
-    functionFragment: 'quoteUserPosition',
-    data: BytesLike
-  ): Result
-  decodeFunctionResult(
     functionFragment: 'updateQuoteTokenMap',
     data: BytesLike
   ): Result
@@ -365,47 +263,39 @@ export interface PerpMarketInterface extends utils.Interface {
     functionFragment: 'userPositions',
     data: BytesLike
   ): Result
-  decodeFunctionResult(
-    functionFragment: 'withdrawFromInsurancePool',
-    data: BytesLike
-  ): Result
-  decodeFunctionResult(
-    functionFragment: 'withdrawMargin',
-    data: BytesLike
-  ): Result
 
   events: {
-    'FundingPayment(uint256,int256,int256)': EventFragment
-    'PositionUpdated(uint256,int256,tuple)': EventFragment
+    'Closed(address,uint256,uint256)': EventFragment
+    'Traded(address,uint256,uint256)': EventFragment
   }
 
-  getEvent(nameOrSignatureOrTopic: 'FundingPayment'): EventFragment
-  getEvent(nameOrSignatureOrTopic: 'PositionUpdated'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'Closed'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'Traded'): EventFragment
 }
 
-export interface FundingPaymentEventObject {
-  positionId: BigNumber
-  fundingFee: BigNumber
-  fillerFundingFee: BigNumber
+export interface ClosedEventObject {
+  trader: string
+  pairId: BigNumber
+  vaultId: BigNumber
 }
-export type FundingPaymentEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber],
-  FundingPaymentEventObject
+export type ClosedEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  ClosedEventObject
 >
 
-export type FundingPaymentEventFilter = TypedEventFilter<FundingPaymentEvent>
+export type ClosedEventFilter = TypedEventFilter<ClosedEvent>
 
-export interface PositionUpdatedEventObject {
-  positionId: BigNumber
-  tradeAmount: BigNumber
-  tradeResult: PerpMarket.PerpTradeResultStructOutput
+export interface TradedEventObject {
+  trader: string
+  pairId: BigNumber
+  vaultId: BigNumber
 }
-export type PositionUpdatedEvent = TypedEvent<
-  [BigNumber, BigNumber, PerpMarket.PerpTradeResultStructOutput],
-  PositionUpdatedEventObject
+export type TradedEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  TradedEventObject
 >
 
-export type PositionUpdatedEventFilter = TypedEventFilter<PositionUpdatedEvent>
+export type TradedEventFilter = TypedEventFilter<TradedEvent>
 
 export interface PerpMarket extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this
@@ -434,35 +324,15 @@ export interface PerpMarket extends BaseContract {
   removeListener: OnEvent<this>
 
   functions: {
-    addFillerPool(
+    cancelOrder(
+      owner: PromiseOrValue<string>,
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
 
     close(
-      positionId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
-
-    confirmLiquidation(
-      filler: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
       pairId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
-
-    depositMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
-
-    depositToInsurancePool(
-      pairId: PromiseOrValue<BigNumberish>,
-      depositAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
-
-    execLiquidationCall(
-      positionId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
@@ -472,38 +342,6 @@ export interface PerpMarket extends BaseContract {
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
-
-    insurancePools(
-      filler: PromiseOrValue<string>,
-      pairId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<
-      [
-        BigNumber,
-        BigNumber,
-        string,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        PerpMarket.TotalPositionStructOutput,
-        boolean,
-        BigNumber
-      ] & {
-        vaultId: BigNumber
-        pairId: BigNumber
-        fillerAddress: string
-        marginAmount: BigNumber
-        fillercumulativeFundingRates: BigNumber
-        fundingRateGrobalGrowth: BigNumber
-        lastFundingRateCalculationTime: BigNumber
-        totalPosition: PerpMarket.TotalPositionStructOutput
-        isLiquidated: boolean
-        liquidationPrice: BigNumber
-      }
-    >
-
-    positionCount(overrides?: CallOverrides): Promise<[BigNumber]>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
@@ -518,82 +356,36 @@ export interface PerpMarket extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
 
-    quoteUserPosition(
-      positionId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
-
     updateQuoteTokenMap(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
 
     userPositions(
-      vaultId: PromiseOrValue<BigNumberish>,
+      owner: PromiseOrValue<string>,
+      pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
-      [
-        BigNumber,
-        BigNumber,
-        string,
-        string,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber
-      ] & {
-        id: BigNumber
-        pairId: BigNumber
-        filler: string
+      [string, BigNumber, string, BigNumber, BigNumber, BigNumber] & {
         owner: string
-        positionAmount: BigNumber
-        entryValue: BigNumber
-        marginAmount: BigNumber
-        cumulativeFundingRates: BigNumber
+        vaultId: BigNumber
+        canceler: string
+        takeProfitPrice: BigNumber
+        stopLossPrice: BigNumber
+        slippageTolerance: BigNumber
       }
     >
-
-    withdrawFromInsurancePool(
-      pairId: PromiseOrValue<BigNumberish>,
-      withdrawAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
-
-    withdrawMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
   }
 
-  addFillerPool(
+  cancelOrder(
+    owner: PromiseOrValue<string>,
     pairId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
 
   close(
-    positionId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
-
-  confirmLiquidation(
-    filler: PromiseOrValue<string>,
+    owner: PromiseOrValue<string>,
     pairId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
-
-  depositMargin(
-    marginAmount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
-
-  depositToInsurancePool(
-    pairId: PromiseOrValue<BigNumberish>,
-    depositAmount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
-
-  execLiquidationCall(
-    positionId: PromiseOrValue<BigNumberish>,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
@@ -603,38 +395,6 @@ export interface PerpMarket extends BaseContract {
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
-
-  insurancePools(
-    filler: PromiseOrValue<string>,
-    pairId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<
-    [
-      BigNumber,
-      BigNumber,
-      string,
-      BigNumber,
-      BigNumber,
-      BigNumber,
-      BigNumber,
-      PerpMarket.TotalPositionStructOutput,
-      boolean,
-      BigNumber
-    ] & {
-      vaultId: BigNumber
-      pairId: BigNumber
-      fillerAddress: string
-      marginAmount: BigNumber
-      fillercumulativeFundingRates: BigNumber
-      fundingRateGrobalGrowth: BigNumber
-      lastFundingRateCalculationTime: BigNumber
-      totalPosition: PerpMarket.TotalPositionStructOutput
-      isLiquidated: boolean
-      liquidationPrice: BigNumber
-    }
-  >
-
-  positionCount(overrides?: CallOverrides): Promise<BigNumber>
 
   predyTradeAfterCallback(
     tradeParams: IPredyPool.TradeParamsStruct,
@@ -649,123 +409,45 @@ export interface PerpMarket extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
 
-  quoteUserPosition(
-    positionId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
-
   updateQuoteTokenMap(
     pairId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
 
   userPositions(
-    vaultId: PromiseOrValue<BigNumberish>,
+    owner: PromiseOrValue<string>,
+    pairId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<
-    [
-      BigNumber,
-      BigNumber,
-      string,
-      string,
-      BigNumber,
-      BigNumber,
-      BigNumber,
-      BigNumber
-    ] & {
-      id: BigNumber
-      pairId: BigNumber
-      filler: string
+    [string, BigNumber, string, BigNumber, BigNumber, BigNumber] & {
       owner: string
-      positionAmount: BigNumber
-      entryValue: BigNumber
-      marginAmount: BigNumber
-      cumulativeFundingRates: BigNumber
+      vaultId: BigNumber
+      canceler: string
+      takeProfitPrice: BigNumber
+      stopLossPrice: BigNumber
+      slippageTolerance: BigNumber
     }
   >
 
-  withdrawFromInsurancePool(
-    pairId: PromiseOrValue<BigNumberish>,
-    withdrawAmount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
-
-  withdrawMargin(
-    marginAmount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
-
   callStatic: {
-    addFillerPool(
+    cancelOrder(
+      owner: PromiseOrValue<string>,
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
+    ): Promise<void>
 
     close(
-      positionId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PerpMarket.PerpTradeResultStructOutput>
-
-    confirmLiquidation(
-      filler: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
       pairId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>
-
-    depositMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>
-
-    depositToInsurancePool(
-      pairId: PromiseOrValue<BigNumberish>,
-      depositAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>
-
-    execLiquidationCall(
-      positionId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<void>
+    ): Promise<IPredyPool.TradeResultStructOutput>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<PerpMarket.PerpTradeResultStructOutput>
-
-    insurancePools(
-      filler: PromiseOrValue<string>,
-      pairId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<
-      [
-        BigNumber,
-        BigNumber,
-        string,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        PerpMarket.TotalPositionStructOutput,
-        boolean,
-        BigNumber
-      ] & {
-        vaultId: BigNumber
-        pairId: BigNumber
-        fillerAddress: string
-        marginAmount: BigNumber
-        fillercumulativeFundingRates: BigNumber
-        fundingRateGrobalGrowth: BigNumber
-        lastFundingRateCalculationTime: BigNumber
-        totalPosition: PerpMarket.TotalPositionStructOutput
-        isLiquidated: boolean
-        liquidationPrice: BigNumber
-      }
-    >
-
-    positionCount(overrides?: CallOverrides): Promise<BigNumber>
+    ): Promise<IPredyPool.TradeResultStructOutput>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
@@ -780,107 +462,53 @@ export interface PerpMarket extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>
 
-    quoteUserPosition(
-      positionId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>
-
     updateQuoteTokenMap(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>
 
     userPositions(
-      vaultId: PromiseOrValue<BigNumberish>,
+      owner: PromiseOrValue<string>,
+      pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
-      [
-        BigNumber,
-        BigNumber,
-        string,
-        string,
-        BigNumber,
-        BigNumber,
-        BigNumber,
-        BigNumber
-      ] & {
-        id: BigNumber
-        pairId: BigNumber
-        filler: string
+      [string, BigNumber, string, BigNumber, BigNumber, BigNumber] & {
         owner: string
-        positionAmount: BigNumber
-        entryValue: BigNumber
-        marginAmount: BigNumber
-        cumulativeFundingRates: BigNumber
+        vaultId: BigNumber
+        canceler: string
+        takeProfitPrice: BigNumber
+        stopLossPrice: BigNumber
+        slippageTolerance: BigNumber
       }
     >
-
-    withdrawFromInsurancePool(
-      pairId: PromiseOrValue<BigNumberish>,
-      withdrawAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>
-
-    withdrawMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>
   }
 
   filters: {
-    'FundingPayment(uint256,int256,int256)'(
-      positionId?: null,
-      fundingFee?: null,
-      fillerFundingFee?: null
-    ): FundingPaymentEventFilter
-    FundingPayment(
-      positionId?: null,
-      fundingFee?: null,
-      fillerFundingFee?: null
-    ): FundingPaymentEventFilter
+    'Closed(address,uint256,uint256)'(
+      trader?: null,
+      pairId?: null,
+      vaultId?: null
+    ): ClosedEventFilter
+    Closed(trader?: null, pairId?: null, vaultId?: null): ClosedEventFilter
 
-    'PositionUpdated(uint256,int256,tuple)'(
-      positionId?: null,
-      tradeAmount?: null,
-      tradeResult?: null
-    ): PositionUpdatedEventFilter
-    PositionUpdated(
-      positionId?: null,
-      tradeAmount?: null,
-      tradeResult?: null
-    ): PositionUpdatedEventFilter
+    'Traded(address,uint256,uint256)'(
+      trader?: null,
+      pairId?: null,
+      vaultId?: null
+    ): TradedEventFilter
+    Traded(trader?: null, pairId?: null, vaultId?: null): TradedEventFilter
   }
 
   estimateGas: {
-    addFillerPool(
+    cancelOrder(
+      owner: PromiseOrValue<string>,
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
 
     close(
-      positionId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
-
-    confirmLiquidation(
-      filler: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
       pairId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
-
-    depositMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
-
-    depositToInsurancePool(
-      pairId: PromiseOrValue<BigNumberish>,
-      depositAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
-
-    execLiquidationCall(
-      positionId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
@@ -890,14 +518,6 @@ export interface PerpMarket extends BaseContract {
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
-
-    insurancePools(
-      filler: PromiseOrValue<string>,
-      pairId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>
-
-    positionCount(overrides?: CallOverrides): Promise<BigNumber>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
@@ -912,63 +532,28 @@ export interface PerpMarket extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
 
-    quoteUserPosition(
-      positionId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
-
     updateQuoteTokenMap(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
 
     userPositions(
-      vaultId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>
-
-    withdrawFromInsurancePool(
+      owner: PromiseOrValue<string>,
       pairId: PromiseOrValue<BigNumberish>,
-      withdrawAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
-
-    withdrawMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<BigNumber>
   }
 
   populateTransaction: {
-    addFillerPool(
+    cancelOrder(
+      owner: PromiseOrValue<string>,
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
 
     close(
-      positionId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
-
-    confirmLiquidation(
-      filler: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
       pairId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
-
-    depositMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
-
-    depositToInsurancePool(
-      pairId: PromiseOrValue<BigNumberish>,
-      depositAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
-
-    execLiquidationCall(
-      positionId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
@@ -978,14 +563,6 @@ export interface PerpMarket extends BaseContract {
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
-
-    insurancePools(
-      filler: PromiseOrValue<string>,
-      pairId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
-
-    positionCount(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
@@ -1000,30 +577,15 @@ export interface PerpMarket extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
 
-    quoteUserPosition(
-      positionId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
-
     updateQuoteTokenMap(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>
 
     userPositions(
-      vaultId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>
-
-    withdrawFromInsurancePool(
+      owner: PromiseOrValue<string>,
       pairId: PromiseOrValue<BigNumberish>,
-      withdrawAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
-
-    withdrawMargin(
-      marginAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>
   }
 }

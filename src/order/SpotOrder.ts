@@ -31,16 +31,16 @@ export const SPOT_ORDER_TYPES = {
 
 const SPOT_ORDER_ABI = [
   'tuple(' +
-    [
-      'tuple(address,address,uint256,uint256)',
-      'address',
-      'address',
-      'int256',
-      'uint256',
-      'address',
-      'bytes',
-    ].join(',') +
-    ')',
+  [
+    'tuple(address,address,uint256,uint256)',
+    'address',
+    'address',
+    'int256',
+    'uint256',
+    'address',
+    'bytes',
+  ].join(',') +
+  ')',
 ]
 
 export class SpotOrder {
@@ -214,12 +214,12 @@ export class SpotDutchOrderValidationData extends BaseValidationData {
   serialize(): Bytes {
     const abiCoder = new ethers.utils.AbiCoder()
 
-    return abiCoder.encode(DUTCH_ORDER_VALIDATION_ABI, [
+    return abiCoder.encode(DUTCH_ORDER_VALIDATION_ABI, [[
       this.startPrice,
       this.endPrice,
       this.startTime,
       this.endTime,
-    ]) as Bytes
+    ]]) as Bytes
   }
 }
 
@@ -235,9 +235,9 @@ export class SpotLimitOrderValidationData extends BaseValidationData {
   serialize(): Bytes {
     const abiCoder = new ethers.utils.AbiCoder()
 
-    return abiCoder.encode(LIMIT_ORDER_VALIDATION_ABI, [
+    return abiCoder.encode(LIMIT_ORDER_VALIDATION_ABI, [[
       this.filler,
       this.limitQuoteTokenAmount,
-    ]) as Bytes
+    ]]) as Bytes
   }
 }

@@ -11,41 +11,41 @@ import type {
   Overrides,
   PopulatedTransaction,
   Signer,
-  utils
-} from 'ethers'
-import type { FunctionFragment, Result } from '@ethersproject/abi'
-import type { Listener, Provider } from '@ethersproject/providers'
+  utils,
+} from "ethers";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue
-} from './common'
+  PromiseOrValue,
+} from "./common";
 
 export type OrderInfoStruct = {
-  market: PromiseOrValue<string>
-  trader: PromiseOrValue<string>
-  nonce: PromiseOrValue<BigNumberish>
-  deadline: PromiseOrValue<BigNumberish>
-}
+  market: PromiseOrValue<string>;
+  trader: PromiseOrValue<string>;
+  nonce: PromiseOrValue<BigNumberish>;
+  deadline: PromiseOrValue<BigNumberish>;
+};
 
 export type OrderInfoStructOutput = [string, string, BigNumber, BigNumber] & {
-  market: string
-  trader: string
-  nonce: BigNumber
-  deadline: BigNumber
-}
+  market: string;
+  trader: string;
+  nonce: BigNumber;
+  deadline: BigNumber;
+};
 
 export type SpotOrderStruct = {
-  info: OrderInfoStruct
-  quoteToken: PromiseOrValue<string>
-  baseToken: PromiseOrValue<string>
-  baseTokenAmount: PromiseOrValue<BigNumberish>
-  quoteTokenAmount: PromiseOrValue<BigNumberish>
-  validatorAddress: PromiseOrValue<string>
-  validationData: PromiseOrValue<BytesLike>
-}
+  info: OrderInfoStruct;
+  quoteToken: PromiseOrValue<string>;
+  baseToken: PromiseOrValue<string>;
+  baseTokenAmount: PromiseOrValue<BigNumberish>;
+  quoteTokenAmount: PromiseOrValue<BigNumberish>;
+  validatorAddress: PromiseOrValue<string>;
+  validationData: PromiseOrValue<BytesLike>;
+};
 
 export type SpotOrderStructOutput = [
   OrderInfoStructOutput,
@@ -56,110 +56,110 @@ export type SpotOrderStructOutput = [
   string,
   string
 ] & {
-  info: OrderInfoStructOutput
-  quoteToken: string
-  baseToken: string
-  baseTokenAmount: BigNumber
-  quoteTokenAmount: BigNumber
-  validatorAddress: string
-  validationData: string
-}
+  info: OrderInfoStructOutput;
+  quoteToken: string;
+  baseToken: string;
+  baseTokenAmount: BigNumber;
+  quoteTokenAmount: BigNumber;
+  validatorAddress: string;
+  validationData: string;
+};
 
 export declare namespace ISettlement {
   export type SettlementDataStruct = {
-    settlementContractAddress: PromiseOrValue<string>
-    encodedData: PromiseOrValue<BytesLike>
-  }
+    settlementContractAddress: PromiseOrValue<string>;
+    encodedData: PromiseOrValue<BytesLike>;
+  };
 
   export type SettlementDataStructOutput = [string, string] & {
-    settlementContractAddress: string
-    encodedData: string
-  }
+    settlementContractAddress: string;
+    encodedData: string;
+  };
 }
 
 export interface SpotMarketQuoterInterface extends utils.Interface {
   functions: {
-    'quoteExecuteOrder(((address,address,uint256,uint256),address,address,int256,uint256,address,bytes),(address,bytes))': FunctionFragment
-  }
+    "quoteExecuteOrder(((address,address,uint256,uint256),address,address,int256,uint256,address,bytes),(address,bytes))": FunctionFragment;
+  };
 
-  getFunction(nameOrSignatureOrTopic: 'quoteExecuteOrder'): FunctionFragment
+  getFunction(nameOrSignatureOrTopic: "quoteExecuteOrder"): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: 'quoteExecuteOrder',
+    functionFragment: "quoteExecuteOrder",
     values: [SpotOrderStruct, ISettlement.SettlementDataStruct]
-  ): string
+  ): string;
 
   decodeFunctionResult(
-    functionFragment: 'quoteExecuteOrder',
+    functionFragment: "quoteExecuteOrder",
     data: BytesLike
-  ): Result
+  ): Result;
 
-  events: {}
+  events: {};
 }
 
 export interface SpotMarketQuoter extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: SpotMarketQuoterInterface
+  interface: SpotMarketQuoterInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     quoteExecuteOrder(
       order: SpotOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
-  }
+    ): Promise<ContractTransaction>;
+  };
 
   quoteExecuteOrder(
     order: SpotOrderStruct,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   callStatic: {
     quoteExecuteOrder(
       order: SpotOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
-  filters: {}
+  filters: {};
 
   estimateGas: {
     quoteExecuteOrder(
       order: SpotOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
     quoteExecuteOrder(
       order: SpotOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
-  }
+    ): Promise<PopulatedTransaction>;
+  };
 }

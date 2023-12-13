@@ -11,27 +11,27 @@ import type {
   Overrides,
   PopulatedTransaction,
   Signer,
-  utils
-} from 'ethers'
-import type { FunctionFragment, Result } from '@ethersproject/abi'
-import type { Listener, Provider } from '@ethersproject/providers'
+  utils,
+} from "ethers";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue
-} from './common'
+  PromiseOrValue,
+} from "./common";
 
 export interface PermitInterface extends utils.Interface {
   functions: {
-    'permit(address,address,uint256,uint256,uint8,bytes32,bytes32)': FunctionFragment
-  }
+    "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
+  };
 
-  getFunction(nameOrSignatureOrTopic: 'permit'): FunctionFragment
+  getFunction(nameOrSignatureOrTopic: "permit"): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: 'permit',
+    functionFragment: "permit",
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<string>,
@@ -41,38 +41,38 @@ export interface PermitInterface extends utils.Interface {
       PromiseOrValue<BytesLike>,
       PromiseOrValue<BytesLike>
     ]
-  ): string
+  ): string;
 
-  decodeFunctionResult(functionFragment: 'permit', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: "permit", data: BytesLike): Result;
 
-  events: {}
+  events: {};
 }
 
 export interface Permit extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this
-  attach(addressOrName: string): this
-  deployed(): Promise<this>
+  connect(signerOrProvider: Signer | Provider | string): this;
+  attach(addressOrName: string): this;
+  deployed(): Promise<this>;
 
-  interface: PermitInterface
+  interface: PermitInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>
+  ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>
-  listeners(eventName?: string): Array<Listener>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this
-  removeAllListeners(eventName?: string): this
-  off: OnEvent<this>
-  on: OnEvent<this>
-  once: OnEvent<this>
-  removeListener: OnEvent<this>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     permit(
@@ -84,8 +84,8 @@ export interface Permit extends BaseContract {
       r: PromiseOrValue<BytesLike>,
       s: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>
-  }
+    ): Promise<ContractTransaction>;
+  };
 
   permit(
     owner: PromiseOrValue<string>,
@@ -96,7 +96,7 @@ export interface Permit extends BaseContract {
     r: PromiseOrValue<BytesLike>,
     s: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>
+  ): Promise<ContractTransaction>;
 
   callStatic: {
     permit(
@@ -108,10 +108,10 @@ export interface Permit extends BaseContract {
       r: PromiseOrValue<BytesLike>,
       s: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<void>
-  }
+    ): Promise<void>;
+  };
 
-  filters: {}
+  filters: {};
 
   estimateGas: {
     permit(
@@ -123,8 +123,8 @@ export interface Permit extends BaseContract {
       r: PromiseOrValue<BytesLike>,
       s: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>
-  }
+    ): Promise<BigNumber>;
+  };
 
   populateTransaction: {
     permit(
@@ -136,6 +136,6 @@ export interface Permit extends BaseContract {
       r: PromiseOrValue<BytesLike>,
       s: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>
-  }
+    ): Promise<PopulatedTransaction>;
+  };
 }

@@ -209,7 +209,7 @@ const LIMIT_ORDER_VALIDATION_ABI = [
 ]
 
 export class SpotLimitOrderValidationData extends BaseValidationData {
-  constructor(public filler: string, public limitPrice: number) {
+  constructor(public filler: string, public limitQuoteTokenAmount: number) {
     super()
   }
 
@@ -218,7 +218,7 @@ export class SpotLimitOrderValidationData extends BaseValidationData {
 
     return abiCoder.encode(LIMIT_ORDER_VALIDATION_ABI, [
       this.filler,
-      this.limitPrice,
+      this.limitQuoteTokenAmount,
     ])
   }
 }

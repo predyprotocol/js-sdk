@@ -15,9 +15,7 @@ const PERP_ORDER_TYPES = {
     { name: 'pairId', type: 'uint256' },
     { name: 'entryTokenAddress', type: 'address' },
     { name: 'tradeAmount', type: 'int256' },
-    { name: 'tradeAmountSqrt', type: 'int256' },
     { name: 'marginAmount', type: 'int256' },
-    { name: 'canceler', type: 'address' },
     { name: 'takeProfitPrice', type: 'uint256' },
     { name: 'stopLossPrice', type: 'uint256' },
     { name: 'slippageTolerance', type: 'uint64' },
@@ -40,8 +38,6 @@ const PERP_ORDER_ABI = [
       'address',
       'int256',
       'int256',
-      'int256',
-      'address',
       'uint256',
       'uint256',
       'uint64',
@@ -80,9 +76,7 @@ export class PerpOrder {
         this.perpOrder.pairId,
         this.perpOrder.entryTokenAddress,
         this.perpOrder.tradeAmount,
-        this.perpOrder.tradeAmountSqrt,
         this.perpOrder.marginAmount,
-        this.perpOrder.canceler,
         this.perpOrder.takeProfitPrice,
         this.perpOrder.stopLossPrice,
         this.perpOrder.slippageTolerance,
@@ -102,9 +96,7 @@ export class PerpOrder {
         pairId,
         entryTokenAddress,
         tradeAmount,
-        tradeAmountSqrt,
         marginAmount,
-        canceler,
         takeProfitPrice,
         stopLossPrice,
         slippageTolerance,
@@ -123,10 +115,8 @@ export class PerpOrder {
         },
         pairId: pairId.toNumber(),
         tradeAmount,
-        tradeAmountSqrt,
         marginAmount,
         entryTokenAddress,
-        canceler,
         takeProfitPrice,
         stopLossPrice,
         slippageTolerance: slippageTolerance.toNumber(),
@@ -150,9 +140,7 @@ export class PerpOrder {
       pairId: this.perpOrder.pairId,
       entryTokenAddress: this.perpOrder.entryTokenAddress,
       tradeAmount: this.perpOrder.tradeAmount,
-      tradeAmountSqrt: this.perpOrder.tradeAmountSqrt,
       marginAmount: this.perpOrder.marginAmount,
-      canceler: this.perpOrder.canceler,
       takeProfitPrice: this.perpOrder.takeProfitPrice,
       stopLossPrice: this.perpOrder.stopLossPrice,
       slippageTolerance: this.perpOrder.slippageTolerance,
@@ -194,32 +182,6 @@ export class PerpOrder {
     return ethers.utils._TypedDataEncoder
       .from(PERP_ORDER_TYPES)
       .hash(this.witnessInfo())
-  }
-}
-
-const DUTCH_ORDER_VALIDATION_ABI = [
-  'tuple(' + ['uint256', 'uint256', 'uint256', 'uint256'].join(',') + ')',
-]
-
-export class DutchOrderValidationData extends BaseValidationData {
-  constructor(
-    public startPrice: number,
-    public endPrice: number,
-    public startTime: number,
-    public endTime: number
-  ) {
-    super()
-  }
-
-  serialize(): string {
-    const abiCoder = new ethers.utils.AbiCoder()
-
-    return abiCoder.encode(DUTCH_ORDER_VALIDATION_ABI, [
-      this.startPrice,
-      this.endPrice,
-      this.startTime,
-      this.endTime,
-    ])
   }
 }
 

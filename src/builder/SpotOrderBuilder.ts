@@ -10,7 +10,7 @@ import { SpotOrderParams } from '../order/types'
 export class SpotOrderBuilder {
   protected spotOrder: Partial<SpotOrderParams>
 
-  constructor(private chainId: number, private permit2Address: string) {
+  constructor(private chainId: number, private permit2Address?: string) {
     // set defaults
     this.spotOrder = {
       validatorAddress: ethers.constants.AddressZero,
@@ -90,10 +90,15 @@ export class SpotOrderBuilder {
 }
 
 export class SpotDutchOrderBuilder extends SpotOrderBuilder {
-  constructor(chainId: number, permit2Address: string) {
+  constructor(
+    chainId: number,
+    validatorAddress?: string,
+    permit2Address?: string
+  ) {
     super(chainId, permit2Address)
 
-    this.spotOrder.validatorAddress = ''
+    this.spotOrder.validatorAddress =
+      validatorAddress || ethers.constants.AddressZero
   }
 
   validationData(
@@ -116,10 +121,15 @@ export class SpotDutchOrderBuilder extends SpotOrderBuilder {
 }
 
 export class SpotLimitOrderBuilder extends SpotOrderBuilder {
-  constructor(chainId: number, permit2Address: string) {
+  constructor(
+    chainId: number,
+    validatorAddress?: string,
+    permit2Address?: string
+  ) {
     super(chainId, permit2Address)
 
-    this.spotOrder.validatorAddress = ''
+    this.spotOrder.validatorAddress =
+      validatorAddress || ethers.constants.AddressZero
   }
 
   validationData(filler: string, limitPrice: number): SpotLimitOrderBuilder {

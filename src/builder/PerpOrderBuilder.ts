@@ -1,19 +1,15 @@
 import { BigNumber, ethers } from 'ethers'
 
-import {
-  DutchOrderValidationData,
-  LimitOrderValidationData,
-  PerpOrder,
-} from '../order/PerpOrder'
+import { DutchOrderValidationData } from '../order/DutchOrderValidationData'
+import { LimitOrderValidationData, PerpOrder } from '../order/PerpOrder'
 import { PerpOrderParams } from '../order/types'
 
 export class PerpOrderBuilder {
   protected gammaOrder: Partial<PerpOrderParams>
 
-  constructor(private chainId: number, private permit2Address: string) {
+  constructor(private chainId: number, private permit2Address?: string) {
     // set defaults
     this.gammaOrder = {
-      canceler: ethers.constants.AddressZero,
       takeProfitPrice: BigNumber.from(0),
       stopLossPrice: BigNumber.from(0),
       validatorAddress: ethers.constants.AddressZero,
@@ -83,12 +79,6 @@ export class PerpOrderBuilder {
     return this
   }
 
-  canceler(canceler: string): PerpOrderBuilder {
-    this.gammaOrder.canceler = canceler
-
-    return this
-  }
-
   takeProfitPrice(takeProfitPrice: BigNumber): PerpOrderBuilder {
     this.gammaOrder.takeProfitPrice = takeProfitPrice
 
@@ -117,10 +107,17 @@ export class PerpOrderBuilder {
 }
 
 export class PerpDutchOrderBuilder extends PerpOrderBuilder {
-  constructor(chainId: number, permit2Address: string) {
+  constructor(
+    chainId: number,
+    validatorAddress?: string,
+    permit2Address?: string
+  ) {
     super(chainId, permit2Address)
 
-    this.gammaOrder.validatorAddress = ''
+    if (validatorAddress) {
+      this.gammaOrder.validatorAddress =
+        validatorAddress || ethers.constants.AddressZero
+    }
   }
 
   validationData(
@@ -143,10 +140,17 @@ export class PerpDutchOrderBuilder extends PerpOrderBuilder {
 }
 
 export class PerpLimitOrderBuilder extends PerpOrderBuilder {
-  constructor(chainId: number, permit2Address: string) {
+  constructor(
+    chainId: number,
+    validatorAddress?: string,
+    permit2Address?: string
+  ) {
     super(chainId, permit2Address)
 
-    this.gammaOrder.validatorAddress = ''
+    if (validatorAddress) {
+      this.gammaOrder.validatorAddress =
+        validatorAddress || ethers.constants.AddressZero
+    }
   }
 
   validationData(

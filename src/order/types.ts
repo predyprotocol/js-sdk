@@ -12,9 +12,7 @@ export interface PerpOrderParams {
   pairId: number
   entryTokenAddress: string
   tradeAmount: BigNumber
-  tradeAmountSqrt: BigNumber
   marginAmount: BigNumber
-  canceler: string
   takeProfitPrice: BigNumber
   stopLossPrice: BigNumber
   slippageTolerance: number

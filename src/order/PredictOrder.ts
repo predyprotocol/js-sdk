@@ -7,7 +7,7 @@ import {
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
 import { ethers } from 'ethers'
 
-import { BaseValidationData, PredictOrderParams } from './types'
+import { PredictOrderParams } from './types'
 
 export const PREDICT_ORDER_TYPES = {
   PredictOrder: [
@@ -180,50 +180,5 @@ export class PredictOrder {
     return ethers.utils._TypedDataEncoder
       .from(PREDICT_ORDER_TYPES)
       .hash(this.witnessInfo())
-  }
-}
-
-const DUTCH_ORDER_VALIDATION_ABI = [
-  'tuple(' + ['uint256', 'uint256', 'uint256', 'uint256'].join(',') + ')',
-]
-
-export class PredictDutchOrderValidationData extends BaseValidationData {
-  constructor(
-    public startPrice: number,
-    public endPrice: number,
-    public startTime: number,
-    public endTime: number
-  ) {
-    super()
-  }
-
-  serialize(): string {
-    const abiCoder = new ethers.utils.AbiCoder()
-
-    return abiCoder.encode(DUTCH_ORDER_VALIDATION_ABI, [
-      this.startPrice,
-      this.endPrice,
-      this.startTime,
-      this.endTime,
-    ])
-  }
-}
-
-const LIMIT_ORDER_VALIDATION_ABI = [
-  'tuple(' + ['uint256', 'uint256'].join(',') + ')',
-]
-
-export class PerpLimitOrderValidationData extends BaseValidationData {
-  constructor(public triggerPrice: number, public limitPrice: number) {
-    super()
-  }
-
-  serialize(): string {
-    const abiCoder = new ethers.utils.AbiCoder()
-
-    return abiCoder.encode(LIMIT_ORDER_VALIDATION_ABI, [
-      this.triggerPrice,
-      this.limitPrice,
-    ])
   }
 }

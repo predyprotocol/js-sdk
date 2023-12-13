@@ -11,206 +11,233 @@ import type {
   Overrides,
   PopulatedTransaction,
   Signer,
-  utils,
-} from "ethers";
+  utils
+} from 'ethers'
 import type {
   FunctionFragment,
   Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  EventFragment
+} from '@ethersproject/abi'
+import type { Listener, Provider } from '@ethersproject/providers'
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
-} from "./common";
+  PromiseOrValue
+} from './common'
 
 export declare namespace IFillerMarket {
   export type SignedOrderStruct = {
-    order: PromiseOrValue<BytesLike>;
-    sig: PromiseOrValue<BytesLike>;
-  };
+    order: PromiseOrValue<BytesLike>
+    sig: PromiseOrValue<BytesLike>
+  }
 
   export type SignedOrderStructOutput = [string, string] & {
-    order: string;
-    sig: string;
-  };
+    order: string
+    sig: string
+  }
 }
 
 export declare namespace ISettlement {
   export type SettlementDataStruct = {
-    settlementContractAddress: PromiseOrValue<string>;
-    encodedData: PromiseOrValue<BytesLike>;
-  };
+    settlementContractAddress: PromiseOrValue<string>
+    encodedData: PromiseOrValue<BytesLike>
+  }
 
   export type SettlementDataStructOutput = [string, string] & {
-    settlementContractAddress: string;
-    encodedData: string;
-  };
+    settlementContractAddress: string
+    encodedData: string
+  }
 }
 
 export interface SpotMarketInterface extends utils.Interface {
   functions: {
-    "executeOrder((bytes,bytes),(address,bytes))": FunctionFragment;
-    "take(bool,address,uint256)": FunctionFragment;
-  };
+    'executeOrder((bytes,bytes),(address,bytes))': FunctionFragment
+    'take(bool,address,uint256)': FunctionFragment
+  }
 
-  getFunction(
-    nameOrSignatureOrTopic: "executeOrder" | "take"
-  ): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: 'executeOrder' | 'take'): FunctionFragment
 
   encodeFunctionData(
-    functionFragment: "executeOrder",
+    functionFragment: 'executeOrder',
     values: [IFillerMarket.SignedOrderStruct, ISettlement.SettlementDataStruct]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "take",
+    functionFragment: 'take',
     values: [
       PromiseOrValue<boolean>,
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>
     ]
-  ): string;
+  ): string
 
   decodeFunctionResult(
-    functionFragment: "executeOrder",
+    functionFragment: 'executeOrder',
     data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "take", data: BytesLike): Result;
+  ): Result
+  decodeFunctionResult(functionFragment: 'take', data: BytesLike): Result
 
   events: {
-    "SpotTraded(address,address,int256,int256)": EventFragment;
-  };
+    'SpotTraded(address,address,address,address,int256,int256,address)': EventFragment
+  }
 
-  getEvent(nameOrSignatureOrTopic: "SpotTraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'SpotTraded'): EventFragment
 }
 
 export interface SpotTradedEventObject {
-  baseToken: string;
-  quoteToken: string;
-  baseAmount: BigNumber;
-  quoteAmount: BigNumber;
+  trader: string
+  filler: string
+  baseToken: string
+  quoteToken: string
+  baseAmount: BigNumber
+  quoteAmount: BigNumber
+  validatorAddress: string
 }
 export type SpotTradedEvent = TypedEvent<
-  [string, string, BigNumber, BigNumber],
+  [string, string, string, string, BigNumber, BigNumber, string],
   SpotTradedEventObject
->;
+>
 
-export type SpotTradedEventFilter = TypedEventFilter<SpotTradedEvent>;
+export type SpotTradedEventFilter = TypedEventFilter<SpotTradedEvent>
 
 export interface SpotMarket extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
-  interface: SpotMarketInterface;
+  interface: SpotMarketInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TEvent>>
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
+  ): Array<TypedListener<TEvent>>
+  listeners(eventName?: string): Array<Listener>
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  ): this
+  removeAllListeners(eventName?: string): this
+  off: OnEvent<this>
+  on: OnEvent<this>
+  once: OnEvent<this>
+  removeListener: OnEvent<this>
 
   functions: {
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
+    /**
+     * Only locker can call this function
+     * Takes tokens
+     */
     take(
       isQuoteAsset: PromiseOrValue<boolean>,
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-  };
+    ): Promise<ContractTransaction>
+  }
 
   executeOrder(
     order: IFillerMarket.SignedOrderStruct,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
+  /**
+   * Only locker can call this function
+   * Takes tokens
+   */
   take(
     isQuoteAsset: PromiseOrValue<boolean>,
     to: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   callStatic: {
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>
 
+    /**
+     * Only locker can call this function
+     * Takes tokens
+     */
     take(
       isQuoteAsset: PromiseOrValue<boolean>,
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
-  };
+    ): Promise<void>
+  }
 
   filters: {
-    "SpotTraded(address,address,int256,int256)"(
+    'SpotTraded(address,address,address,address,int256,int256,address)'(
+      trader?: PromiseOrValue<string> | null,
+      filler?: null,
       baseToken?: null,
       quoteToken?: null,
       baseAmount?: null,
-      quoteAmount?: null
-    ): SpotTradedEventFilter;
+      quoteAmount?: null,
+      validatorAddress?: null
+    ): SpotTradedEventFilter
     SpotTraded(
+      trader?: PromiseOrValue<string> | null,
+      filler?: null,
       baseToken?: null,
       quoteToken?: null,
       baseAmount?: null,
-      quoteAmount?: null
-    ): SpotTradedEventFilter;
-  };
+      quoteAmount?: null,
+      validatorAddress?: null
+    ): SpotTradedEventFilter
+  }
 
   estimateGas: {
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
+    /**
+     * Only locker can call this function
+     * Takes tokens
+     */
     take(
       isQuoteAsset: PromiseOrValue<boolean>,
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-  };
+    ): Promise<BigNumber>
+  }
 
   populateTransaction: {
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
+    /**
+     * Only locker can call this function
+     * Takes tokens
+     */
     take(
       isQuoteAsset: PromiseOrValue<boolean>,
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-  };
+    ): Promise<PopulatedTransaction>
+  }
 }

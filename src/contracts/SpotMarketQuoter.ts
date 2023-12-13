@@ -37,39 +37,30 @@ export type OrderInfoStructOutput = [string, string, BigNumber, BigNumber] & {
   deadline: BigNumber
 }
 
-export type PerpOrderStruct = {
+export type SpotOrderStruct = {
   info: OrderInfoStruct
-  pairId: PromiseOrValue<BigNumberish>
-  entryTokenAddress: PromiseOrValue<string>
-  tradeAmount: PromiseOrValue<BigNumberish>
-  marginAmount: PromiseOrValue<BigNumberish>
-  takeProfitPrice: PromiseOrValue<BigNumberish>
-  stopLossPrice: PromiseOrValue<BigNumberish>
-  slippageTolerance: PromiseOrValue<BigNumberish>
+  quoteToken: PromiseOrValue<string>
+  baseToken: PromiseOrValue<string>
+  baseTokenAmount: PromiseOrValue<BigNumberish>
+  quoteTokenAmount: PromiseOrValue<BigNumberish>
   validatorAddress: PromiseOrValue<string>
   validationData: PromiseOrValue<BytesLike>
 }
 
-export type PerpOrderStructOutput = [
+export type SpotOrderStructOutput = [
   OrderInfoStructOutput,
-  BigNumber,
   string,
-  BigNumber,
-  BigNumber,
-  BigNumber,
+  string,
   BigNumber,
   BigNumber,
   string,
   string
 ] & {
   info: OrderInfoStructOutput
-  pairId: BigNumber
-  entryTokenAddress: string
-  tradeAmount: BigNumber
-  marginAmount: BigNumber
-  takeProfitPrice: BigNumber
-  stopLossPrice: BigNumber
-  slippageTolerance: BigNumber
+  quoteToken: string
+  baseToken: string
+  baseTokenAmount: BigNumber
+  quoteTokenAmount: BigNumber
   validatorAddress: string
   validationData: string
 }
@@ -86,78 +77,18 @@ export declare namespace ISettlement {
   }
 }
 
-export declare namespace IPredyPool {
-  export type PayoffStruct = {
-    perpEntryUpdate: PromiseOrValue<BigNumberish>
-    sqrtEntryUpdate: PromiseOrValue<BigNumberish>
-    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>
-    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>
-    perpPayoff: PromiseOrValue<BigNumberish>
-    sqrtPayoff: PromiseOrValue<BigNumberish>
-  }
-
-  export type PayoffStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
-  ] & {
-    perpEntryUpdate: BigNumber
-    sqrtEntryUpdate: BigNumber
-    sqrtRebalanceEntryUpdateUnderlying: BigNumber
-    sqrtRebalanceEntryUpdateStable: BigNumber
-    perpPayoff: BigNumber
-    sqrtPayoff: BigNumber
-  }
-
-  export type TradeResultStruct = {
-    payoff: IPredyPool.PayoffStruct
-    vaultId: PromiseOrValue<BigNumberish>
-    fee: PromiseOrValue<BigNumberish>
-    minMargin: PromiseOrValue<BigNumberish>
-    averagePrice: PromiseOrValue<BigNumberish>
-    sqrtTwap: PromiseOrValue<BigNumberish>
-    sqrtPrice: PromiseOrValue<BigNumberish>
-  }
-
-  export type TradeResultStructOutput = [
-    IPredyPool.PayoffStructOutput,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
-  ] & {
-    payoff: IPredyPool.PayoffStructOutput
-    vaultId: BigNumber
-    fee: BigNumber
-    minMargin: BigNumber
-    averagePrice: BigNumber
-    sqrtTwap: BigNumber
-    sqrtPrice: BigNumber
-  }
-}
-
-export interface PerpMarketQuoterInterface extends utils.Interface {
+export interface SpotMarketQuoterInterface extends utils.Interface {
   functions: {
-    'perpMarket()': FunctionFragment
-    'quoteExecuteOrder(((address,address,uint256,uint256),uint64,address,int256,int256,uint256,uint256,uint64,address,bytes),(address,bytes))': FunctionFragment
+    'quoteExecuteOrder(((address,address,uint256,uint256),address,address,int256,uint256,address,bytes),(address,bytes))': FunctionFragment
   }
 
-  getFunction(
-    nameOrSignatureOrTopic: 'perpMarket' | 'quoteExecuteOrder'
-  ): FunctionFragment
+  getFunction(nameOrSignatureOrTopic: 'quoteExecuteOrder'): FunctionFragment
 
-  encodeFunctionData(functionFragment: 'perpMarket', values?: undefined): string
   encodeFunctionData(
     functionFragment: 'quoteExecuteOrder',
-    values: [PerpOrderStruct, ISettlement.SettlementDataStruct]
+    values: [SpotOrderStruct, ISettlement.SettlementDataStruct]
   ): string
 
-  decodeFunctionResult(functionFragment: 'perpMarket', data: BytesLike): Result
   decodeFunctionResult(
     functionFragment: 'quoteExecuteOrder',
     data: BytesLike
@@ -166,12 +97,12 @@ export interface PerpMarketQuoterInterface extends utils.Interface {
   events: {}
 }
 
-export interface PerpMarketQuoter extends BaseContract {
+export interface SpotMarketQuoter extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this
   attach(addressOrName: string): this
   deployed(): Promise<this>
 
-  interface: PerpMarketQuoterInterface
+  interface: SpotMarketQuoterInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -193,50 +124,40 @@ export interface PerpMarketQuoter extends BaseContract {
   removeListener: OnEvent<this>
 
   functions: {
-    perpMarket(overrides?: CallOverrides): Promise<[string]>
-
     quoteExecuteOrder(
-      order: PerpOrderStruct,
+      order: SpotOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>
   }
 
-  perpMarket(overrides?: CallOverrides): Promise<string>
-
   quoteExecuteOrder(
-    order: PerpOrderStruct,
+    order: SpotOrderStruct,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>
 
   callStatic: {
-    perpMarket(overrides?: CallOverrides): Promise<string>
-
     quoteExecuteOrder(
-      order: PerpOrderStruct,
+      order: SpotOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<IPredyPool.TradeResultStructOutput>
+    ): Promise<BigNumber>
   }
 
   filters: {}
 
   estimateGas: {
-    perpMarket(overrides?: CallOverrides): Promise<BigNumber>
-
     quoteExecuteOrder(
-      order: PerpOrderStruct,
+      order: SpotOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>
   }
 
   populateTransaction: {
-    perpMarket(overrides?: CallOverrides): Promise<PopulatedTransaction>
-
     quoteExecuteOrder(
-      order: PerpOrderStruct,
+      order: SpotOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>

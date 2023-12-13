@@ -1,15 +1,13 @@
 import { BigNumber, ethers } from 'ethers'
 
-import {
-  PredictDutchOrderValidationData,
-  PredictOrder,
-} from '../order/PredictOrder'
+import { GeneralDutchOrderValidationData } from '../order/GeneralDutchOrderValidationData'
+import { PredictOrder } from '../order/PredictOrder'
 import { PredictOrderParams } from '../order/types'
 
 export class PredictOrderBuilder {
   protected predictOrder: Partial<PredictOrderParams>
 
-  constructor(private chainId: number, private permit2Address: string) {
+  constructor(private chainId: number, private permit2Address?: string) {
     // set defaults
     this.predictOrder = {
       validatorAddress: ethers.constants.AddressZero,
@@ -101,21 +99,32 @@ export class PredictOrderBuilder {
 }
 
 export class PredictDutchOrderBuilder extends PredictOrderBuilder {
-  constructor(chainId: number, permit2Address: string) {
+  constructor(
+    chainId: number,
+    validatorAddress?: string,
+    permit2Address?: string
+  ) {
     super(chainId, permit2Address)
 
-    this.predictOrder.validatorAddress = ''
+    if (validatorAddress) {
+      this.predictOrder.validatorAddress =
+        validatorAddress || ethers.constants.AddressZero
+    }
   }
 
   validationData(
-    startPrice: number,
-    endPrice: number,
+    baseSqrtPrice: number,
+    startSlippageTolerance: number,
+    endSlippageTolerance: number,
+    maxAcceptableSqrtPriceRange: number,
     startTime: number,
     endTime: number
   ): PredictDutchOrderBuilder {
-    const validationData = new PredictDutchOrderValidationData(
-      startPrice,
-      endPrice,
+    const validationData = new GeneralDutchOrderValidationData(
+      baseSqrtPrice,
+      startSlippageTolerance,
+      endSlippageTolerance,
+      maxAcceptableSqrtPriceRange,
       startTime,
       endTime
     )

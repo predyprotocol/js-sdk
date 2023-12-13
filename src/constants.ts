@@ -1,14 +1,16 @@
+import { Address } from './types'
+
 export const VALIDATOR_ADDRESS = ''
 
 export const DUTCH_ORDER_VALIDATION_MAPPING: {
-  readonly [key: number]: string
+  readonly [key: number]: Address
 } = {
   1: '0x0000000000000000000000000000000000000000',
   42161: '0x0000000000000000000000000000000000000000',
 }
 
 export const UNISWAP_SETTLEMENT_MAPPING: {
-  readonly [key: number]: string
+  readonly [key: number]: Address
 } = {
   1: '0x0000000000000000000000000000000000000000',
   42161: '0x0000000000000000000000000000000000000000',

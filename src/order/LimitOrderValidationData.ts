@@ -1,4 +1,6 @@
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
+
+import { Bytes } from '../types'
 
 import { BaseValidationData } from './types'
 
@@ -8,15 +10,15 @@ const LIMIT_ORDER_VALIDATION_ABI = [
 
 export class LimitOrderValidationData extends BaseValidationData {
   constructor(
-    public triggerPrice: number,
-    public triggerPriceSqrt: number,
-    public limitPrice: number,
-    public limitPriceSqrt: number
+    public triggerPrice: BigNumber,
+    public triggerPriceSqrt: BigNumber,
+    public limitPrice: BigNumber,
+    public limitPriceSqrt: BigNumber
   ) {
     super()
   }
 
-  serialize(): string {
+  serialize(): Bytes {
     const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(LIMIT_ORDER_VALIDATION_ABI, [
@@ -24,6 +26,6 @@ export class LimitOrderValidationData extends BaseValidationData {
       this.triggerPriceSqrt,
       this.limitPrice,
       this.limitPriceSqrt,
-    ])
+    ]) as Bytes
   }
 }

@@ -3,6 +3,7 @@ import { BigNumber, ethers } from 'ethers'
 import { GeneralDutchOrderValidationData } from '../order/GeneralDutchOrderValidationData'
 import { PredictOrder } from '../order/PredictOrder'
 import { PredictOrderParams } from '../order/types'
+import { Address } from '../types'
 
 export class PredictOrderBuilder {
   protected predictOrder: Partial<PredictOrderParams>
@@ -21,7 +22,7 @@ export class PredictOrderBuilder {
     }
   }
 
-  market(market: string): PredictOrderBuilder {
+  market(market: Address): PredictOrderBuilder {
     if (this.predictOrder.orderInfo) {
       this.predictOrder.orderInfo.market = market
     }
@@ -29,7 +30,7 @@ export class PredictOrderBuilder {
     return this
   }
 
-  trader(trader: string): PredictOrderBuilder {
+  trader(trader: Address): PredictOrderBuilder {
     if (this.predictOrder.orderInfo) {
       this.predictOrder.orderInfo.trader = trader
     }
@@ -65,7 +66,7 @@ export class PredictOrderBuilder {
     return this
   }
 
-  entryTokenAddress(entryTokenAddress: string): PredictOrderBuilder {
+  entryTokenAddress(entryTokenAddress: Address): PredictOrderBuilder {
     this.predictOrder.entryTokenAddress = entryTokenAddress
 
     return this
@@ -101,8 +102,8 @@ export class PredictOrderBuilder {
 export class PredictDutchOrderBuilder extends PredictOrderBuilder {
   constructor(
     chainId: number,
-    validatorAddress?: string,
-    permit2Address?: string
+    validatorAddress?: Address,
+    permit2Address?: Address
   ) {
     super(chainId, permit2Address)
 
@@ -113,7 +114,7 @@ export class PredictDutchOrderBuilder extends PredictOrderBuilder {
   }
 
   validationData(
-    baseSqrtPrice: number,
+    baseSqrtPrice: BigNumber,
     startSlippageTolerance: number,
     endSlippageTolerance: number,
     maxAcceptableSqrtPriceRange: number,

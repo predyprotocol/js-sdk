@@ -6,6 +6,7 @@ import {
   SpotOrder,
 } from '../order/SpotOrder'
 import { SpotOrderParams } from '../order/types'
+import { Address } from '../types'
 
 export class SpotOrderBuilder {
   protected spotOrder: Partial<SpotOrderParams>
@@ -24,7 +25,7 @@ export class SpotOrderBuilder {
     }
   }
 
-  market(market: string): SpotOrderBuilder {
+  market(market: Address): SpotOrderBuilder {
     if (this.spotOrder.orderInfo) {
       this.spotOrder.orderInfo.market = market
     }
@@ -32,7 +33,7 @@ export class SpotOrderBuilder {
     return this
   }
 
-  trader(trader: string): SpotOrderBuilder {
+  trader(trader: Address): SpotOrderBuilder {
     if (this.spotOrder.orderInfo) {
       this.spotOrder.orderInfo.trader = trader
     }
@@ -56,13 +57,13 @@ export class SpotOrderBuilder {
     return this
   }
 
-  baseToken(baseToken: string): SpotOrderBuilder {
+  baseToken(baseToken: Address): SpotOrderBuilder {
     this.spotOrder.baseToken = baseToken
 
     return this
   }
 
-  quoteToken(quoteToken: string): SpotOrderBuilder {
+  quoteToken(quoteToken: Address): SpotOrderBuilder {
     this.spotOrder.quoteToken = quoteToken
 
     return this
@@ -92,8 +93,8 @@ export class SpotOrderBuilder {
 export class SpotDutchOrderBuilder extends SpotOrderBuilder {
   constructor(
     chainId: number,
-    validatorAddress?: string,
-    permit2Address?: string
+    validatorAddress?: Address,
+    permit2Address?: Address
   ) {
     super(chainId, permit2Address)
 
@@ -102,8 +103,8 @@ export class SpotDutchOrderBuilder extends SpotOrderBuilder {
   }
 
   validationData(
-    startPrice: number,
-    endPrice: number,
+    startPrice: BigNumber,
+    endPrice: BigNumber,
     startTime: number,
     endTime: number
   ): SpotDutchOrderBuilder {
@@ -123,8 +124,8 @@ export class SpotDutchOrderBuilder extends SpotOrderBuilder {
 export class SpotLimitOrderBuilder extends SpotOrderBuilder {
   constructor(
     chainId: number,
-    validatorAddress?: string,
-    permit2Address?: string
+    validatorAddress?: Address,
+    permit2Address?: Address
   ) {
     super(chainId, permit2Address)
 
@@ -132,7 +133,7 @@ export class SpotLimitOrderBuilder extends SpotOrderBuilder {
       validatorAddress || ethers.constants.AddressZero
   }
 
-  validationData(filler: string, limitPrice: number): SpotLimitOrderBuilder {
+  validationData(filler: string, limitPrice: BigNumber): SpotLimitOrderBuilder {
     const validationData = new SpotLimitOrderValidationData(filler, limitPrice)
 
     this.spotOrder.validationData = validationData.serialize()

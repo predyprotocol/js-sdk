@@ -1,8 +1,10 @@
 import { BigNumber } from 'ethers'
 
+import { Address, Bytes } from '../types'
+
 export interface OrderInfo {
-  market: string
-  trader: string
+  market: Address
+  trader: Address
   nonce: BigNumber
   deadline: number
 }
@@ -10,14 +12,14 @@ export interface OrderInfo {
 export interface PerpOrderParams {
   orderInfo: OrderInfo
   pairId: number
-  entryTokenAddress: string
+  entryTokenAddress: Address
   tradeAmount: BigNumber
   marginAmount: BigNumber
   takeProfitPrice: BigNumber
   stopLossPrice: BigNumber
   slippageTolerance: number
-  validatorAddress: string
-  validationData: string
+  validatorAddress: Address
+  validationData: Bytes
   chainId: number
 }
 
@@ -25,41 +27,41 @@ export interface PredictOrderParams {
   orderInfo: OrderInfo
   pairId: number
   duration: number
-  entryTokenAddress: string
+  entryTokenAddress: Address
   tradeAmount: BigNumber
   tradeAmountSqrt: BigNumber
   marginAmount: BigNumber
-  validatorAddress: string
-  validationData: string
+  validatorAddress: Address
+  validationData: Bytes
   chainId: number
 }
 
 export interface SpotOrderParams {
   orderInfo: OrderInfo
-  quoteToken: string
-  baseToken: string
+  quoteToken: Address
+  baseToken: Address
   baseTokenAmount: BigNumber
   quoteTokenAmount: BigNumber
-  validatorAddress: string
-  validationData: string
+  validatorAddress: Address
+  validationData: Bytes
   chainId: number
 }
 
 export interface GammaOrderParams {
   orderInfo: OrderInfo
   pairId: number
-  entryTokenAddress: string
+  entryTokenAddress: Address
   tradeAmount: BigNumber
   tradeAmountSqrt: BigNumber
   marginAmount: BigNumber
   hedgeInterval: BigNumber
   sqrtPriceTrigger: BigNumber
   maxSlippageTolerance: number
-  validatorAddress: string
-  validationData: string
+  validatorAddress: Address
+  validationData: Bytes
   chainId: number
 }
 
 export abstract class BaseValidationData {
-  abstract serialize(): string
+  abstract serialize(): Bytes
 }

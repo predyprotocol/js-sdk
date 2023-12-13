@@ -1,6 +1,8 @@
+import { Address, Bytes } from '../types'
+
 export interface SettlementData {
-  settlementContractAddress: string
-  encodedData: string
+  settlementContractAddress: Address
+  encodedData: Bytes
 }
 
 export abstract class BaseSettlement {

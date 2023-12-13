@@ -1,8 +1,10 @@
 import { BigNumber, ethers } from 'ethers'
 
 import { DutchOrderValidationData } from '../order/DutchOrderValidationData'
-import { LimitOrderValidationData, PerpOrder } from '../order/PerpOrder'
+import { LimitOrderValidationData } from '../order/LimitOrderValidationData'
+import { PerpOrder } from '../order/PerpOrder'
 import { PerpOrderParams } from '../order/types'
+import { Address } from '../types'
 
 export class PerpOrderBuilder {
   protected gammaOrder: Partial<PerpOrderParams>
@@ -23,7 +25,7 @@ export class PerpOrderBuilder {
     }
   }
 
-  market(market: string): PerpOrderBuilder {
+  market(market: Address): PerpOrderBuilder {
     if (this.gammaOrder.orderInfo) {
       this.gammaOrder.orderInfo.market = market
     }
@@ -31,7 +33,7 @@ export class PerpOrderBuilder {
     return this
   }
 
-  trader(trader: string): PerpOrderBuilder {
+  trader(trader: Address): PerpOrderBuilder {
     if (this.gammaOrder.orderInfo) {
       this.gammaOrder.orderInfo.trader = trader
     }
@@ -61,7 +63,7 @@ export class PerpOrderBuilder {
     return this
   }
 
-  entryTokenAddress(entryTokenAddress: string): PerpOrderBuilder {
+  entryTokenAddress(entryTokenAddress: Address): PerpOrderBuilder {
     this.gammaOrder.entryTokenAddress = entryTokenAddress
 
     return this
@@ -109,8 +111,8 @@ export class PerpOrderBuilder {
 export class PerpDutchOrderBuilder extends PerpOrderBuilder {
   constructor(
     chainId: number,
-    validatorAddress?: string,
-    permit2Address?: string
+    validatorAddress?: Address,
+    permit2Address?: Address
   ) {
     super(chainId, permit2Address)
 
@@ -121,8 +123,8 @@ export class PerpDutchOrderBuilder extends PerpOrderBuilder {
   }
 
   validationData(
-    startPrice: number,
-    endPrice: number,
+    startPrice: BigNumber,
+    endPrice: BigNumber,
     startTime: number,
     endTime: number
   ): PerpDutchOrderBuilder {
@@ -142,8 +144,8 @@ export class PerpDutchOrderBuilder extends PerpOrderBuilder {
 export class PerpLimitOrderBuilder extends PerpOrderBuilder {
   constructor(
     chainId: number,
-    validatorAddress?: string,
-    permit2Address?: string
+    validatorAddress?: Address,
+    permit2Address?: Address
   ) {
     super(chainId, permit2Address)
 
@@ -154,12 +156,14 @@ export class PerpLimitOrderBuilder extends PerpOrderBuilder {
   }
 
   validationData(
-    triggerPrice: number,
-    limitPrice: number
+    triggerPrice: BigNumber,
+    limitPrice: BigNumber
   ): PerpLimitOrderBuilder {
     const validationData = new LimitOrderValidationData(
       triggerPrice,
-      limitPrice
+      BigNumber.from(0),
+      limitPrice,
+      BigNumber.from(0)
     )
 
     this.gammaOrder.validationData = validationData.serialize()

@@ -7,7 +7,7 @@ import {
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
 import { ethers } from 'ethers'
 
-import { BaseValidationData, PerpOrderParams } from './types'
+import { PerpOrderParams } from './types'
 
 const PERP_ORDER_TYPES = {
   GeneralOrderParams: [
@@ -182,24 +182,5 @@ export class PerpOrder {
     return ethers.utils._TypedDataEncoder
       .from(PERP_ORDER_TYPES)
       .hash(this.witnessInfo())
-  }
-}
-
-const LIMIT_ORDER_VALIDATION_ABI = [
-  'tuple(' + ['uint256', 'uint256'].join(',') + ')',
-]
-
-export class LimitOrderValidationData extends BaseValidationData {
-  constructor(public triggerPrice: number, public limitPrice: number) {
-    super()
-  }
-
-  serialize(): string {
-    const abiCoder = new ethers.utils.AbiCoder()
-
-    return abiCoder.encode(LIMIT_ORDER_VALIDATION_ABI, [
-      this.triggerPrice,
-      this.limitPrice,
-    ])
   }
 }

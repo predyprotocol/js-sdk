@@ -7,6 +7,8 @@ import {
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
 import { BigNumber, ethers } from 'ethers'
 
+import { Bytes } from '../types'
+
 import { BaseValidationData, SpotOrderParams } from './types'
 
 export const SPOT_ORDER_TYPES = {
@@ -75,6 +77,23 @@ export class SpotOrder {
         this.spotOrder.validationData,
       ],
     ])
+  }
+
+  toLegacy() {
+    return {
+      info: {
+        market: this.spotOrder.orderInfo.market,
+        trader: this.spotOrder.orderInfo.trader,
+        nonce: BigInt(this.spotOrder.orderInfo.nonce.toString()),
+        deadline: BigInt(this.spotOrder.orderInfo.deadline),
+      },
+      quoteToken: this.spotOrder.quoteToken,
+      baseToken: this.spotOrder.baseToken,
+      baseTokenAmount: BigInt(this.spotOrder.baseTokenAmount.toString()),
+      quoteTokenAmount: BigInt(this.spotOrder.quoteTokenAmount.toString()),
+      validatorAddress: this.spotOrder.validatorAddress,
+      validationData: this.spotOrder.validationData,
+    }
   }
 
   static parse(encoded: string, chainId: number, permit2?: string): SpotOrder {
@@ -184,15 +203,15 @@ const DUTCH_ORDER_VALIDATION_ABI = [
 
 export class SpotDutchOrderValidationData extends BaseValidationData {
   constructor(
-    public startPrice: number,
-    public endPrice: number,
+    public startPrice: BigNumber,
+    public endPrice: BigNumber,
     public startTime: number,
     public endTime: number
   ) {
     super()
   }
 
-  serialize(): string {
+  serialize(): Bytes {
     const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(DUTCH_ORDER_VALIDATION_ABI, [
@@ -200,7 +219,7 @@ export class SpotDutchOrderValidationData extends BaseValidationData {
       this.endPrice,
       this.startTime,
       this.endTime,
-    ])
+    ]) as Bytes
   }
 }
 
@@ -209,16 +228,16 @@ const LIMIT_ORDER_VALIDATION_ABI = [
 ]
 
 export class SpotLimitOrderValidationData extends BaseValidationData {
-  constructor(public filler: string, public limitQuoteTokenAmount: number) {
+  constructor(public filler: string, public limitQuoteTokenAmount: BigNumber) {
     super()
   }
 
-  serialize(): string {
+  serialize(): Bytes {
     const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(LIMIT_ORDER_VALIDATION_ABI, [
       this.filler,
       this.limitQuoteTokenAmount,
-    ])
+    ]) as Bytes
   }
 }

@@ -1,6 +1,7 @@
 import { BigNumber, ethers } from 'ethers'
 
 import { UNISWAP_SETTLEMENT_MAPPING } from '../constants'
+import { Address, Bytes } from '../types'
 
 import { BaseSettlement, SettlementData } from './types'
 
@@ -11,7 +12,7 @@ const UNISWAP_SETTLEMENT_DATA_ABI = [
 ]
 
 export class UniswapSettlement extends BaseSettlement {
-  settlementContractAddress: string
+  settlementContractAddress: Address
 
   constructor(
     public path: string,
@@ -20,7 +21,7 @@ export class UniswapSettlement extends BaseSettlement {
     public baseTokenAddress: string,
     public fee: BigNumber,
     public chainId: number,
-    settlementContractAddress?: string
+    settlementContractAddress?: Address
   ) {
     super()
 
@@ -44,7 +45,7 @@ export class UniswapSettlement extends BaseSettlement {
           this.baseTokenAddress,
           this.fee,
         ],
-      ]),
+      ]) as Bytes,
     }
   }
 }

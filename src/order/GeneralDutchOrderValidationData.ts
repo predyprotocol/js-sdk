@@ -1,4 +1,6 @@
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
+
+import { Bytes } from '../types'
 
 import { BaseValidationData } from './types'
 
@@ -12,7 +14,7 @@ const GENERAL_DUTCH_ORDER_VALIDATION_ABI = [
 
 export class GeneralDutchOrderValidationData extends BaseValidationData {
   constructor(
-    public baseSqrtPrice: number,
+    public baseSqrtPrice: BigNumber,
     public startSlippageTolerance: number,
     public endSlippageTolerance: number,
     public maxAcceptableSqrtPriceRange: number,
@@ -22,7 +24,7 @@ export class GeneralDutchOrderValidationData extends BaseValidationData {
     super()
   }
 
-  serialize(): string {
+  serialize(): Bytes {
     const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(GENERAL_DUTCH_ORDER_VALIDATION_ABI, [
@@ -32,6 +34,6 @@ export class GeneralDutchOrderValidationData extends BaseValidationData {
       this.maxAcceptableSqrtPriceRange,
       this.startTime,
       this.endTime,
-    ])
+    ]) as Bytes
   }
 }

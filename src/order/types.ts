@@ -65,3 +65,21 @@ export interface GammaOrderParams {
 export abstract class BaseValidationData {
   abstract serialize(): Bytes
 }
+
+export const PERMIT_WITNESS_TRANSFER_FROM_TYPES = (witnessType: string) => [
+  { name: 'permitted', type: 'TokenPermissions' },
+  { name: 'spender', type: 'address' },
+  { name: 'nonce', type: 'uint256' },
+  { name: 'deadline', type: 'uint256' },
+  { name: 'witness', type: witnessType },
+]
+export const TOKEN_PERMISSION_TYPES = [
+  { name: 'token', type: 'address' },
+  { name: 'amount', type: 'uint256' },
+]
+export const ORDER_INFO_TYPES = [
+  { name: 'market', type: 'address' },
+  { name: 'trader', type: 'address' },
+  { name: 'nonce', type: 'uint256' },
+  { name: 'deadline', type: 'uint256' },
+]

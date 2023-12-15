@@ -22,10 +22,7 @@ export class DutchOrderValidationData extends BaseValidationData {
     const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(DUTCH_ORDER_VALIDATION_ABI, [
-      this.startPrice,
-      this.endPrice,
-      this.startTime,
-      this.endTime,
+      [this.startPrice, this.endPrice, this.startTime, this.endTime],
     ]) as Bytes
   }
 }

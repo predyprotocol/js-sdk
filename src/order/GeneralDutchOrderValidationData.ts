@@ -28,12 +28,14 @@ export class GeneralDutchOrderValidationData extends BaseValidationData {
     const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(GENERAL_DUTCH_ORDER_VALIDATION_ABI, [
-      this.baseSqrtPrice,
-      this.startSlippageTolerance,
-      this.endSlippageTolerance,
-      this.maxAcceptableSqrtPriceRange,
-      this.startTime,
-      this.endTime,
+      [
+        this.baseSqrtPrice,
+        this.startSlippageTolerance,
+        this.endSlippageTolerance,
+        this.maxAcceptableSqrtPriceRange,
+        this.startTime,
+        this.endTime,
+      ],
     ]) as Bytes
   }
 }

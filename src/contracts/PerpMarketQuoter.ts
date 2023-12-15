@@ -11,44 +11,44 @@ import type {
   Overrides,
   PopulatedTransaction,
   Signer,
-  utils,
-} from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  utils
+} from 'ethers'
+import type { FunctionFragment, Result } from '@ethersproject/abi'
+import type { Listener, Provider } from '@ethersproject/providers'
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
-} from "./common";
+  PromiseOrValue
+} from './common'
 
 export type OrderInfoStruct = {
-  market: PromiseOrValue<string>;
-  trader: PromiseOrValue<string>;
-  nonce: PromiseOrValue<BigNumberish>;
-  deadline: PromiseOrValue<BigNumberish>;
-};
+  market: PromiseOrValue<string>
+  trader: PromiseOrValue<string>
+  nonce: PromiseOrValue<BigNumberish>
+  deadline: PromiseOrValue<BigNumberish>
+}
 
 export type OrderInfoStructOutput = [string, string, BigNumber, BigNumber] & {
-  market: string;
-  trader: string;
-  nonce: BigNumber;
-  deadline: BigNumber;
-};
+  market: string
+  trader: string
+  nonce: BigNumber
+  deadline: BigNumber
+}
 
 export type PerpOrderStruct = {
-  info: OrderInfoStruct;
-  pairId: PromiseOrValue<BigNumberish>;
-  entryTokenAddress: PromiseOrValue<string>;
-  tradeAmount: PromiseOrValue<BigNumberish>;
-  marginAmount: PromiseOrValue<BigNumberish>;
-  takeProfitPrice: PromiseOrValue<BigNumberish>;
-  stopLossPrice: PromiseOrValue<BigNumberish>;
-  slippageTolerance: PromiseOrValue<BigNumberish>;
-  validatorAddress: PromiseOrValue<string>;
-  validationData: PromiseOrValue<BytesLike>;
-};
+  info: OrderInfoStruct
+  pairId: PromiseOrValue<BigNumberish>
+  entryTokenAddress: PromiseOrValue<string>
+  tradeAmount: PromiseOrValue<BigNumberish>
+  marginAmount: PromiseOrValue<BigNumberish>
+  takeProfitPrice: PromiseOrValue<BigNumberish>
+  stopLossPrice: PromiseOrValue<BigNumberish>
+  slippageTolerance: PromiseOrValue<BigNumberish>
+  validatorAddress: PromiseOrValue<string>
+  validationData: PromiseOrValue<BytesLike>
+}
 
 export type PerpOrderStructOutput = [
   OrderInfoStructOutput,
@@ -62,39 +62,39 @@ export type PerpOrderStructOutput = [
   string,
   string
 ] & {
-  info: OrderInfoStructOutput;
-  pairId: BigNumber;
-  entryTokenAddress: string;
-  tradeAmount: BigNumber;
-  marginAmount: BigNumber;
-  takeProfitPrice: BigNumber;
-  stopLossPrice: BigNumber;
-  slippageTolerance: BigNumber;
-  validatorAddress: string;
-  validationData: string;
-};
+  info: OrderInfoStructOutput
+  pairId: BigNumber
+  entryTokenAddress: string
+  tradeAmount: BigNumber
+  marginAmount: BigNumber
+  takeProfitPrice: BigNumber
+  stopLossPrice: BigNumber
+  slippageTolerance: BigNumber
+  validatorAddress: string
+  validationData: string
+}
 
 export declare namespace ISettlement {
   export type SettlementDataStruct = {
-    settlementContractAddress: PromiseOrValue<string>;
-    encodedData: PromiseOrValue<BytesLike>;
-  };
+    settlementContractAddress: PromiseOrValue<string>
+    encodedData: PromiseOrValue<BytesLike>
+  }
 
   export type SettlementDataStructOutput = [string, string] & {
-    settlementContractAddress: string;
-    encodedData: string;
-  };
+    settlementContractAddress: string
+    encodedData: string
+  }
 }
 
 export declare namespace IPredyPool {
   export type PayoffStruct = {
-    perpEntryUpdate: PromiseOrValue<BigNumberish>;
-    sqrtEntryUpdate: PromiseOrValue<BigNumberish>;
-    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>;
-    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>;
-    perpPayoff: PromiseOrValue<BigNumberish>;
-    sqrtPayoff: PromiseOrValue<BigNumberish>;
-  };
+    perpEntryUpdate: PromiseOrValue<BigNumberish>
+    sqrtEntryUpdate: PromiseOrValue<BigNumberish>
+    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>
+    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>
+    perpPayoff: PromiseOrValue<BigNumberish>
+    sqrtPayoff: PromiseOrValue<BigNumberish>
+  }
 
   export type PayoffStructOutput = [
     BigNumber,
@@ -104,23 +104,23 @@ export declare namespace IPredyPool {
     BigNumber,
     BigNumber
   ] & {
-    perpEntryUpdate: BigNumber;
-    sqrtEntryUpdate: BigNumber;
-    sqrtRebalanceEntryUpdateUnderlying: BigNumber;
-    sqrtRebalanceEntryUpdateStable: BigNumber;
-    perpPayoff: BigNumber;
-    sqrtPayoff: BigNumber;
-  };
+    perpEntryUpdate: BigNumber
+    sqrtEntryUpdate: BigNumber
+    sqrtRebalanceEntryUpdateUnderlying: BigNumber
+    sqrtRebalanceEntryUpdateStable: BigNumber
+    perpPayoff: BigNumber
+    sqrtPayoff: BigNumber
+  }
 
   export type TradeResultStruct = {
-    payoff: IPredyPool.PayoffStruct;
-    vaultId: PromiseOrValue<BigNumberish>;
-    fee: PromiseOrValue<BigNumberish>;
-    minMargin: PromiseOrValue<BigNumberish>;
-    averagePrice: PromiseOrValue<BigNumberish>;
-    sqrtTwap: PromiseOrValue<BigNumberish>;
-    sqrtPrice: PromiseOrValue<BigNumberish>;
-  };
+    payoff: IPredyPool.PayoffStruct
+    vaultId: PromiseOrValue<BigNumberish>
+    fee: PromiseOrValue<BigNumberish>
+    minMargin: PromiseOrValue<BigNumberish>
+    averagePrice: PromiseOrValue<BigNumberish>
+    sqrtTwap: PromiseOrValue<BigNumberish>
+    sqrtPrice: PromiseOrValue<BigNumberish>
+  }
 
   export type TradeResultStructOutput = [
     IPredyPool.PayoffStructOutput,
@@ -131,117 +131,114 @@ export declare namespace IPredyPool {
     BigNumber,
     BigNumber
   ] & {
-    payoff: IPredyPool.PayoffStructOutput;
-    vaultId: BigNumber;
-    fee: BigNumber;
-    minMargin: BigNumber;
-    averagePrice: BigNumber;
-    sqrtTwap: BigNumber;
-    sqrtPrice: BigNumber;
-  };
+    payoff: IPredyPool.PayoffStructOutput
+    vaultId: BigNumber
+    fee: BigNumber
+    minMargin: BigNumber
+    averagePrice: BigNumber
+    sqrtTwap: BigNumber
+    sqrtPrice: BigNumber
+  }
 }
 
 export interface PerpMarketQuoterInterface extends utils.Interface {
   functions: {
-    "perpMarket()": FunctionFragment;
-    "quoteExecuteOrder(((address,address,uint256,uint256),uint64,address,int256,int256,uint256,uint256,uint64,address,bytes),(address,bytes))": FunctionFragment;
-  };
+    'perpMarket()': FunctionFragment
+    'quoteExecuteOrder(((address,address,uint256,uint256),uint64,address,int256,int256,uint256,uint256,uint64,address,bytes),(address,bytes))': FunctionFragment
+  }
 
   getFunction(
-    nameOrSignatureOrTopic: "perpMarket" | "quoteExecuteOrder"
-  ): FunctionFragment;
+    nameOrSignatureOrTopic: 'perpMarket' | 'quoteExecuteOrder'
+  ): FunctionFragment
 
+  encodeFunctionData(functionFragment: 'perpMarket', values?: undefined): string
   encodeFunctionData(
-    functionFragment: "perpMarket",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "quoteExecuteOrder",
+    functionFragment: 'quoteExecuteOrder',
     values: [PerpOrderStruct, ISettlement.SettlementDataStruct]
-  ): string;
+  ): string
 
-  decodeFunctionResult(functionFragment: "perpMarket", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'perpMarket', data: BytesLike): Result
   decodeFunctionResult(
-    functionFragment: "quoteExecuteOrder",
+    functionFragment: 'quoteExecuteOrder',
     data: BytesLike
-  ): Result;
+  ): Result
 
-  events: {};
+  events: {}
 }
 
 export interface PerpMarketQuoter extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
-  interface: PerpMarketQuoterInterface;
+  interface: PerpMarketQuoterInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TEvent>>
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
+  ): Array<TypedListener<TEvent>>
+  listeners(eventName?: string): Array<Listener>
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  ): this
+  removeAllListeners(eventName?: string): this
+  off: OnEvent<this>
+  on: OnEvent<this>
+  once: OnEvent<this>
+  removeListener: OnEvent<this>
 
   functions: {
-    perpMarket(overrides?: CallOverrides): Promise<[string]>;
+    perpMarket(overrides?: CallOverrides): Promise<[string]>
 
     quoteExecuteOrder(
       order: PerpOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-  };
+    ): Promise<ContractTransaction>
+  }
 
-  perpMarket(overrides?: CallOverrides): Promise<string>;
+  perpMarket(overrides?: CallOverrides): Promise<string>
 
   quoteExecuteOrder(
     order: PerpOrderStruct,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   callStatic: {
-    perpMarket(overrides?: CallOverrides): Promise<string>;
+    perpMarket(overrides?: CallOverrides): Promise<string>
 
     quoteExecuteOrder(
       order: PerpOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<IPredyPool.TradeResultStructOutput>;
-  };
+    ): Promise<IPredyPool.TradeResultStructOutput>
+  }
 
-  filters: {};
+  filters: {}
 
   estimateGas: {
-    perpMarket(overrides?: CallOverrides): Promise<BigNumber>;
+    perpMarket(overrides?: CallOverrides): Promise<BigNumber>
 
     quoteExecuteOrder(
       order: PerpOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-  };
+    ): Promise<BigNumber>
+  }
 
   populateTransaction: {
-    perpMarket(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    perpMarket(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     quoteExecuteOrder(
       order: PerpOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-  };
+    ): Promise<PopulatedTransaction>
+  }
 }

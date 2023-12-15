@@ -7,8 +7,8 @@ import { BaseSettlement, SettlementData } from './types'
 
 const UNISWAP_SETTLEMENT_DATA_ABI = [
   'tuple(' +
-  ['bytes', 'uint256', 'address', 'address', 'int256'].join(',') +
-  ')',
+    ['bytes', 'uint256', 'address', 'address', 'int256'].join(',') +
+    ')',
 ]
 
 export class UniswapSettlement extends BaseSettlement {

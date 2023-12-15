@@ -11,47 +11,47 @@ import type {
   Overrides,
   PopulatedTransaction,
   Signer,
-  utils,
-} from "ethers";
+  utils
+} from 'ethers'
 import type {
   FunctionFragment,
   Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+  EventFragment
+} from '@ethersproject/abi'
+import type { Listener, Provider } from '@ethersproject/providers'
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-  PromiseOrValue,
-} from "./common";
+  PromiseOrValue
+} from './common'
 
 export type OrderInfoStruct = {
-  market: PromiseOrValue<string>;
-  trader: PromiseOrValue<string>;
-  nonce: PromiseOrValue<BigNumberish>;
-  deadline: PromiseOrValue<BigNumberish>;
-};
+  market: PromiseOrValue<string>
+  trader: PromiseOrValue<string>
+  nonce: PromiseOrValue<BigNumberish>
+  deadline: PromiseOrValue<BigNumberish>
+}
 
 export type OrderInfoStructOutput = [string, string, BigNumber, BigNumber] & {
-  market: string;
-  trader: string;
-  nonce: BigNumber;
-  deadline: BigNumber;
-};
+  market: string
+  trader: string
+  nonce: BigNumber
+  deadline: BigNumber
+}
 
 export type PredictOrderStruct = {
-  info: OrderInfoStruct;
-  pairId: PromiseOrValue<BigNumberish>;
-  duration: PromiseOrValue<BigNumberish>;
-  entryTokenAddress: PromiseOrValue<string>;
-  tradeAmount: PromiseOrValue<BigNumberish>;
-  tradeAmountSqrt: PromiseOrValue<BigNumberish>;
-  marginAmount: PromiseOrValue<BigNumberish>;
-  validatorAddress: PromiseOrValue<string>;
-  validationData: PromiseOrValue<BytesLike>;
-};
+  info: OrderInfoStruct
+  pairId: PromiseOrValue<BigNumberish>
+  duration: PromiseOrValue<BigNumberish>
+  entryTokenAddress: PromiseOrValue<string>
+  tradeAmount: PromiseOrValue<BigNumberish>
+  tradeAmountSqrt: PromiseOrValue<BigNumberish>
+  marginAmount: PromiseOrValue<BigNumberish>
+  validatorAddress: PromiseOrValue<string>
+  validationData: PromiseOrValue<BytesLike>
+}
 
 export type PredictOrderStructOutput = [
   OrderInfoStructOutput,
@@ -64,26 +64,26 @@ export type PredictOrderStructOutput = [
   string,
   string
 ] & {
-  info: OrderInfoStructOutput;
-  pairId: BigNumber;
-  duration: BigNumber;
-  entryTokenAddress: string;
-  tradeAmount: BigNumber;
-  tradeAmountSqrt: BigNumber;
-  marginAmount: BigNumber;
-  validatorAddress: string;
-  validationData: string;
-};
+  info: OrderInfoStructOutput
+  pairId: BigNumber
+  duration: BigNumber
+  entryTokenAddress: string
+  tradeAmount: BigNumber
+  tradeAmountSqrt: BigNumber
+  marginAmount: BigNumber
+  validatorAddress: string
+  validationData: string
+}
 
 export declare namespace IPredyPool {
   export type PayoffStruct = {
-    perpEntryUpdate: PromiseOrValue<BigNumberish>;
-    sqrtEntryUpdate: PromiseOrValue<BigNumberish>;
-    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>;
-    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>;
-    perpPayoff: PromiseOrValue<BigNumberish>;
-    sqrtPayoff: PromiseOrValue<BigNumberish>;
-  };
+    perpEntryUpdate: PromiseOrValue<BigNumberish>
+    sqrtEntryUpdate: PromiseOrValue<BigNumberish>
+    sqrtRebalanceEntryUpdateUnderlying: PromiseOrValue<BigNumberish>
+    sqrtRebalanceEntryUpdateStable: PromiseOrValue<BigNumberish>
+    perpPayoff: PromiseOrValue<BigNumberish>
+    sqrtPayoff: PromiseOrValue<BigNumberish>
+  }
 
   export type PayoffStructOutput = [
     BigNumber,
@@ -93,23 +93,23 @@ export declare namespace IPredyPool {
     BigNumber,
     BigNumber
   ] & {
-    perpEntryUpdate: BigNumber;
-    sqrtEntryUpdate: BigNumber;
-    sqrtRebalanceEntryUpdateUnderlying: BigNumber;
-    sqrtRebalanceEntryUpdateStable: BigNumber;
-    perpPayoff: BigNumber;
-    sqrtPayoff: BigNumber;
-  };
+    perpEntryUpdate: BigNumber
+    sqrtEntryUpdate: BigNumber
+    sqrtRebalanceEntryUpdateUnderlying: BigNumber
+    sqrtRebalanceEntryUpdateStable: BigNumber
+    perpPayoff: BigNumber
+    sqrtPayoff: BigNumber
+  }
 
   export type TradeResultStruct = {
-    payoff: IPredyPool.PayoffStruct;
-    vaultId: PromiseOrValue<BigNumberish>;
-    fee: PromiseOrValue<BigNumberish>;
-    minMargin: PromiseOrValue<BigNumberish>;
-    averagePrice: PromiseOrValue<BigNumberish>;
-    sqrtTwap: PromiseOrValue<BigNumberish>;
-    sqrtPrice: PromiseOrValue<BigNumberish>;
-  };
+    payoff: IPredyPool.PayoffStruct
+    vaultId: PromiseOrValue<BigNumberish>
+    fee: PromiseOrValue<BigNumberish>
+    minMargin: PromiseOrValue<BigNumberish>
+    averagePrice: PromiseOrValue<BigNumberish>
+    sqrtTwap: PromiseOrValue<BigNumberish>
+    sqrtPrice: PromiseOrValue<BigNumberish>
+  }
 
   export type TradeResultStructOutput = [
     IPredyPool.PayoffStructOutput,
@@ -120,22 +120,22 @@ export declare namespace IPredyPool {
     BigNumber,
     BigNumber
   ] & {
-    payoff: IPredyPool.PayoffStructOutput;
-    vaultId: BigNumber;
-    fee: BigNumber;
-    minMargin: BigNumber;
-    averagePrice: BigNumber;
-    sqrtTwap: BigNumber;
-    sqrtPrice: BigNumber;
-  };
+    payoff: IPredyPool.PayoffStructOutput
+    vaultId: BigNumber
+    fee: BigNumber
+    minMargin: BigNumber
+    averagePrice: BigNumber
+    sqrtTwap: BigNumber
+    sqrtPrice: BigNumber
+  }
 
   export type TradeParamsStruct = {
-    pairId: PromiseOrValue<BigNumberish>;
-    vaultId: PromiseOrValue<BigNumberish>;
-    tradeAmount: PromiseOrValue<BigNumberish>;
-    tradeAmountSqrt: PromiseOrValue<BigNumberish>;
-    extraData: PromiseOrValue<BytesLike>;
-  };
+    pairId: PromiseOrValue<BigNumberish>
+    vaultId: PromiseOrValue<BigNumberish>
+    tradeAmount: PromiseOrValue<BigNumberish>
+    tradeAmountSqrt: PromiseOrValue<BigNumberish>
+    extraData: PromiseOrValue<BytesLike>
+  }
 
   export type TradeParamsStructOutput = [
     BigNumber,
@@ -144,187 +144,187 @@ export declare namespace IPredyPool {
     BigNumber,
     string
   ] & {
-    pairId: BigNumber;
-    vaultId: BigNumber;
-    tradeAmount: BigNumber;
-    tradeAmountSqrt: BigNumber;
-    extraData: string;
-  };
+    pairId: BigNumber
+    vaultId: BigNumber
+    tradeAmount: BigNumber
+    tradeAmountSqrt: BigNumber
+    extraData: string
+  }
 }
 
 export declare namespace ISettlement {
   export type SettlementDataStruct = {
-    settlementContractAddress: PromiseOrValue<string>;
-    encodedData: PromiseOrValue<BytesLike>;
-  };
+    settlementContractAddress: PromiseOrValue<string>
+    encodedData: PromiseOrValue<BytesLike>
+  }
 
   export type SettlementDataStructOutput = [string, string] & {
-    settlementContractAddress: string;
-    encodedData: string;
-  };
+    settlementContractAddress: string
+    encodedData: string
+  }
 }
 
 export declare namespace IFillerMarket {
   export type SignedOrderStruct = {
-    order: PromiseOrValue<BytesLike>;
-    sig: PromiseOrValue<BytesLike>;
-  };
+    order: PromiseOrValue<BytesLike>
+    sig: PromiseOrValue<BytesLike>
+  }
 
   export type SignedOrderStructOutput = [string, string] & {
-    order: string;
-    sig: string;
-  };
+    order: string
+    sig: string
+  }
 }
 
 export interface PredictMarketInterface extends utils.Interface {
   functions: {
-    "closeAfterExpiration(uint256,(address,bytes))": FunctionFragment;
-    "executeOrder((bytes,bytes),(address,bytes))": FunctionFragment;
-    "owner()": FunctionFragment;
-    "predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))": FunctionFragment;
-    "quoteExecuteOrder(((address,address,uint256,uint256),uint64,uint64,address,int256,int256,uint256,address,bytes),(address,bytes))": FunctionFragment;
-    "transferOwnership(address)": FunctionFragment;
-    "updateQuoteTokenMap(uint256)": FunctionFragment;
-    "updateWhitelistFiller(address)": FunctionFragment;
-    "userPositions(uint256)": FunctionFragment;
-    "whitelistFiller()": FunctionFragment;
-  };
+    'closeAfterExpiration(uint256,(address,bytes))': FunctionFragment
+    'executeOrder((bytes,bytes),(address,bytes))': FunctionFragment
+    'owner()': FunctionFragment
+    'predyTradeAfterCallback((uint256,uint256,int256,int256,bytes),((int256,int256,int256,int256,int256,int256),uint256,int256,int256,int256,uint256,uint256))': FunctionFragment
+    'quoteExecuteOrder(((address,address,uint256,uint256),uint64,uint64,address,int256,int256,uint256,address,bytes),(address,bytes))': FunctionFragment
+    'transferOwnership(address)': FunctionFragment
+    'updateQuoteTokenMap(uint256)': FunctionFragment
+    'updateWhitelistFiller(address)': FunctionFragment
+    'userPositions(uint256)': FunctionFragment
+    'whitelistFiller()': FunctionFragment
+  }
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "closeAfterExpiration"
-      | "executeOrder"
-      | "owner"
-      | "predyTradeAfterCallback"
-      | "quoteExecuteOrder"
-      | "transferOwnership"
-      | "updateQuoteTokenMap"
-      | "updateWhitelistFiller"
-      | "userPositions"
-      | "whitelistFiller"
-  ): FunctionFragment;
+      | 'closeAfterExpiration'
+      | 'executeOrder'
+      | 'owner'
+      | 'predyTradeAfterCallback'
+      | 'quoteExecuteOrder'
+      | 'transferOwnership'
+      | 'updateQuoteTokenMap'
+      | 'updateWhitelistFiller'
+      | 'userPositions'
+      | 'whitelistFiller'
+  ): FunctionFragment
 
   encodeFunctionData(
-    functionFragment: "closeAfterExpiration",
+    functionFragment: 'closeAfterExpiration',
     values: [PromiseOrValue<BigNumberish>, ISettlement.SettlementDataStruct]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "executeOrder",
+    functionFragment: 'executeOrder',
     values: [IFillerMarket.SignedOrderStruct, ISettlement.SettlementDataStruct]
-  ): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  ): string
+  encodeFunctionData(functionFragment: 'owner', values?: undefined): string
   encodeFunctionData(
-    functionFragment: "predyTradeAfterCallback",
+    functionFragment: 'predyTradeAfterCallback',
     values: [IPredyPool.TradeParamsStruct, IPredyPool.TradeResultStruct]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "quoteExecuteOrder",
+    functionFragment: 'quoteExecuteOrder',
     values: [PredictOrderStruct, ISettlement.SettlementDataStruct]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "transferOwnership",
+    functionFragment: 'transferOwnership',
     values: [PromiseOrValue<string>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "updateQuoteTokenMap",
+    functionFragment: 'updateQuoteTokenMap',
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "updateWhitelistFiller",
+    functionFragment: 'updateWhitelistFiller',
     values: [PromiseOrValue<string>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "userPositions",
+    functionFragment: 'userPositions',
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
+  ): string
   encodeFunctionData(
-    functionFragment: "whitelistFiller",
+    functionFragment: 'whitelistFiller',
     values?: undefined
-  ): string;
+  ): string
 
   decodeFunctionResult(
-    functionFragment: "closeAfterExpiration",
+    functionFragment: 'closeAfterExpiration',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "executeOrder",
+    functionFragment: 'executeOrder',
     data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  ): Result
+  decodeFunctionResult(functionFragment: 'owner', data: BytesLike): Result
   decodeFunctionResult(
-    functionFragment: "predyTradeAfterCallback",
+    functionFragment: 'predyTradeAfterCallback',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "quoteExecuteOrder",
+    functionFragment: 'quoteExecuteOrder',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "transferOwnership",
+    functionFragment: 'transferOwnership',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "updateQuoteTokenMap",
+    functionFragment: 'updateQuoteTokenMap',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "updateWhitelistFiller",
+    functionFragment: 'updateWhitelistFiller',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "userPositions",
+    functionFragment: 'userPositions',
     data: BytesLike
-  ): Result;
+  ): Result
   decodeFunctionResult(
-    functionFragment: "whitelistFiller",
+    functionFragment: 'whitelistFiller',
     data: BytesLike
-  ): Result;
+  ): Result
 
   events: {
-    "OwnershipTransferred(address,address)": EventFragment;
-    "PredictPositionClosed(uint256,uint256,tuple,int256)": EventFragment;
-    "PredictPositionOpened(uint256,address,uint256,uint256,tuple,uint256,uint256)": EventFragment;
-  };
+    'OwnershipTransferred(address,address)': EventFragment
+    'PredictPositionClosed(uint256,uint256,tuple,int256)': EventFragment
+    'PredictPositionOpened(uint256,address,uint256,uint256,tuple,uint256,uint256)': EventFragment
+  }
 
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PredictPositionClosed"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PredictPositionOpened"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'OwnershipTransferred'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'PredictPositionClosed'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'PredictPositionOpened'): EventFragment
 }
 
 export interface OwnershipTransferredEventObject {
-  user: string;
-  newOwner: string;
+  user: string
+  newOwner: string
 }
 export type OwnershipTransferredEvent = TypedEvent<
   [string, string],
   OwnershipTransferredEventObject
->;
+>
 
 export type OwnershipTransferredEventFilter =
-  TypedEventFilter<OwnershipTransferredEvent>;
+  TypedEventFilter<OwnershipTransferredEvent>
 
 export interface PredictPositionClosedEventObject {
-  vaultId: BigNumber;
-  closeValue: BigNumber;
-  payoff: IPredyPool.PayoffStructOutput;
-  fee: BigNumber;
+  vaultId: BigNumber
+  closeValue: BigNumber
+  payoff: IPredyPool.PayoffStructOutput
+  fee: BigNumber
 }
 export type PredictPositionClosedEvent = TypedEvent<
   [BigNumber, BigNumber, IPredyPool.PayoffStructOutput, BigNumber],
   PredictPositionClosedEventObject
->;
+>
 
 export type PredictPositionClosedEventFilter =
-  TypedEventFilter<PredictPositionClosedEvent>;
+  TypedEventFilter<PredictPositionClosedEvent>
 
 export interface PredictPositionOpenedEventObject {
-  vaultId: BigNumber;
-  trader: string;
-  pairId: BigNumber;
-  openValue: BigNumber;
-  payoff: IPredyPool.PayoffStructOutput;
-  expiration: BigNumber;
-  duration: BigNumber;
+  vaultId: BigNumber
+  trader: string
+  pairId: BigNumber
+  openValue: BigNumber
+  payoff: IPredyPool.PayoffStructOutput
+  expiration: BigNumber
+  duration: BigNumber
 }
 export type PredictPositionOpenedEvent = TypedEvent<
   [
@@ -337,68 +337,68 @@ export type PredictPositionOpenedEvent = TypedEvent<
     BigNumber
   ],
   PredictPositionOpenedEventObject
->;
+>
 
 export type PredictPositionOpenedEventFilter =
-  TypedEventFilter<PredictPositionOpenedEvent>;
+  TypedEventFilter<PredictPositionOpenedEvent>
 
 export interface PredictMarket extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
-  interface: PredictMarketInterface;
+  interface: PredictMarketInterface
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TEvent>>;
+  ): Promise<Array<TEvent>>
 
   listeners<TEvent extends TypedEvent>(
     eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
-  listeners(eventName?: string): Array<Listener>;
+  ): Array<TypedListener<TEvent>>
+  listeners(eventName?: string): Array<Listener>
   removeAllListeners<TEvent extends TypedEvent>(
     eventFilter: TypedEventFilter<TEvent>
-  ): this;
-  removeAllListeners(eventName?: string): this;
-  off: OnEvent<this>;
-  on: OnEvent<this>;
-  once: OnEvent<this>;
-  removeListener: OnEvent<this>;
+  ): this
+  removeAllListeners(eventName?: string): this
+  off: OnEvent<this>
+  on: OnEvent<this>
+  once: OnEvent<this>
+  removeListener: OnEvent<this>
 
   functions: {
     closeAfterExpiration(
       positionId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
-    owner(overrides?: CallOverrides): Promise<[string]>;
+    owner(overrides?: CallOverrides): Promise<[string]>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     quoteExecuteOrder(
       predictOrder: PredictOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     /**
      * Registers quote token address for the pair
@@ -406,7 +406,7 @@ export interface PredictMarket extends BaseContract {
     updateQuoteTokenMap(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     /**
      * only owner can call this function
@@ -415,46 +415,46 @@ export interface PredictMarket extends BaseContract {
     updateWhitelistFiller(
       newWhitelistFiller: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    ): Promise<ContractTransaction>
 
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[string, BigNumber] & { owner: string; expiration: BigNumber }>;
+    ): Promise<[string, BigNumber] & { owner: string; expiration: BigNumber }>
 
-    whitelistFiller(overrides?: CallOverrides): Promise<[string]>;
-  };
+    whitelistFiller(overrides?: CallOverrides): Promise<[string]>
+  }
 
   closeAfterExpiration(
     positionId: PromiseOrValue<BigNumberish>,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   executeOrder(
     order: IFillerMarket.SignedOrderStruct,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
-  owner(overrides?: CallOverrides): Promise<string>;
+  owner(overrides?: CallOverrides): Promise<string>
 
   predyTradeAfterCallback(
     tradeParams: IPredyPool.TradeParamsStruct,
     tradeResult: IPredyPool.TradeResultStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   quoteExecuteOrder(
     predictOrder: PredictOrderStruct,
     settlementData: ISettlement.SettlementDataStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   transferOwnership(
     newOwner: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   /**
    * Registers quote token address for the pair
@@ -462,7 +462,7 @@ export interface PredictMarket extends BaseContract {
   updateQuoteTokenMap(
     pairId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   /**
    * only owner can call this function
@@ -471,46 +471,46 @@ export interface PredictMarket extends BaseContract {
   updateWhitelistFiller(
     newWhitelistFiller: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 
   userPositions(
     vaultId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<[string, BigNumber] & { owner: string; expiration: BigNumber }>;
+  ): Promise<[string, BigNumber] & { owner: string; expiration: BigNumber }>
 
-  whitelistFiller(overrides?: CallOverrides): Promise<string>;
+  whitelistFiller(overrides?: CallOverrides): Promise<string>
 
   callStatic: {
     closeAfterExpiration(
       positionId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<IPredyPool.TradeResultStructOutput>;
+    ): Promise<IPredyPool.TradeResultStructOutput>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<IPredyPool.TradeResultStructOutput>;
+    ): Promise<IPredyPool.TradeResultStructOutput>
 
-    owner(overrides?: CallOverrides): Promise<string>;
+    owner(overrides?: CallOverrides): Promise<string>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     quoteExecuteOrder(
       predictOrder: PredictOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     /**
      * Registers quote token address for the pair
@@ -518,7 +518,7 @@ export interface PredictMarket extends BaseContract {
     updateQuoteTokenMap(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     /**
      * only owner can call this function
@@ -527,40 +527,40 @@ export interface PredictMarket extends BaseContract {
     updateWhitelistFiller(
       newWhitelistFiller: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<void>
 
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[string, BigNumber] & { owner: string; expiration: BigNumber }>;
+    ): Promise<[string, BigNumber] & { owner: string; expiration: BigNumber }>
 
-    whitelistFiller(overrides?: CallOverrides): Promise<string>;
-  };
+    whitelistFiller(overrides?: CallOverrides): Promise<string>
+  }
 
   filters: {
-    "OwnershipTransferred(address,address)"(
+    'OwnershipTransferred(address,address)'(
       user?: PromiseOrValue<string> | null,
       newOwner?: PromiseOrValue<string> | null
-    ): OwnershipTransferredEventFilter;
+    ): OwnershipTransferredEventFilter
     OwnershipTransferred(
       user?: PromiseOrValue<string> | null,
       newOwner?: PromiseOrValue<string> | null
-    ): OwnershipTransferredEventFilter;
+    ): OwnershipTransferredEventFilter
 
-    "PredictPositionClosed(uint256,uint256,tuple,int256)"(
+    'PredictPositionClosed(uint256,uint256,tuple,int256)'(
       vaultId?: null,
       closeValue?: null,
       payoff?: null,
       fee?: null
-    ): PredictPositionClosedEventFilter;
+    ): PredictPositionClosedEventFilter
     PredictPositionClosed(
       vaultId?: null,
       closeValue?: null,
       payoff?: null,
       fee?: null
-    ): PredictPositionClosedEventFilter;
+    ): PredictPositionClosedEventFilter
 
-    "PredictPositionOpened(uint256,address,uint256,uint256,tuple,uint256,uint256)"(
+    'PredictPositionOpened(uint256,address,uint256,uint256,tuple,uint256,uint256)'(
       vaultId?: PromiseOrValue<BigNumberish> | null,
       trader?: null,
       pairId?: null,
@@ -568,7 +568,7 @@ export interface PredictMarket extends BaseContract {
       payoff?: null,
       expiration?: null,
       duration?: null
-    ): PredictPositionOpenedEventFilter;
+    ): PredictPositionOpenedEventFilter
     PredictPositionOpened(
       vaultId?: PromiseOrValue<BigNumberish> | null,
       trader?: null,
@@ -577,40 +577,40 @@ export interface PredictMarket extends BaseContract {
       payoff?: null,
       expiration?: null,
       duration?: null
-    ): PredictPositionOpenedEventFilter;
-  };
+    ): PredictPositionOpenedEventFilter
+  }
 
   estimateGas: {
     closeAfterExpiration(
       positionId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
-    owner(overrides?: CallOverrides): Promise<BigNumber>;
+    owner(overrides?: CallOverrides): Promise<BigNumber>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     quoteExecuteOrder(
       predictOrder: PredictOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     /**
      * Registers quote token address for the pair
@@ -618,7 +618,7 @@ export interface PredictMarket extends BaseContract {
     updateQuoteTokenMap(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     /**
      * only owner can call this function
@@ -627,47 +627,47 @@ export interface PredictMarket extends BaseContract {
     updateWhitelistFiller(
       newWhitelistFiller: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<BigNumber>
 
-    whitelistFiller(overrides?: CallOverrides): Promise<BigNumber>;
-  };
+    whitelistFiller(overrides?: CallOverrides): Promise<BigNumber>
+  }
 
   populateTransaction: {
     closeAfterExpiration(
       positionId: PromiseOrValue<BigNumberish>,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     executeOrder(
       order: IFillerMarket.SignedOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     predyTradeAfterCallback(
       tradeParams: IPredyPool.TradeParamsStruct,
       tradeResult: IPredyPool.TradeResultStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     quoteExecuteOrder(
       predictOrder: PredictOrderStruct,
       settlementData: ISettlement.SettlementDataStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     /**
      * Registers quote token address for the pair
@@ -675,7 +675,7 @@ export interface PredictMarket extends BaseContract {
     updateQuoteTokenMap(
       pairId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     /**
      * only owner can call this function
@@ -684,13 +684,13 @@ export interface PredictMarket extends BaseContract {
     updateWhitelistFiller(
       newWhitelistFiller: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
     userPositions(
       vaultId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    ): Promise<PopulatedTransaction>
 
-    whitelistFiller(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-  };
+    whitelistFiller(overrides?: CallOverrides): Promise<PopulatedTransaction>
+  }
 }

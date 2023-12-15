@@ -11,7 +11,7 @@ import { Address } from '../types'
 export class SpotOrderBuilder {
   protected spotOrder: Partial<SpotOrderParams>
 
-  constructor(private chainId: number, private permit2Address?: string) {
+  constructor(private chainId: number, private permit2Address?: Address) {
     // set defaults
     this.spotOrder = {
       validatorAddress: ethers.constants.AddressZero,

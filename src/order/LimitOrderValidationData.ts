@@ -22,10 +22,12 @@ export class LimitOrderValidationData extends BaseValidationData {
     const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(LIMIT_ORDER_VALIDATION_ABI, [
-      this.triggerPrice,
-      this.triggerPriceSqrt,
-      this.limitPrice,
-      this.limitPriceSqrt,
+      [
+        this.triggerPrice,
+        this.triggerPriceSqrt,
+        this.limitPrice,
+        this.limitPriceSqrt,
+      ],
     ]) as Bytes
   }
 }

@@ -7,28 +7,39 @@ import {
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
 import { ethers } from 'ethers'
 
-import { PerpOrderParams } from './types'
+import { Address } from '../types'
 
-const PERP_ORDER_TYPES = {
-  GeneralOrderParams: [
-    { name: 'info', type: 'OrderInfo' },
-    { name: 'pairId', type: 'uint256' },
-    { name: 'entryTokenAddress', type: 'address' },
-    { name: 'tradeAmount', type: 'int256' },
-    { name: 'marginAmount', type: 'int256' },
-    { name: 'takeProfitPrice', type: 'uint256' },
-    { name: 'stopLossPrice', type: 'uint256' },
-    { name: 'slippageTolerance', type: 'uint64' },
-    { name: 'validatorAddress', type: 'address' },
-    { name: 'validationData', type: 'bytes' },
-  ],
-  OrderInfo: [
-    { name: 'market', type: 'address' },
-    { name: 'trader', type: 'address' },
-    { name: 'nonce', type: 'uint256' },
-    { name: 'deadline', type: 'uint256' },
-  ],
+import {
+  ORDER_INFO_TYPES,
+  PERMIT_WITNESS_TRANSFER_FROM_TYPES,
+  PerpOrderParams,
+  TOKEN_PERMISSION_TYPES,
+} from './types'
+
+const PERP_ORDER_TYPES_SINGLE = [
+  { name: 'info', type: 'OrderInfo' },
+  { name: 'pairId', type: 'uint256' },
+  { name: 'entryTokenAddress', type: 'address' },
+  { name: 'tradeAmount', type: 'int256' },
+  { name: 'marginAmount', type: 'int256' },
+  { name: 'takeProfitPrice', type: 'uint256' },
+  { name: 'stopLossPrice', type: 'uint256' },
+  { name: 'slippageTolerance', type: 'uint64' },
+  { name: 'validatorAddress', type: 'address' },
+  { name: 'validationData', type: 'bytes' },
+]
+
+export const PERP_ORDER_TYPES = {
+  PerpOrder: PERP_ORDER_TYPES_SINGLE,
+  OrderInfo: ORDER_INFO_TYPES,
 }
+
+export const PERP_ORDER_PERMIT2_TYPES = {
+  PermitWitnessTransferFrom: PERMIT_WITNESS_TRANSFER_FROM_TYPES('PerpOrder'),
+  OrderInfo: ORDER_INFO_TYPES,
+  PerpOrder: PERP_ORDER_TYPES_SINGLE,
+  TokenPermissions: TOKEN_PERMISSION_TYPES,
+} as const
 
 const PERP_ORDER_ABI = [
   'tuple(' +
@@ -84,6 +95,26 @@ export class PerpOrder {
         this.perpOrder.validationData,
       ],
     ])
+  }
+
+  toLegacy() {
+    return {
+      info: {
+        market: this.perpOrder.orderInfo.market,
+        trader: this.perpOrder.orderInfo.trader,
+        nonce: BigInt(this.perpOrder.orderInfo.nonce.toString()),
+        deadline: BigInt(this.perpOrder.orderInfo.deadline),
+      },
+      pairId: BigInt(this.perpOrder.pairId),
+      entryTokenAddress: this.perpOrder.entryTokenAddress,
+      tradeAmount: BigInt(this.perpOrder.tradeAmount.toString()),
+      marginAmount: BigInt(this.perpOrder.marginAmount.toString()),
+      takeProfitPrice: BigInt(this.perpOrder.takeProfitPrice.toString()),
+      stopLossPrice: BigInt(this.perpOrder.stopLossPrice.toString()),
+      slippageTolerance: BigInt(this.perpOrder.slippageTolerance),
+      validatorAddress: this.perpOrder.validatorAddress,
+      validationData: this.perpOrder.validationData,
+    }
   }
 
   static parse(encoded: string, chainId: number, permit2?: string): PerpOrder {
@@ -182,5 +213,28 @@ export class PerpOrder {
     return ethers.utils._TypedDataEncoder
       .from(PERP_ORDER_TYPES)
       .hash(this.witnessInfo())
+  }
+
+  permit2Message() {
+    return {
+      domain: {
+        name: 'Permit2',
+        chainId: this.chainId,
+        verifyingContract: this.permit2Address as Address,
+      },
+      types: PERP_ORDER_PERMIT2_TYPES,
+      message: {
+        deadline: BigInt(this.perpOrder.orderInfo.deadline),
+        nonce: BigInt(this.perpOrder.orderInfo.nonce.toString()),
+        permitted: {
+          token: this.perpOrder.entryTokenAddress,
+          amount: this.perpOrder.marginAmount.gt(0)
+            ? BigInt(this.perpOrder.marginAmount.toString())
+            : BigInt(0),
+        },
+        spender: this.perpOrder.orderInfo.market,
+        witness: this.toLegacy(),
+      },
+    }
   }
 }

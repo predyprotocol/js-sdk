@@ -3,7 +3,7 @@ import { BigNumber, ethers } from 'ethers'
 import { DutchOrderValidationData } from '../order/DutchOrderValidationData'
 import { LimitOrderValidationData } from '../order/LimitOrderValidationData'
 import { PerpOrder } from '../order/PerpOrder'
-import { PerpOrderParams } from '../order/types'
+import { OrderInfo, PerpOrderParams } from '../order/types'
 import { Address } from '../types'
 
 export class PerpOrderBuilder {
@@ -16,12 +16,12 @@ export class PerpOrderBuilder {
       stopLossPrice: BigNumber.from(0),
       validatorAddress: ethers.constants.AddressZero,
       validationData: '0x',
-      orderInfo: {
-        market: ethers.constants.AddressZero,
-        trader: ethers.constants.AddressZero,
-        deadline: 0,
-        nonce: BigNumber.from(0),
-      },
+      orderInfo: new OrderInfo(
+        ethers.constants.AddressZero,
+        ethers.constants.AddressZero,
+        BigNumber.from(0),
+        0
+      ),
     }
   }
 

@@ -12,6 +12,7 @@ import { Address, Bytes } from '../types'
 import {
   BaseValidationData,
   ORDER_INFO_TYPES,
+  OrderInfo,
   PERMIT_WITNESS_TRANSFER_FROM_TYPES,
   SpotOrderParams,
   TOKEN_PERMISSION_TYPES,
@@ -67,7 +68,7 @@ export class SpotOrder {
     }
   }
 
-  serialize(): string {
+  serialize(): Bytes {
     const abiCoder = new ethers.utils.AbiCoder()
 
     return abiCoder.encode(SPOT_ORDER_ABI, [
@@ -85,17 +86,12 @@ export class SpotOrder {
         this.spotOrder.validatorAddress,
         this.spotOrder.validationData,
       ],
-    ])
+    ]) as Bytes
   }
 
   toLegacy() {
     return {
-      info: {
-        market: this.spotOrder.orderInfo.market,
-        trader: this.spotOrder.orderInfo.trader,
-        nonce: BigInt(this.spotOrder.orderInfo.nonce.toString()),
-        deadline: BigInt(this.spotOrder.orderInfo.deadline),
-      },
+      info: this.spotOrder.orderInfo.toWitnessDataForViem(),
       quoteToken: this.spotOrder.quoteToken,
       baseToken: this.spotOrder.baseToken,
       baseTokenAmount: BigInt(this.spotOrder.baseTokenAmount.toString()),
@@ -123,12 +119,7 @@ export class SpotOrder {
 
     return new SpotOrder(
       {
-        orderInfo: {
-          market,
-          trader,
-          nonce,
-          deadline: deadline.toNumber(),
-        },
+        orderInfo: new OrderInfo(market, trader, nonce, deadline.toNumber()),
         quoteToken,
         baseToken,
         baseTokenAmount,
@@ -191,6 +182,29 @@ export class SpotOrder {
     }
   }
 
+  permitDataForViem() {
+    const permit = this.toPermit()
+
+    return {
+      domain: {
+        name: 'Permit2',
+        chainId: this.chainId,
+        verifyingContract: this.permit2Address,
+      },
+      types: SPOT_ORDER_PERMIT2_TYPES,
+      message: {
+        deadline: BigInt(permit.deadline.toString()),
+        nonce: BigInt(permit.nonce.toString()),
+        permitted: {
+          token: permit.permitted.token,
+          amount: BigInt(permit.permitted.amount.toString()),
+        },
+        spender: permit.spender,
+        witness: this.toLegacy(),
+      },
+    }
+  }
+
   private witness(): Witness {
     return {
       witness: this.witnessInfo(),
@@ -203,38 +217,6 @@ export class SpotOrder {
     return ethers.utils._TypedDataEncoder
       .from(SPOT_ORDER_TYPES)
       .hash(this.witnessInfo())
-  }
-
-  permit2Message() {
-    let token: Address = '0x'
-    let amount = BigNumber.from(0)
-
-    if (this.spotOrder.baseTokenAmount.gt(0)) {
-      token = this.spotOrder.quoteToken
-      amount = this.spotOrder.quoteTokenAmount
-    } else {
-      token = this.spotOrder.baseToken
-      amount = this.spotOrder.baseTokenAmount.mul(-1)
-    }
-
-    return {
-      domain: {
-        name: 'Permit2',
-        chainId: this.chainId,
-        verifyingContract: this.permit2Address,
-      },
-      types: SPOT_ORDER_PERMIT2_TYPES,
-      message: {
-        deadline: BigInt(this.spotOrder.orderInfo.deadline),
-        nonce: BigInt(this.spotOrder.orderInfo.nonce.toString()),
-        permitted: {
-          token: token,
-          amount: BigInt(amount.toString()),
-        },
-        spender: this.spotOrder.orderInfo.market,
-        witness: this.toLegacy(),
-      },
-    }
   }
 }
 

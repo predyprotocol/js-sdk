@@ -5,31 +5,43 @@ import {
   Witness,
 } from '@uniswap/permit2-sdk'
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 
-import { GammaOrderParams } from './types'
+import { Address } from '../types'
 
-const GAMMA_ORDER_TYPES = {
-  GeneralOrderParams: [
-    { name: 'info', type: 'OrderInfo' },
-    { name: 'pairId', type: 'uint256' },
-    { name: 'entryTokenAddress', type: 'address' },
-    { name: 'tradeAmount', type: 'int256' },
-    { name: 'tradeAmountSqrt', type: 'int256' },
-    { name: 'marginAmount', type: 'int256' },
-    { name: 'hedgeInterval', type: 'uint256' },
-    { name: 'sqrtPriceTrigger', type: 'uint256' },
-    { name: 'maxSlippageTolerance', type: 'uint64' },
-    { name: 'validatorAddress', type: 'address' },
-    { name: 'validationData', type: 'bytes' },
-  ],
-  OrderInfo: [
-    { name: 'market', type: 'address' },
-    { name: 'trader', type: 'address' },
-    { name: 'nonce', type: 'uint256' },
-    { name: 'deadline', type: 'uint256' },
-  ],
+import {
+  GammaOrderParams,
+  ORDER_INFO_TYPES,
+  OrderInfo,
+  PERMIT_WITNESS_TRANSFER_FROM_TYPES,
+  TOKEN_PERMISSION_TYPES,
+} from './types'
+
+const GAMMA_ORDER_TYPES_SINGLE = [
+  { name: 'info', type: 'OrderInfo' },
+  { name: 'pairId', type: 'uint256' },
+  { name: 'entryTokenAddress', type: 'address' },
+  { name: 'tradeAmount', type: 'int256' },
+  { name: 'tradeAmountSqrt', type: 'int256' },
+  { name: 'marginAmount', type: 'int256' },
+  { name: 'hedgeInterval', type: 'uint256' },
+  { name: 'sqrtPriceTrigger', type: 'uint256' },
+  { name: 'maxSlippageTolerance', type: 'uint64' },
+  { name: 'validatorAddress', type: 'address' },
+  { name: 'validationData', type: 'bytes' },
+]
+
+export const GAMMA_ORDER_TYPES = {
+  GammaOrder: GAMMA_ORDER_TYPES_SINGLE,
+  OrderInfo: ORDER_INFO_TYPES,
 }
+
+export const GAMMA_ORDER_PERMIT2_TYPES = {
+  PermitWitnessTransferFrom: PERMIT_WITNESS_TRANSFER_FROM_TYPES('GammaOrder'),
+  OrderInfo: ORDER_INFO_TYPES,
+  GammaOrder: GAMMA_ORDER_TYPES_SINGLE,
+  TokenPermissions: TOKEN_PERMISSION_TYPES,
+} as const
 
 const GAMMA_ORDER_ABI = [
   'tuple(' +
@@ -111,12 +123,7 @@ export class GammaOrder {
 
     return new GammaOrder(
       {
-        orderInfo: {
-          market,
-          trader,
-          nonce,
-          deadline: deadline.toNumber(),
-        },
+        orderInfo: new OrderInfo(market, trader, nonce, deadline.toNumber()),
         pairId: pairId.toNumber(),
         tradeAmount,
         tradeAmountSqrt,
@@ -155,6 +162,23 @@ export class GammaOrder {
     }
   }
 
+  witnessInfoForViem() {
+    return {
+      info: this.gammaOrder.orderInfo.toWitnessDataForViem(),
+      pairId: BigInt(this.gammaOrder.pairId),
+      entryTokenAddress: this.gammaOrder.entryTokenAddress,
+      tradeAmount: BigInt(this.gammaOrder.tradeAmount.toString()),
+      tradeAmountSqrt: BigInt(this.gammaOrder.tradeAmountSqrt.toString()),
+      marginAmount: BigInt(this.gammaOrder.marginAmount.toString()),
+      hedgeInterval: BigInt(this.gammaOrder.hedgeInterval.toString()),
+      sqrtPriceTrigger: BigInt(this.gammaOrder.sqrtPriceTrigger.toString()),
+      maxSlippageTolerance: BigInt(this.gammaOrder.maxSlippageTolerance),
+      validatorAddress: this.gammaOrder.validatorAddress,
+      validationData: this.gammaOrder.validationData,
+    }
+  }
+
+  /// @dev Returns the EIP712 typed data and value for ethers.js
   permitData(): PermitTransferFromData {
     return SignatureTransfer.getPermitData(
       this.toPermit(),
@@ -168,11 +192,37 @@ export class GammaOrder {
     return {
       permitted: {
         token: this.gammaOrder.entryTokenAddress,
-        amount: this.gammaOrder.marginAmount,
+        amount: this.gammaOrder.marginAmount.gt(0)
+          ? this.gammaOrder.marginAmount
+          : BigNumber.from(0),
       },
       spender: this.gammaOrder.orderInfo.market,
       nonce: this.gammaOrder.orderInfo.nonce,
       deadline: this.gammaOrder.orderInfo.deadline,
+    }
+  }
+
+  /// @dev Returns the EIP712 typed data and value for viem
+  permitDataForViem() {
+    const permit = this.toPermit()
+
+    return {
+      domain: {
+        name: 'Permit2',
+        chainId: this.chainId,
+        verifyingContract: this.permit2Address as Address,
+      },
+      types: GAMMA_ORDER_PERMIT2_TYPES,
+      message: {
+        deadline: BigInt(permit.deadline.toString()),
+        nonce: BigInt(permit.toString()),
+        permitted: {
+          token: permit.permitted.token,
+          amount: BigInt(permit.permitted.amount.toString()),
+        },
+        spender: permit.spender,
+        witness: this.witnessInfoForViem(),
+      },
     }
   }
 

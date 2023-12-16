@@ -5,7 +5,7 @@ import {
   SpotLimitOrderValidationData,
   SpotOrder,
 } from '../order/SpotOrder'
-import { SpotOrderParams } from '../order/types'
+import { OrderInfo, SpotOrderParams } from '../order/types'
 import { Address } from '../types'
 
 export class SpotOrderBuilder {
@@ -16,12 +16,12 @@ export class SpotOrderBuilder {
     this.spotOrder = {
       validatorAddress: ethers.constants.AddressZero,
       validationData: '0x',
-      orderInfo: {
-        market: ethers.constants.AddressZero,
-        trader: ethers.constants.AddressZero,
-        deadline: 0,
-        nonce: BigNumber.from(0),
-      },
+      orderInfo: new OrderInfo(
+        ethers.constants.AddressZero,
+        ethers.constants.AddressZero,
+        BigNumber.from(0),
+        0
+      ),
     }
   }
 

@@ -2,7 +2,7 @@ import { BigNumber, ethers } from 'ethers'
 
 import { GeneralDutchOrderValidationData } from '../order/GeneralDutchOrderValidationData'
 import { PredictOrder } from '../order/PredictOrder'
-import { PredictOrderParams } from '../order/types'
+import { OrderInfo, PredictOrderParams } from '../order/types'
 import { Address } from '../types'
 
 export class PredictOrderBuilder {
@@ -13,12 +13,12 @@ export class PredictOrderBuilder {
     this.predictOrder = {
       validatorAddress: ethers.constants.AddressZero,
       validationData: '0x',
-      orderInfo: {
-        market: ethers.constants.AddressZero,
-        trader: ethers.constants.AddressZero,
-        deadline: 0,
-        nonce: BigNumber.from(0),
-      },
+      orderInfo: new OrderInfo(
+        ethers.constants.AddressZero,
+        ethers.constants.AddressZero,
+        BigNumber.from(0),
+        0
+      ),
     }
   }
 

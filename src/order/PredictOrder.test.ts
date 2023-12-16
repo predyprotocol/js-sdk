@@ -1,6 +1,7 @@
 import { BigNumber, constants } from 'ethers'
 
 import { PredictOrder } from './PredictOrder'
+import { OrderInfo } from './types'
 
 const ZERO = BigNumber.from(0)
 
@@ -18,12 +19,7 @@ describe('PredictOrder', () => {
           validatorAddress: '0x',
           validationData: '0x',
           chainId: 1,
-          orderInfo: {
-            trader: '0x',
-            market: '0x',
-            nonce: ZERO,
-            deadline: 0,
-          },
+          orderInfo: new OrderInfo('0x', '0x', ZERO, 0),
         },
         1,
         ''
@@ -53,12 +49,12 @@ describe('PredictOrder', () => {
           validatorAddress: constants.AddressZero,
           validationData: '0x',
           chainId: 1,
-          orderInfo: {
-            trader: constants.AddressZero,
-            market: constants.AddressZero,
-            nonce: ZERO,
-            deadline: 0,
-          },
+          orderInfo: new OrderInfo(
+            constants.AddressZero,
+            constants.AddressZero,
+            ZERO,
+            0
+          ),
         },
         1,
         ''

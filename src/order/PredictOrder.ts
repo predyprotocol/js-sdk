@@ -5,29 +5,41 @@ import {
   Witness,
 } from '@uniswap/permit2-sdk'
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 
-import { PredictOrderParams } from './types'
+import { Address } from '../types'
+
+import {
+  ORDER_INFO_TYPES,
+  OrderInfo,
+  PERMIT_WITNESS_TRANSFER_FROM_TYPES,
+  PredictOrderParams,
+  TOKEN_PERMISSION_TYPES,
+} from './types'
+
+const PREDICT_ORDER_TYPES_SINGLE = [
+  { name: 'info', type: 'OrderInfo' },
+  { name: 'pairId', type: 'uint64' },
+  { name: 'duration', type: 'uint64' },
+  { name: 'entryTokenAddress', type: 'address' },
+  { name: 'tradeAmount', type: 'int256' },
+  { name: 'tradeAmountSqrt', type: 'int256' },
+  { name: 'marginAmount', type: 'uint256' },
+  { name: 'validatorAddress', type: 'address' },
+  { name: 'validationData', type: 'bytes' },
+]
 
 export const PREDICT_ORDER_TYPES = {
-  PredictOrder: [
-    { name: 'info', type: 'OrderInfo' },
-    { name: 'pairId', type: 'uint64' },
-    { name: 'duration', type: 'uint64' },
-    { name: 'entryTokenAddress', type: 'address' },
-    { name: 'tradeAmount', type: 'int256' },
-    { name: 'tradeAmountSqrt', type: 'int256' },
-    { name: 'marginAmount', type: 'uint256' },
-    { name: 'validatorAddress', type: 'address' },
-    { name: 'validationData', type: 'bytes' },
-  ],
-  OrderInfo: [
-    { name: 'market', type: 'address' },
-    { name: 'trader', type: 'address' },
-    { name: 'nonce', type: 'uint256' },
-    { name: 'deadline', type: 'uint256' },
-  ],
+  PredictOrder: PREDICT_ORDER_TYPES_SINGLE,
+  OrderInfo: ORDER_INFO_TYPES,
 }
+
+export const PREDICT_ORDER_PERMIT2_TYPES = {
+  PermitWitnessTransferFrom: PERMIT_WITNESS_TRANSFER_FROM_TYPES('PredictOrder'),
+  OrderInfo: ORDER_INFO_TYPES,
+  PredictOrder: PREDICT_ORDER_TYPES_SINGLE,
+  TokenPermissions: TOKEN_PERMISSION_TYPES,
+} as const
 
 const PREDICT_ORDER_ABI = [
   'tuple(' +
@@ -107,12 +119,7 @@ export class PredictOrder {
 
     return new PredictOrder(
       {
-        orderInfo: {
-          market,
-          trader,
-          nonce,
-          deadline: deadline.toNumber(),
-        },
+        orderInfo: new OrderInfo(market, trader, nonce, deadline.toNumber()),
         pairId: pairId.toNumber(),
         duration: duration.toNumber(),
         tradeAmount,
@@ -147,6 +154,21 @@ export class PredictOrder {
     }
   }
 
+  witnessInfoForViem() {
+    return {
+      info: this.predictOrder.orderInfo.toWitnessDataForViem(),
+      pairId: BigInt(this.predictOrder.pairId.toString()),
+      duration: BigInt(this.predictOrder.duration.toString()),
+      entryTokenAddress: this.predictOrder.entryTokenAddress,
+      tradeAmount: BigInt(this.predictOrder.tradeAmount.toString()),
+      tradeAmountSqrt: BigInt(this.predictOrder.tradeAmountSqrt.toString()),
+      marginAmount: BigInt(this.predictOrder.marginAmount.toString()),
+      validatorAddress: this.predictOrder.validatorAddress,
+      validationData: this.predictOrder.validationData,
+    }
+  }
+
+  /// @dev Returns the EIP712 typed data and value for ethers.js
   permitData(): PermitTransferFromData {
     return SignatureTransfer.getPermitData(
       this.toPermit(),
@@ -160,11 +182,37 @@ export class PredictOrder {
     return {
       permitted: {
         token: this.predictOrder.entryTokenAddress,
-        amount: this.predictOrder.marginAmount,
+        amount: this.predictOrder.marginAmount.gt(0)
+          ? this.predictOrder.marginAmount
+          : BigNumber.from(0),
       },
       spender: this.predictOrder.orderInfo.market,
       nonce: this.predictOrder.orderInfo.nonce,
       deadline: this.predictOrder.orderInfo.deadline,
+    }
+  }
+
+  /// @dev Returns the EIP712 typed data and value for viem
+  permitDataForViem() {
+    const permit = this.toPermit()
+
+    return {
+      domain: {
+        name: 'Permit2',
+        chainId: this.chainId,
+        verifyingContract: this.permit2Address as Address,
+      },
+      types: PREDICT_ORDER_PERMIT2_TYPES,
+      message: {
+        deadline: BigInt(permit.deadline.toString()),
+        nonce: BigInt(permit.toString()),
+        permitted: {
+          token: permit.permitted.token,
+          amount: BigInt(permit.permitted.amount.toString()),
+        },
+        spender: permit.spender,
+        witness: this.witnessInfoForViem(),
+      },
     }
   }
 

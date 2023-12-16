@@ -2,11 +2,22 @@ import { BigNumber } from 'ethers'
 
 import { Address, Bytes } from '../types'
 
-export interface OrderInfo {
-  market: Address
-  trader: Address
-  nonce: BigNumber
-  deadline: number
+export class OrderInfo {
+  constructor(
+    public market: Address,
+    public trader: Address,
+    public nonce: BigNumber,
+    public deadline: number
+  ) {}
+
+  toWitnessDataForViem() {
+    return {
+      market: this.market,
+      trader: this.trader,
+      nonce: BigInt(this.nonce.toString()),
+      deadline: BigInt(this.deadline.toString()),
+    }
+  }
 }
 
 export interface PerpOrderParams {
@@ -61,6 +72,8 @@ export interface GammaOrderParams {
   validationData: Bytes
   chainId: number
 }
+
+export abstract class BaseOrder {}
 
 export abstract class BaseValidationData {
   abstract serialize(): Bytes

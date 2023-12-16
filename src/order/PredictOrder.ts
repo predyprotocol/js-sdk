@@ -43,18 +43,18 @@ export const PREDICT_ORDER_PERMIT2_TYPES = {
 
 const PREDICT_ORDER_ABI = [
   'tuple(' +
-    [
-      'tuple(address,address,uint256,uint256)',
-      'uint64',
-      'uint64',
-      'address',
-      'int256',
-      'int256',
-      'uint256',
-      'address',
-      'bytes',
-    ].join(',') +
-    ')',
+  [
+    'tuple(address,address,uint256,uint256)',
+    'uint64',
+    'uint64',
+    'address',
+    'int256',
+    'int256',
+    'uint256',
+    'address',
+    'bytes',
+  ].join(',') +
+  ')',
 ]
 
 export class PredictOrder {
@@ -205,7 +205,7 @@ export class PredictOrder {
       types: PREDICT_ORDER_PERMIT2_TYPES,
       message: {
         deadline: BigInt(permit.deadline.toString()),
-        nonce: BigInt(permit.toString()),
+        nonce: BigInt(permit.nonce.toString()),
         permitted: {
           token: permit.permitted.token,
           amount: BigInt(permit.permitted.amount.toString()),

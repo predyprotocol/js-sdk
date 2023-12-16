@@ -41,16 +41,16 @@ export const SPOT_ORDER_PERMIT2_TYPES = {
 
 const SPOT_ORDER_ABI = [
   'tuple(' +
-    [
-      'tuple(address,address,uint256,uint256)',
-      'address',
-      'address',
-      'int256',
-      'uint256',
-      'address',
-      'bytes',
-    ].join(',') +
-    ')',
+  [
+    'tuple(address,address,uint256,uint256)',
+    'address',
+    'address',
+    'int256',
+    'uint256',
+    'address',
+    'bytes',
+  ].join(',') +
+  ')',
 ]
 
 export class SpotOrder {
@@ -89,7 +89,7 @@ export class SpotOrder {
     ]) as Bytes
   }
 
-  toLegacy() {
+  witnessInfoForViem() {
     return {
       info: this.spotOrder.orderInfo.toWitnessDataForViem(),
       quoteToken: this.spotOrder.quoteToken,
@@ -200,7 +200,7 @@ export class SpotOrder {
           amount: BigInt(permit.permitted.amount.toString()),
         },
         spender: permit.spender,
-        witness: this.toLegacy(),
+        witness: this.witnessInfoForViem(),
       },
     }
   }

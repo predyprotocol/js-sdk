@@ -44,19 +44,19 @@ export const PERP_ORDER_PERMIT2_TYPES = {
 
 const PERP_ORDER_ABI = [
   'tuple(' +
-    [
-      'tuple(address,address,uint256,uint256)',
-      'uint64',
-      'address',
-      'int256',
-      'int256',
-      'uint256',
-      'uint256',
-      'uint64',
-      'address',
-      'bytes',
-    ].join(',') +
-    ')',
+  [
+    'tuple(address,address,uint256,uint256)',
+    'uint64',
+    'address',
+    'int256',
+    'int256',
+    'uint256',
+    'uint256',
+    'uint64',
+    'address',
+    'bytes',
+  ].join(',') +
+  ')',
 ]
 
 export class PerpOrder {
@@ -208,7 +208,7 @@ export class PerpOrder {
       types: PERP_ORDER_PERMIT2_TYPES,
       message: {
         deadline: BigInt(permit.deadline.toString()),
-        nonce: BigInt(permit.toString()),
+        nonce: BigInt(permit.nonce.toString()),
         permitted: {
           token: permit.permitted.token,
           amount: BigInt(permit.permitted.amount.toString()),

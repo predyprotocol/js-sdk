@@ -186,6 +186,7 @@ export class SpotOrder {
     const permit = this.toPermit()
 
     return {
+      primaryType: 'PermitWitnessTransferFrom',
       domain: {
         name: 'Permit2',
         chainId: this.chainId,

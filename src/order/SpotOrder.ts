@@ -168,7 +168,7 @@ export class SpotOrder {
       amount = this.spotOrder.quoteTokenAmount
     } else {
       token = this.spotOrder.baseToken
-      amount = this.spotOrder.baseTokenAmount
+      amount = this.spotOrder.baseTokenAmount.abs()
     }
 
     return {

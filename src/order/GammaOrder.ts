@@ -1,11 +1,4 @@
-import {
-  PermitTransferFrom,
-  PermitTransferFromData,
-  SignatureTransfer,
-  Witness,
-} from '@uniswap/permit2-sdk'
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
-import { BigNumber } from 'ethers'
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { Address, Bytes } from '../types'
@@ -115,42 +108,7 @@ export class GammaOrder {
     }
   }
 
-  public witnessInfoLegacy() {
-    return {
-      info: {
-        market: this.gammaOrder.info.market,
-        trader: this.gammaOrder.info.trader,
-        nonce: BigNumber.from(this.gammaOrder.info.nonce.toString()),
-        deadline: this.gammaOrder.info.deadline,
-      },
-      pairId: this.gammaOrder.pairId,
-      entryTokenAddress: this.gammaOrder.entryTokenAddress,
-      tradeAmount: BigNumber.from(this.gammaOrder.tradeAmount.toString()),
-      tradeAmountSqrt: BigNumber.from(
-        this.gammaOrder.tradeAmountSqrt.toString()
-      ),
-      marginAmount: BigNumber.from(this.gammaOrder.marginAmount.toString()),
-      hedgeInterval: BigNumber.from(this.gammaOrder.hedgeInterval.toString()),
-      sqrtPriceTrigger: BigNumber.from(
-        this.gammaOrder.sqrtPriceTrigger.toString()
-      ),
-      maxSlippageTolerance: this.gammaOrder.maxSlippageTolerance,
-      validatorAddress: this.gammaOrder.validatorAddress,
-      validationData: this.gammaOrder.validationData,
-    }
-  }
-
-  /// @dev Returns the EIP712 typed data and value for ethers.js
-  permitDataForEthers(): PermitTransferFromData {
-    return SignatureTransfer.getPermitData(
-      this.toPermit(),
-      this.permit2Address,
-      this.chainId,
-      this.witness()
-    ) as PermitTransferFromData
-  }
-
-  toPermit(): PermitTransferFrom {
+  toPermit() {
     return {
       permitted: {
         token: this.gammaOrder.entryTokenAddress,
@@ -182,14 +140,6 @@ export class GammaOrder {
         spender: permit.spender,
         witness: this.witnessInfo(),
       },
-    }
-  }
-
-  private witness(): Witness {
-    return {
-      witness: this.witnessInfoLegacy(),
-      witnessTypeName: 'GammaOrder',
-      witnessType: GAMMA_ORDER_TYPES,
     }
   }
 }

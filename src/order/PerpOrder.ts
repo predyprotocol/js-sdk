@@ -1,11 +1,4 @@
-import {
-  PermitTransferFrom,
-  PermitTransferFromData,
-  SignatureTransfer,
-  Witness,
-} from '@uniswap/permit2-sdk'
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
-import { BigNumber } from 'ethers'
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { Address, Bytes } from '../types'
@@ -112,39 +105,7 @@ export class PerpOrder {
     }
   }
 
-  public witnessInfoLegacy() {
-    return {
-      info: {
-        market: this.perpOrder.info.market,
-        trader: this.perpOrder.info.trader,
-        nonce: BigNumber.from(this.perpOrder.info.nonce.toString()),
-        deadline: this.perpOrder.info.deadline,
-      },
-      pairId: BigNumber.from(this.perpOrder.pairId.toString()),
-      entryTokenAddress: this.perpOrder.entryTokenAddress,
-      tradeAmount: BigNumber.from(this.perpOrder.tradeAmount.toString()),
-      marginAmount: BigNumber.from(this.perpOrder.marginAmount.toString()),
-      takeProfitPrice: BigNumber.from(
-        this.perpOrder.takeProfitPrice.toString()
-      ),
-      stopLossPrice: BigNumber.from(this.perpOrder.stopLossPrice.toString()),
-      slippageTolerance: this.perpOrder.slippageTolerance,
-      validatorAddress: this.perpOrder.validatorAddress,
-      validationData: this.perpOrder.validationData,
-    }
-  }
-
-  /// @dev Returns the EIP712 typed data and value for ethers.js
-  permitDataForEthers(): PermitTransferFromData {
-    return SignatureTransfer.getPermitData(
-      this.toPermit(),
-      this.permit2Address,
-      this.chainId,
-      this.witness()
-    ) as PermitTransferFromData
-  }
-
-  toPermit(): PermitTransferFrom {
+  toPermit() {
     return {
       permitted: {
         token: this.perpOrder.entryTokenAddress,
@@ -176,14 +137,6 @@ export class PerpOrder {
         spender: permit.spender,
         witness: this.witnessInfo(),
       },
-    }
-  }
-
-  private witness(): Witness {
-    return {
-      witness: this.witnessInfoLegacy(),
-      witnessTypeName: 'PerpOrder',
-      witnessType: PERP_ORDER_TYPES,
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@predy/js-sdk",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -44,7 +44,6 @@
     "@ethersproject/providers": "^5.7.2",
     "@uniswap/permit2-sdk": "^1.2.0",
     "@uniswap/uniswapx-sdk": "^1.4.1",
-    "ethers": "^6.9.1",
     "viem": "^1.20.3"
   }
 }

@@ -1,11 +1,4 @@
-import {
-  PermitTransferFrom,
-  PermitTransferFromData,
-  SignatureTransfer,
-  Witness,
-} from '@uniswap/permit2-sdk'
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
-import { BigNumber } from 'ethers'
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { Address, Bytes } from '../types'
@@ -113,38 +106,7 @@ export class PredictOrder {
     }
   }
 
-  public witnessInfoLegacy() {
-    return {
-      info: {
-        market: this.predictOrder.info.market,
-        trader: this.predictOrder.info.trader,
-        nonce: BigNumber.from(this.predictOrder.info.nonce.toString()),
-        deadline: this.predictOrder.info.deadline,
-      },
-      pairId: BigNumber.from(this.predictOrder.pairId.toString()),
-      duration: BigNumber.from(this.predictOrder.duration.toString()),
-      entryTokenAddress: this.predictOrder.entryTokenAddress,
-      tradeAmount: BigNumber.from(this.predictOrder.tradeAmount.toString()),
-      tradeAmountSqrt: BigNumber.from(
-        this.predictOrder.tradeAmountSqrt.toString()
-      ),
-      marginAmount: BigNumber.from(this.predictOrder.marginAmount.toString()),
-      validatorAddress: this.predictOrder.validatorAddress,
-      validationData: this.predictOrder.validationData,
-    }
-  }
-
-  /// @dev Returns the EIP712 typed data and value for ethers.js
-  permitData(): PermitTransferFromData {
-    return SignatureTransfer.getPermitData(
-      this.toPermit(),
-      this.permit2Address,
-      this.chainId,
-      this.witness()
-    ) as PermitTransferFromData
-  }
-
-  toPermit(): PermitTransferFrom {
+  toPermit() {
     return {
       permitted: {
         token: this.predictOrder.entryTokenAddress,
@@ -160,7 +122,7 @@ export class PredictOrder {
   }
 
   /// @dev Returns the EIP712 typed data and value for viem
-  permitDataForViem() {
+  permitData() {
     const permit = this.toPermit()
 
     return {
@@ -178,14 +140,6 @@ export class PredictOrder {
         spender: permit.spender,
         witness: this.witnessInfo(),
       },
-    }
-  }
-
-  private witness(): Witness {
-    return {
-      witness: this.witnessInfoLegacy(),
-      witnessTypeName: 'PredictOrder',
-      witnessType: PREDICT_ORDER_TYPES,
     }
   }
 }

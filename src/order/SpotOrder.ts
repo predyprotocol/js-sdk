@@ -1,11 +1,4 @@
-import {
-  PermitTransferFrom,
-  PermitTransferFromData,
-  SignatureTransfer,
-  Witness,
-} from '@uniswap/permit2-sdk'
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
-import { BigNumber } from 'ethers'
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { Address, Bytes } from '../types'
@@ -104,37 +97,7 @@ export class SpotOrder {
     }
   }
 
-  public witnessInfoLegacy() {
-    return {
-      info: {
-        market: this.spotOrder.info.market,
-        trader: this.spotOrder.info.trader,
-        nonce: BigNumber.from(this.spotOrder.info.nonce.toString()),
-        deadline: this.spotOrder.info.deadline,
-      },
-      quoteToken: this.spotOrder.quoteToken,
-      baseToken: this.spotOrder.baseToken,
-      baseTokenAmount: BigNumber.from(
-        this.spotOrder.baseTokenAmount.toString()
-      ),
-      quoteTokenAmount: BigNumber.from(
-        this.spotOrder.quoteTokenAmount.toString()
-      ),
-      validatorAddress: this.spotOrder.validatorAddress,
-      validationData: this.spotOrder.validationData,
-    }
-  }
-
-  permitDataForEthers() {
-    return SignatureTransfer.getPermitData(
-      this.toPermit(),
-      this.permit2Address,
-      this.chainId,
-      this.witness()
-    ) as PermitTransferFromData
-  }
-
-  toPermit(): PermitTransferFrom {
+  toPermit() {
     let token = ''
     let amount = 0n
 
@@ -175,14 +138,6 @@ export class SpotOrder {
         spender: permit.spender,
         witness: this.witnessInfo(),
       },
-    }
-  }
-
-  private witness(): Witness {
-    return {
-      witness: this.witnessInfoLegacy(),
-      witnessTypeName: 'SpotOrder',
-      witnessType: SPOT_ORDER_TYPES,
     }
   }
 }

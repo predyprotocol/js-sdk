@@ -1,19 +1,16 @@
 import { ZERO_ADDRESS } from '../constants'
 
-import { PerpOrder } from './PerpOrder'
+import { SpotOrder } from './SpotOrder'
 
-describe('PerpOrder', () => {
+describe('SpotOrder', () => {
   describe('permitData', () => {
     it('succeeds to generate permit data', () => {
-      const order = new PerpOrder(
+      const order = new SpotOrder(
         {
-          pairId: 1n,
-          entryTokenAddress: ZERO_ADDRESS,
-          tradeAmount: 0n,
-          marginAmount: 0n,
-          takeProfitPrice: 0n,
-          stopLossPrice: 0n,
-          slippageTolerance: 0n,
+          quoteToken: ZERO_ADDRESS,
+          baseToken: ZERO_ADDRESS,
+          baseTokenAmount: 0n,
+          quoteTokenAmount: 0n,
           validatorAddress: ZERO_ADDRESS,
           validationData: '0x',
           info: {
@@ -23,8 +20,7 @@ describe('PerpOrder', () => {
             deadline: 10n,
           },
         },
-        1,
-        ''
+        1
       )
 
       const { domain, message } = order.permitData()
@@ -40,15 +36,12 @@ describe('PerpOrder', () => {
 
   describe('serialize', () => {
     it('succeeds to serialize', () => {
-      const order = new PerpOrder(
+      const order = new SpotOrder(
         {
-          pairId: 1n,
-          entryTokenAddress: ZERO_ADDRESS,
-          tradeAmount: 0n,
-          marginAmount: 0n,
-          takeProfitPrice: 0n,
-          stopLossPrice: 0n,
-          slippageTolerance: 0n,
+          quoteToken: ZERO_ADDRESS,
+          baseToken: ZERO_ADDRESS,
+          baseTokenAmount: 0n,
+          quoteTokenAmount: 0n,
           validatorAddress: ZERO_ADDRESS,
           validationData: '0x',
           info: {
@@ -58,15 +51,14 @@ describe('PerpOrder', () => {
             deadline: 10n,
           },
         },
-        1,
-        ''
+        1
       )
 
       const encoded = order.serialize()
 
-      const decoded = PerpOrder.parse(encoded, 1)
+      const decoded = SpotOrder.parse(encoded, 1)
 
-      expect(decoded.perpOrder).toEqual(order.perpOrder)
+      expect(decoded.spotOrder).toEqual(order.spotOrder)
     })
   })
 })

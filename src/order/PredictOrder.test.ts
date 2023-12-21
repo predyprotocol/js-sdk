@@ -1,25 +1,28 @@
-import { BigNumber, constants } from 'ethers'
+import { ZERO_ADDRESS } from '../constants'
 
 import { PredictOrder } from './PredictOrder'
-import { OrderInfo } from './types'
 
-const ZERO = BigNumber.from(0)
+const ZERO = 0n
 
 describe('PredictOrder', () => {
   describe('permitData', () => {
     it('succeeds to generate permit data', () => {
       const order = new PredictOrder(
         {
-          pairId: 1,
-          entryTokenAddress: constants.AddressZero,
-          duration: 60,
+          pairId: 1n,
+          entryTokenAddress: ZERO_ADDRESS,
+          duration: 60n,
           tradeAmount: ZERO,
           tradeAmountSqrt: ZERO,
           marginAmount: ZERO,
           validatorAddress: '0x',
           validationData: '0x',
-          chainId: 1,
-          orderInfo: new OrderInfo('0x', '0x', ZERO, 0),
+          info: {
+            market: ZERO_ADDRESS,
+            trader: ZERO_ADDRESS,
+            nonce: 0n,
+            deadline: 10n,
+          },
         },
         1,
         ''
@@ -40,21 +43,20 @@ describe('PredictOrder', () => {
     it('succeeds to serialize', () => {
       const order = new PredictOrder(
         {
-          pairId: 1,
-          duration: 60,
-          entryTokenAddress: constants.AddressZero,
+          pairId: 1n,
+          duration: 60n,
+          entryTokenAddress: ZERO_ADDRESS,
           tradeAmount: ZERO,
           tradeAmountSqrt: ZERO,
           marginAmount: ZERO,
-          validatorAddress: constants.AddressZero,
+          validatorAddress: ZERO_ADDRESS,
           validationData: '0x',
-          chainId: 1,
-          orderInfo: new OrderInfo(
-            constants.AddressZero,
-            constants.AddressZero,
-            ZERO,
-            0
-          ),
+          info: {
+            market: ZERO_ADDRESS,
+            trader: ZERO_ADDRESS,
+            nonce: 0n,
+            deadline: 10n,
+          },
         },
         1,
         ''

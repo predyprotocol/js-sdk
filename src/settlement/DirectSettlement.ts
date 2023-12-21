@@ -1,33 +1,29 @@
 import { encodeAbiParameters } from 'viem'
 
-import { UNISWAP_SETTLEMENT_MAPPING } from '../constants'
+import { DIRECT_SETTLEMENT_MAPPING } from '../constants'
 import { Address, Bytes } from '../types'
 
 import { BaseSettlement, SettlementData } from './types'
 
-const UNISWAP_SETTLEMENT_DATA_ABI = [
+const DIRECT_SETTLEMENT_DATA_ABI = [
   {
-    name: 'UniswapSellementData',
+    name: 'DirectSellementData',
     type: 'tuple',
     components: [
-      { name: 'path', type: 'bytes' },
-      { name: 'amountOutMinimumOrInMaximum', type: 'uint256' },
       { name: 'quoteTokenAddress', type: 'address' },
       { name: 'baseTokenAddress', type: 'address' },
-      { name: 'fee', type: 'int256' },
+      { name: 'price', type: 'uint256' },
     ],
   },
 ]
 
-export class UniswapSettlement extends BaseSettlement {
+export class DirectSettlement extends BaseSettlement {
   settlementContractAddress: Address
 
   constructor(
-    public path: string,
-    public amountOutMinimumOrInMaximum: bigint,
     public quoteTokenAddress: string,
     public baseTokenAddress: string,
-    public fee: bigint,
+    public price: bigint,
     public chainId: number,
     settlementContractAddress?: Address
   ) {
@@ -36,20 +32,18 @@ export class UniswapSettlement extends BaseSettlement {
     if (settlementContractAddress) {
       this.settlementContractAddress = settlementContractAddress
     } else {
-      this.settlementContractAddress = UNISWAP_SETTLEMENT_MAPPING[chainId]
+      this.settlementContractAddress = DIRECT_SETTLEMENT_MAPPING[chainId]
     }
   }
 
   serialize(): SettlementData {
     return {
       settlementContractAddress: this.settlementContractAddress,
-      encodedData: encodeAbiParameters(UNISWAP_SETTLEMENT_DATA_ABI, [
+      encodedData: encodeAbiParameters(DIRECT_SETTLEMENT_DATA_ABI, [
         {
-          path: this.path,
-          amountOutMinimumOrInMaximum: this.amountOutMinimumOrInMaximum,
           quoteTokenAddress: this.quoteTokenAddress,
           baseTokenAddress: this.baseTokenAddress,
-          fee: this.fee,
+          price: this.price,
         },
       ]) as Bytes,
     }

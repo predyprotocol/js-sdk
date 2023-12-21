@@ -1,11 +1,10 @@
-import { BigNumber, ethers } from 'ethers'
-
+import { ZERO_ADDRESS } from '../constants'
 import {
   SpotDutchOrderValidationData,
   SpotLimitOrderValidationData,
   SpotOrder,
 } from '../order/SpotOrder'
-import { OrderInfo, SpotOrderParams } from '../order/types'
+import { SpotOrderParams } from '../order/types'
 import { Address } from '../types'
 
 export class SpotOrderBuilder {
@@ -14,44 +13,44 @@ export class SpotOrderBuilder {
   constructor(private chainId: number, private permit2Address?: Address) {
     // set defaults
     this.spotOrder = {
-      validatorAddress: ethers.constants.AddressZero,
+      validatorAddress: ZERO_ADDRESS,
       validationData: '0x',
-      orderInfo: new OrderInfo(
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        BigNumber.from(0),
-        0
-      ),
+      info: {
+        market: ZERO_ADDRESS,
+        trader: ZERO_ADDRESS,
+        nonce: 0n,
+        deadline: 0n,
+      },
     }
   }
 
   market(market: Address): SpotOrderBuilder {
-    if (this.spotOrder.orderInfo) {
-      this.spotOrder.orderInfo.market = market
+    if (this.spotOrder.info) {
+      this.spotOrder.info.market = market
     }
 
     return this
   }
 
   trader(trader: Address): SpotOrderBuilder {
-    if (this.spotOrder.orderInfo) {
-      this.spotOrder.orderInfo.trader = trader
+    if (this.spotOrder.info) {
+      this.spotOrder.info.trader = trader
     }
 
     return this
   }
 
-  deadline(deadline: number): SpotOrderBuilder {
-    if (this.spotOrder.orderInfo) {
-      this.spotOrder.orderInfo.deadline = deadline
+  deadline(deadline: bigint): SpotOrderBuilder {
+    if (this.spotOrder.info) {
+      this.spotOrder.info.deadline = deadline
     }
 
     return this
   }
 
-  nonce(nonce: BigNumber): SpotOrderBuilder {
-    if (this.spotOrder.orderInfo) {
-      this.spotOrder.orderInfo.nonce = nonce
+  nonce(nonce: bigint): SpotOrderBuilder {
+    if (this.spotOrder.info) {
+      this.spotOrder.info.nonce = nonce
     }
 
     return this
@@ -69,13 +68,13 @@ export class SpotOrderBuilder {
     return this
   }
 
-  baseTokenAmount(baseTokenAmount: BigNumber): SpotOrderBuilder {
+  baseTokenAmount(baseTokenAmount: bigint): SpotOrderBuilder {
     this.spotOrder.baseTokenAmount = baseTokenAmount
 
     return this
   }
 
-  quoteTokenAmount(quoteTokenAmount: BigNumber): SpotOrderBuilder {
+  quoteTokenAmount(quoteTokenAmount: bigint): SpotOrderBuilder {
     this.spotOrder.quoteTokenAmount = quoteTokenAmount
 
     return this
@@ -98,13 +97,12 @@ export class SpotDutchOrderBuilder extends SpotOrderBuilder {
   ) {
     super(chainId, permit2Address)
 
-    this.spotOrder.validatorAddress =
-      validatorAddress || ethers.constants.AddressZero
+    this.spotOrder.validatorAddress = validatorAddress || ZERO_ADDRESS
   }
 
   validationData(
-    startPrice: BigNumber,
-    endPrice: BigNumber,
+    startPrice: bigint,
+    endPrice: bigint,
     startTime: number,
     endTime: number
   ): SpotDutchOrderBuilder {
@@ -129,11 +127,10 @@ export class SpotLimitOrderBuilder extends SpotOrderBuilder {
   ) {
     super(chainId, permit2Address)
 
-    this.spotOrder.validatorAddress =
-      validatorAddress || ethers.constants.AddressZero
+    this.spotOrder.validatorAddress = validatorAddress || ZERO_ADDRESS
   }
 
-  validationData(filler: string, limitPrice: BigNumber): SpotLimitOrderBuilder {
+  validationData(filler: string, limitPrice: bigint): SpotLimitOrderBuilder {
     const validationData = new SpotLimitOrderValidationData(filler, limitPrice)
 
     this.spotOrder.validationData = validationData.serialize()

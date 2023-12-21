@@ -1,8 +1,7 @@
-import { BigNumber, ethers } from 'ethers'
-
+import { ZERO_ADDRESS } from '../constants'
 import { GeneralDutchOrderValidationData } from '../order/GeneralDutchOrderValidationData'
 import { PredictOrder } from '../order/PredictOrder'
-import { OrderInfo, PredictOrderParams } from '../order/types'
+import { PredictOrderParams } from '../order/types'
 import { Address } from '../types'
 
 export class PredictOrderBuilder {
@@ -11,56 +10,56 @@ export class PredictOrderBuilder {
   constructor(private chainId: number, private permit2Address?: string) {
     // set defaults
     this.predictOrder = {
-      validatorAddress: ethers.constants.AddressZero,
+      validatorAddress: ZERO_ADDRESS,
       validationData: '0x',
-      orderInfo: new OrderInfo(
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        BigNumber.from(0),
-        0
-      ),
+      info: {
+        market: ZERO_ADDRESS,
+        trader: ZERO_ADDRESS,
+        nonce: 0n,
+        deadline: 0n,
+      },
     }
   }
 
   market(market: Address): PredictOrderBuilder {
-    if (this.predictOrder.orderInfo) {
-      this.predictOrder.orderInfo.market = market
+    if (this.predictOrder.info) {
+      this.predictOrder.info.market = market
     }
 
     return this
   }
 
   trader(trader: Address): PredictOrderBuilder {
-    if (this.predictOrder.orderInfo) {
-      this.predictOrder.orderInfo.trader = trader
+    if (this.predictOrder.info) {
+      this.predictOrder.info.trader = trader
     }
 
     return this
   }
 
-  deadline(deadline: number): PredictOrderBuilder {
-    if (this.predictOrder.orderInfo) {
-      this.predictOrder.orderInfo.deadline = deadline
+  deadline(deadline: bigint): PredictOrderBuilder {
+    if (this.predictOrder.info) {
+      this.predictOrder.info.deadline = deadline
     }
 
     return this
   }
 
-  nonce(nonce: BigNumber): PredictOrderBuilder {
-    if (this.predictOrder.orderInfo) {
-      this.predictOrder.orderInfo.nonce = nonce
+  nonce(nonce: bigint): PredictOrderBuilder {
+    if (this.predictOrder.info) {
+      this.predictOrder.info.nonce = nonce
     }
 
     return this
   }
 
-  tradeAmount(tradeAmount: BigNumber): PredictOrderBuilder {
+  tradeAmount(tradeAmount: bigint): PredictOrderBuilder {
     this.predictOrder.tradeAmount = tradeAmount
 
     return this
   }
 
-  tradeAmountSqrt(tradeAmountSqrt: BigNumber): PredictOrderBuilder {
+  tradeAmountSqrt(tradeAmountSqrt: bigint): PredictOrderBuilder {
     this.predictOrder.tradeAmountSqrt = tradeAmountSqrt
 
     return this
@@ -72,19 +71,19 @@ export class PredictOrderBuilder {
     return this
   }
 
-  pairId(pairId: number): PredictOrderBuilder {
+  pairId(pairId: bigint): PredictOrderBuilder {
     this.predictOrder.pairId = pairId
 
     return this
   }
 
-  marginAmount(marginAmount: BigNumber): PredictOrderBuilder {
+  marginAmount(marginAmount: bigint): PredictOrderBuilder {
     this.predictOrder.marginAmount = marginAmount
 
     return this
   }
 
-  duration(duration: number): PredictOrderBuilder {
+  duration(duration: bigint): PredictOrderBuilder {
     this.predictOrder.duration = duration
 
     return this
@@ -108,13 +107,12 @@ export class PredictDutchOrderBuilder extends PredictOrderBuilder {
     super(chainId, permit2Address)
 
     if (validatorAddress) {
-      this.predictOrder.validatorAddress =
-        validatorAddress || ethers.constants.AddressZero
+      this.predictOrder.validatorAddress = validatorAddress || ZERO_ADDRESS
     }
   }
 
   validationData(
-    baseSqrtPrice: BigNumber,
+    baseSqrtPrice: bigint,
     startSlippageTolerance: number,
     endSlippageTolerance: number,
     maxAcceptableSqrtPriceRange: number,

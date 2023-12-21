@@ -1,17 +1,26 @@
-import { BigNumber, ethers } from 'ethers'
+import { encodeAbiParameters } from 'viem'
 
 import { Bytes } from '../types'
 
 import { BaseValidationData } from './types'
 
 const DUTCH_ORDER_VALIDATION_ABI = [
-  'tuple(' + ['uint256', 'uint256', 'uint256', 'uint256'].join(',') + ')',
+  {
+    name: 'DutchOrderValidationData',
+    type: 'tuple',
+    components: [
+      { name: 'startPrice', type: 'uint256' },
+      { name: 'endPrice', type: 'uint256' },
+      { name: 'startTime', type: 'uint256' },
+      { name: 'endTime', type: 'uint256' },
+    ],
+  },
 ]
 
 export class DutchOrderValidationData extends BaseValidationData {
   constructor(
-    public startPrice: BigNumber,
-    public endPrice: BigNumber,
+    public startPrice: bigint,
+    public endPrice: bigint,
     public startTime: number,
     public endTime: number
   ) {
@@ -19,10 +28,13 @@ export class DutchOrderValidationData extends BaseValidationData {
   }
 
   serialize(): Bytes {
-    const abiCoder = new ethers.utils.AbiCoder()
-
-    return abiCoder.encode(DUTCH_ORDER_VALIDATION_ABI, [
-      [this.startPrice, this.endPrice, this.startTime, this.endTime],
+    return encodeAbiParameters(DUTCH_ORDER_VALIDATION_ABI, [
+      {
+        startPrice: this.startPrice,
+        endPrice: this.endPrice,
+        startTime: this.startTime,
+        endTime: this.endTime,
+      },
     ]) as Bytes
   }
 }

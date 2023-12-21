@@ -5,14 +5,15 @@ import {
   Witness,
 } from '@uniswap/permit2-sdk'
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
-import { BigNumber, ethers } from 'ethers'
+import { BigNumber } from 'ethers'
+import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { Address, Bytes } from '../types'
+import { abs } from '../utils'
 
 import {
   BaseValidationData,
   ORDER_INFO_TYPES,
-  OrderInfo,
   PERMIT_WITNESS_TRANSFER_FROM_TYPES,
   SpotOrderParams,
   TOKEN_PERMISSION_TYPES,
@@ -40,17 +41,28 @@ export const SPOT_ORDER_PERMIT2_TYPES = {
 } as const
 
 const SPOT_ORDER_ABI = [
-  'tuple(' +
-  [
-    'tuple(address,address,uint256,uint256)',
-    'address',
-    'address',
-    'int256',
-    'uint256',
-    'address',
-    'bytes',
-  ].join(',') +
-  ')',
+  {
+    name: 'SpotOrder',
+    type: 'tuple',
+    components: [
+      {
+        name: 'info',
+        type: 'tuple',
+        components: [
+          { name: 'market', type: 'address' },
+          { name: 'trader', type: 'address' },
+          { name: 'nonce', type: 'uint256' },
+          { name: 'deadline', type: 'uint256' },
+        ],
+      },
+      { name: 'quoteToken', type: 'address' },
+      { name: 'baseToken', type: 'address' },
+      { name: 'baseTokenAmount', type: 'int256' },
+      { name: 'quoteTokenAmount', type: 'uint256' },
+      { name: 'validatorAddress', type: 'address' },
+      { name: 'validationData', type: 'bytes' },
+    ],
+  },
 ]
 
 export class SpotOrder {
@@ -69,78 +81,20 @@ export class SpotOrder {
   }
 
   serialize(): Bytes {
-    const abiCoder = new ethers.utils.AbiCoder()
-
-    return abiCoder.encode(SPOT_ORDER_ABI, [
-      [
-        [
-          this.spotOrder.orderInfo.market,
-          this.spotOrder.orderInfo.trader,
-          this.spotOrder.orderInfo.nonce,
-          this.spotOrder.orderInfo.deadline,
-        ],
-        this.spotOrder.quoteToken,
-        this.spotOrder.baseToken,
-        this.spotOrder.baseTokenAmount,
-        this.spotOrder.quoteTokenAmount,
-        this.spotOrder.validatorAddress,
-        this.spotOrder.validationData,
-      ],
-    ]) as Bytes
+    return encodeAbiParameters(SPOT_ORDER_ABI, [this.spotOrder]) as Bytes
   }
 
-  witnessInfoForViem() {
+  static parse(encoded: Bytes, chainId: number, permit2?: Address): SpotOrder {
+    const decoded = decodeAbiParameters(SPOT_ORDER_ABI, encoded)
+
+    const order = decoded[0] as SpotOrderParams
+
+    return new SpotOrder(order, chainId, permit2)
+  }
+
+  public witnessInfo() {
     return {
-      info: this.spotOrder.orderInfo.toWitnessDataForViem(),
-      quoteToken: this.spotOrder.quoteToken,
-      baseToken: this.spotOrder.baseToken,
-      baseTokenAmount: BigInt(this.spotOrder.baseTokenAmount.toString()),
-      quoteTokenAmount: BigInt(this.spotOrder.quoteTokenAmount.toString()),
-      validatorAddress: this.spotOrder.validatorAddress,
-      validationData: this.spotOrder.validationData,
-    }
-  }
-
-  static parse(encoded: string, chainId: number, permit2?: Address): SpotOrder {
-    const abiCoder = new ethers.utils.AbiCoder()
-    const decoded = abiCoder.decode(SPOT_ORDER_ABI, encoded)
-
-    const [
-      [
-        [market, trader, nonce, deadline],
-        quoteToken,
-        baseToken,
-        baseTokenAmount,
-        quoteTokenAmount,
-        validatorAddress,
-        validationData,
-      ],
-    ] = decoded
-
-    return new SpotOrder(
-      {
-        orderInfo: new OrderInfo(market, trader, nonce, deadline.toNumber()),
-        quoteToken,
-        baseToken,
-        baseTokenAmount,
-        quoteTokenAmount,
-        validatorAddress,
-        validationData,
-        chainId,
-      },
-      chainId,
-      permit2
-    )
-  }
-
-  private witnessInfo() {
-    return {
-      info: {
-        market: this.spotOrder.orderInfo.market,
-        trader: this.spotOrder.orderInfo.trader,
-        nonce: this.spotOrder.orderInfo.nonce,
-        deadline: this.spotOrder.orderInfo.deadline,
-      },
+      info: this.spotOrder.info,
       quoteToken: this.spotOrder.quoteToken,
       baseToken: this.spotOrder.baseToken,
       baseTokenAmount: this.spotOrder.baseTokenAmount,
@@ -150,7 +104,28 @@ export class SpotOrder {
     }
   }
 
-  permitData() {
+  public witnessInfoLegacy() {
+    return {
+      info: {
+        market: this.spotOrder.info.market,
+        trader: this.spotOrder.info.trader,
+        nonce: BigNumber.from(this.spotOrder.info.nonce.toString()),
+        deadline: this.spotOrder.info.deadline,
+      },
+      quoteToken: this.spotOrder.quoteToken,
+      baseToken: this.spotOrder.baseToken,
+      baseTokenAmount: BigNumber.from(
+        this.spotOrder.baseTokenAmount.toString()
+      ),
+      quoteTokenAmount: BigNumber.from(
+        this.spotOrder.quoteTokenAmount.toString()
+      ),
+      validatorAddress: this.spotOrder.validatorAddress,
+      validationData: this.spotOrder.validationData,
+    }
+  }
+
+  permitDataForEthers() {
     return SignatureTransfer.getPermitData(
       this.toPermit(),
       this.permit2Address,
@@ -161,14 +136,14 @@ export class SpotOrder {
 
   toPermit(): PermitTransferFrom {
     let token = ''
-    let amount = BigNumber.from(0)
+    let amount = 0n
 
-    if (this.spotOrder.baseTokenAmount.gt(0)) {
+    if (this.spotOrder.baseTokenAmount > 0n) {
       token = this.spotOrder.quoteToken
       amount = this.spotOrder.quoteTokenAmount
     } else {
       token = this.spotOrder.baseToken
-      amount = this.spotOrder.baseTokenAmount.abs()
+      amount = abs(this.spotOrder.baseTokenAmount)
     }
 
     return {
@@ -176,13 +151,13 @@ export class SpotOrder {
         token,
         amount,
       },
-      spender: this.spotOrder.orderInfo.market,
-      nonce: this.spotOrder.orderInfo.nonce,
-      deadline: this.spotOrder.orderInfo.deadline,
+      spender: this.spotOrder.info.market,
+      nonce: this.spotOrder.info.nonce,
+      deadline: this.spotOrder.info.deadline,
     }
   }
 
-  permitDataForViem() {
+  permitData() {
     const permit = this.toPermit()
 
     return {
@@ -194,41 +169,41 @@ export class SpotOrder {
       },
       types: SPOT_ORDER_PERMIT2_TYPES,
       message: {
-        deadline: BigInt(permit.deadline.toString()),
-        nonce: BigInt(permit.nonce.toString()),
-        permitted: {
-          token: permit.permitted.token,
-          amount: BigInt(permit.permitted.amount.toString()),
-        },
+        deadline: permit.deadline,
+        nonce: permit.nonce,
+        permitted: permit.permitted,
         spender: permit.spender,
-        witness: this.witnessInfoForViem(),
+        witness: this.witnessInfo(),
       },
     }
   }
 
   private witness(): Witness {
     return {
-      witness: this.witnessInfo(),
+      witness: this.witnessInfoLegacy(),
       witnessTypeName: 'SpotOrder',
       witnessType: SPOT_ORDER_TYPES,
     }
   }
-
-  hash(): string {
-    return ethers.utils._TypedDataEncoder
-      .from(SPOT_ORDER_TYPES)
-      .hash(this.witnessInfo())
-  }
 }
 
-const DUTCH_ORDER_VALIDATION_ABI = [
-  'tuple(' + ['uint256', 'uint256', 'uint256', 'uint256'].join(',') + ')',
+const SPOT_DUTCH_ORDER_VALIDATION_ABI = [
+  {
+    name: 'SpotDutchOrderValidationData',
+    type: 'tuple',
+    components: [
+      { name: 'startPrice', type: 'uint256' },
+      { name: 'endPrice', type: 'uint256' },
+      { name: 'startTime', type: 'uint256' },
+      { name: 'endTime', type: 'uint256' },
+    ],
+  },
 ]
 
 export class SpotDutchOrderValidationData extends BaseValidationData {
   constructor(
-    public startPrice: BigNumber,
-    public endPrice: BigNumber,
+    public startPrice: bigint,
+    public endPrice: bigint,
     public startTime: number,
     public endTime: number
   ) {
@@ -236,28 +211,36 @@ export class SpotDutchOrderValidationData extends BaseValidationData {
   }
 
   serialize(): Bytes {
-    const abiCoder = new ethers.utils.AbiCoder()
-
-    return abiCoder.encode(DUTCH_ORDER_VALIDATION_ABI, [
-      [this.startPrice, this.endPrice, this.startTime, this.endTime],
+    return encodeAbiParameters(SPOT_DUTCH_ORDER_VALIDATION_ABI, [
+      {
+        startPrice: this.startPrice,
+        endPrice: this.endPrice,
+        startTime: this.startTime,
+        endTime: this.endTime,
+      },
     ]) as Bytes
   }
 }
 
 const LIMIT_ORDER_VALIDATION_ABI = [
-  'tuple(' + ['address', 'uint256'].join(',') + ')',
+  {
+    name: 'LimitOrderValidationData',
+    type: 'tuple',
+    components: [
+      { name: 'filler', type: 'address' },
+      { name: 'limitQuoteTokenAmount', type: 'uint256' },
+    ],
+  },
 ]
 
 export class SpotLimitOrderValidationData extends BaseValidationData {
-  constructor(public filler: string, public limitQuoteTokenAmount: BigNumber) {
+  constructor(public filler: string, public limitQuoteTokenAmount: bigint) {
     super()
   }
 
   serialize(): Bytes {
-    const abiCoder = new ethers.utils.AbiCoder()
-
-    return abiCoder.encode(LIMIT_ORDER_VALIDATION_ABI, [
-      [this.filler, this.limitQuoteTokenAmount],
+    return encodeAbiParameters(LIMIT_ORDER_VALIDATION_ABI, [
+      { filler: this.filler, limitQuoteTokenAmount: this.limitQuoteTokenAmount },
     ]) as Bytes
   }
 }

@@ -5,13 +5,13 @@ import {
   Witness,
 } from '@uniswap/permit2-sdk'
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
-import { BigNumber, ethers } from 'ethers'
+import { BigNumber } from 'ethers'
+import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
-import { Address } from '../types'
+import { Address, Bytes } from '../types'
 
 import {
   ORDER_INFO_TYPES,
-  OrderInfo,
   PERMIT_WITNESS_TRANSFER_FROM_TYPES,
   PredictOrderParams,
   TOKEN_PERMISSION_TYPES,
@@ -42,19 +42,30 @@ export const PREDICT_ORDER_PERMIT2_TYPES = {
 } as const
 
 const PREDICT_ORDER_ABI = [
-  'tuple(' +
-  [
-    'tuple(address,address,uint256,uint256)',
-    'uint64',
-    'uint64',
-    'address',
-    'int256',
-    'int256',
-    'uint256',
-    'address',
-    'bytes',
-  ].join(',') +
-  ')',
+  {
+    name: 'PredictOrder',
+    type: 'tuple',
+    components: [
+      {
+        name: 'info',
+        type: 'tuple',
+        components: [
+          { name: 'market', type: 'address' },
+          { name: 'trader', type: 'address' },
+          { name: 'nonce', type: 'uint256' },
+          { name: 'deadline', type: 'uint256' },
+        ],
+      },
+      { name: 'pairId', type: 'uint64' },
+      { name: 'duration', type: 'uint64' },
+      { name: 'entryTokenAddress', type: 'address' },
+      { name: 'tradeAmount', type: 'int256' },
+      { name: 'tradeAmountSqrt', type: 'int256' },
+      { name: 'marginAmount', type: 'uint256' },
+      { name: 'validatorAddress', type: 'address' },
+      { name: 'validationData', type: 'bytes' },
+    ],
+  },
 ]
 
 export class PredictOrder {
@@ -72,77 +83,25 @@ export class PredictOrder {
     }
   }
 
-  serialize(): string {
-    const abiCoder = new ethers.utils.AbiCoder()
-
-    return abiCoder.encode(PREDICT_ORDER_ABI, [
-      [
-        [
-          this.predictOrder.orderInfo.market,
-          this.predictOrder.orderInfo.trader,
-          this.predictOrder.orderInfo.nonce,
-          this.predictOrder.orderInfo.deadline,
-        ],
-        this.predictOrder.pairId,
-        this.predictOrder.duration,
-        this.predictOrder.entryTokenAddress,
-        this.predictOrder.tradeAmount,
-        this.predictOrder.tradeAmountSqrt,
-        this.predictOrder.marginAmount,
-        this.predictOrder.validatorAddress,
-        this.predictOrder.validationData,
-      ],
-    ])
+  serialize(): Bytes {
+    return encodeAbiParameters(PREDICT_ORDER_ABI, [this.predictOrder])
   }
 
   static parse(
-    encoded: string,
+    encoded: Bytes,
     chainId: number,
     permit2?: string
   ): PredictOrder {
-    const abiCoder = new ethers.utils.AbiCoder()
-    const decoded = abiCoder.decode(PREDICT_ORDER_ABI, encoded)
+    const decoded = decodeAbiParameters(PREDICT_ORDER_ABI, encoded)
 
-    const [
-      [
-        [market, trader, nonce, deadline],
-        pairId,
-        duration,
-        entryTokenAddress,
-        tradeAmount,
-        tradeAmountSqrt,
-        marginAmount,
-        validatorAddress,
-        validationData,
-      ],
-    ] = decoded
+    const order = decoded[0] as PredictOrderParams
 
-    return new PredictOrder(
-      {
-        orderInfo: new OrderInfo(market, trader, nonce, deadline.toNumber()),
-        pairId: pairId.toNumber(),
-        duration: duration.toNumber(),
-        tradeAmount,
-        tradeAmountSqrt,
-        marginAmount,
-        entryTokenAddress,
-        validatorAddress,
-        validationData,
-        chainId,
-      },
-      chainId,
-      permit2
-    )
+    return new PredictOrder(order, chainId, permit2)
   }
 
-  private witnessInfo() {
+  public witnessInfo() {
     return {
-      info: {
-        market: this.predictOrder.orderInfo.market,
-        trader: this.predictOrder.orderInfo.trader,
-        nonce: this.predictOrder.orderInfo.nonce,
-        deadline: this.predictOrder.orderInfo.deadline,
-      },
+      info: this.predictOrder.info,
       pairId: this.predictOrder.pairId,
       duration: this.predictOrder.duration,
       entryTokenAddress: this.predictOrder.entryTokenAddress,
@@ -154,15 +113,22 @@ export class PredictOrder {
     }
   }
 
-  witnessInfoForViem() {
+  public witnessInfoLegacy() {
     return {
-      info: this.predictOrder.orderInfo.toWitnessDataForViem(),
-      pairId: BigInt(this.predictOrder.pairId.toString()),
-      duration: BigInt(this.predictOrder.duration.toString()),
+      info: {
+        market: this.predictOrder.info.market,
+        trader: this.predictOrder.info.trader,
+        nonce: BigNumber.from(this.predictOrder.info.nonce.toString()),
+        deadline: this.predictOrder.info.deadline,
+      },
+      pairId: BigNumber.from(this.predictOrder.pairId.toString()),
+      duration: BigNumber.from(this.predictOrder.duration.toString()),
       entryTokenAddress: this.predictOrder.entryTokenAddress,
-      tradeAmount: BigInt(this.predictOrder.tradeAmount.toString()),
-      tradeAmountSqrt: BigInt(this.predictOrder.tradeAmountSqrt.toString()),
-      marginAmount: BigInt(this.predictOrder.marginAmount.toString()),
+      tradeAmount: BigNumber.from(this.predictOrder.tradeAmount.toString()),
+      tradeAmountSqrt: BigNumber.from(
+        this.predictOrder.tradeAmountSqrt.toString()
+      ),
+      marginAmount: BigNumber.from(this.predictOrder.marginAmount.toString()),
       validatorAddress: this.predictOrder.validatorAddress,
       validationData: this.predictOrder.validationData,
     }
@@ -182,13 +148,14 @@ export class PredictOrder {
     return {
       permitted: {
         token: this.predictOrder.entryTokenAddress,
-        amount: this.predictOrder.marginAmount.gt(0)
-          ? this.predictOrder.marginAmount
-          : BigNumber.from(0),
+        amount:
+          this.predictOrder.marginAmount > 0n
+            ? this.predictOrder.marginAmount
+            : 0n,
       },
-      spender: this.predictOrder.orderInfo.market,
-      nonce: this.predictOrder.orderInfo.nonce,
-      deadline: this.predictOrder.orderInfo.deadline,
+      spender: this.predictOrder.info.market,
+      nonce: this.predictOrder.info.nonce,
+      deadline: this.predictOrder.info.deadline,
     }
   }
 
@@ -205,29 +172,20 @@ export class PredictOrder {
       },
       types: PREDICT_ORDER_PERMIT2_TYPES,
       message: {
-        deadline: BigInt(permit.deadline.toString()),
-        nonce: BigInt(permit.nonce.toString()),
-        permitted: {
-          token: permit.permitted.token,
-          amount: BigInt(permit.permitted.amount.toString()),
-        },
+        deadline: permit.deadline,
+        nonce: permit.nonce,
+        permitted: permit.permitted,
         spender: permit.spender,
-        witness: this.witnessInfoForViem(),
+        witness: this.witnessInfo(),
       },
     }
   }
 
   private witness(): Witness {
     return {
-      witness: this.witnessInfo(),
+      witness: this.witnessInfoLegacy(),
       witnessTypeName: 'PredictOrder',
       witnessType: PREDICT_ORDER_TYPES,
     }
-  }
-
-  hash(): string {
-    return ethers.utils._TypedDataEncoder
-      .from(PREDICT_ORDER_TYPES)
-      .hash(this.witnessInfo())
   }
 }

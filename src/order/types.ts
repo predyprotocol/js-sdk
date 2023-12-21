@@ -1,76 +1,59 @@
-import { BigNumber } from 'ethers'
-
 import { Address, Bytes } from '../types'
 
-export class OrderInfo {
-  constructor(
-    public market: Address,
-    public trader: Address,
-    public nonce: BigNumber,
-    public deadline: number
-  ) {}
-
-  toWitnessDataForViem() {
-    return {
-      market: this.market,
-      trader: this.trader,
-      nonce: BigInt(this.nonce.toString()),
-      deadline: BigInt(this.deadline.toString()),
-    }
-  }
+export interface OrderInfo {
+  market: Address
+  trader: Address
+  nonce: bigint
+  deadline: bigint
 }
 
 export interface PerpOrderParams {
-  orderInfo: OrderInfo
-  pairId: number
+  info: OrderInfo
+  pairId: bigint
   entryTokenAddress: Address
-  tradeAmount: BigNumber
-  marginAmount: BigNumber
-  takeProfitPrice: BigNumber
-  stopLossPrice: BigNumber
-  slippageTolerance: number
+  tradeAmount: bigint
+  marginAmount: bigint
+  takeProfitPrice: bigint
+  stopLossPrice: bigint
+  slippageTolerance: bigint
   validatorAddress: Address
   validationData: Bytes
-  chainId: number
 }
 
 export interface PredictOrderParams {
-  orderInfo: OrderInfo
-  pairId: number
-  duration: number
+  info: OrderInfo
+  pairId: bigint
+  duration: bigint
   entryTokenAddress: Address
-  tradeAmount: BigNumber
-  tradeAmountSqrt: BigNumber
-  marginAmount: BigNumber
+  tradeAmount: bigint
+  tradeAmountSqrt: bigint
+  marginAmount: bigint
   validatorAddress: Address
   validationData: Bytes
-  chainId: number
 }
 
 export interface SpotOrderParams {
-  orderInfo: OrderInfo
+  info: OrderInfo
   quoteToken: Address
   baseToken: Address
-  baseTokenAmount: BigNumber
-  quoteTokenAmount: BigNumber
+  baseTokenAmount: bigint
+  quoteTokenAmount: bigint
   validatorAddress: Address
   validationData: Bytes
-  chainId: number
 }
 
 export interface GammaOrderParams {
-  orderInfo: OrderInfo
-  pairId: number
+  info: OrderInfo
+  pairId: bigint
   entryTokenAddress: Address
-  tradeAmount: BigNumber
-  tradeAmountSqrt: BigNumber
-  marginAmount: BigNumber
-  hedgeInterval: BigNumber
-  sqrtPriceTrigger: BigNumber
-  maxSlippageTolerance: number
+  tradeAmount: bigint
+  tradeAmountSqrt: bigint
+  marginAmount: bigint
+  hedgeInterval: bigint
+  sqrtPriceTrigger: bigint
+  maxSlippageTolerance: bigint
   validatorAddress: Address
   validationData: Bytes
-  chainId: number
 }
 
 export abstract class BaseOrder {}

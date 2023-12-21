@@ -5,13 +5,13 @@ import {
   Witness,
 } from '@uniswap/permit2-sdk'
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
-import { BigNumber, ethers } from 'ethers'
+import { BigNumber } from 'ethers'
+import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { Address, Bytes } from '../types'
 
 import {
   ORDER_INFO_TYPES,
-  OrderInfo,
   PERMIT_WITNESS_TRANSFER_FROM_TYPES,
   PerpOrderParams,
   TOKEN_PERMISSION_TYPES,
@@ -43,20 +43,31 @@ export const PERP_ORDER_PERMIT2_TYPES = {
 } as const
 
 const PERP_ORDER_ABI = [
-  'tuple(' +
-  [
-    'tuple(address,address,uint256,uint256)',
-    'uint64',
-    'address',
-    'int256',
-    'int256',
-    'uint256',
-    'uint256',
-    'uint64',
-    'address',
-    'bytes',
-  ].join(',') +
-  ')',
+  {
+    name: 'PerpOrder',
+    type: 'tuple',
+    components: [
+      {
+        name: 'info',
+        type: 'tuple',
+        components: [
+          { name: 'market', type: 'address' },
+          { name: 'trader', type: 'address' },
+          { name: 'nonce', type: 'uint256' },
+          { name: 'deadline', type: 'uint256' },
+        ],
+      },
+      { name: 'pairId', type: 'uint64' },
+      { name: 'entryTokenAddress', type: 'address' },
+      { name: 'tradeAmount', type: 'int256' },
+      { name: 'marginAmount', type: 'int256' },
+      { name: 'takeProfitPrice', type: 'uint256' },
+      { name: 'stopLossPrice', type: 'uint256' },
+      { name: 'slippageTolerance', type: 'uint64' },
+      { name: 'validatorAddress', type: 'address' },
+      { name: 'validationData', type: 'bytes' },
+    ],
+  },
 ]
 
 export class PerpOrder {
@@ -75,75 +86,20 @@ export class PerpOrder {
   }
 
   serialize(): Bytes {
-    const abiCoder = new ethers.utils.AbiCoder()
-
-    return abiCoder.encode(PERP_ORDER_ABI, [
-      [
-        [
-          this.perpOrder.orderInfo.market,
-          this.perpOrder.orderInfo.trader,
-          this.perpOrder.orderInfo.nonce,
-          this.perpOrder.orderInfo.deadline,
-        ],
-        this.perpOrder.pairId,
-        this.perpOrder.entryTokenAddress,
-        this.perpOrder.tradeAmount,
-        this.perpOrder.marginAmount,
-        this.perpOrder.takeProfitPrice,
-        this.perpOrder.stopLossPrice,
-        this.perpOrder.slippageTolerance,
-        this.perpOrder.validatorAddress,
-        this.perpOrder.validationData,
-      ],
-    ]) as Bytes
+    return encodeAbiParameters(PERP_ORDER_ABI, [this.perpOrder])
   }
 
-  static parse(encoded: string, chainId: number, permit2?: string): PerpOrder {
-    const abiCoder = new ethers.utils.AbiCoder()
-    const decoded = abiCoder.decode(PERP_ORDER_ABI, encoded)
+  static parse(encoded: Bytes, chainId: number, permit2?: string): PerpOrder {
+    const decoded = decodeAbiParameters(PERP_ORDER_ABI, encoded)
 
-    const [
-      [
-        [market, trader, nonce, deadline],
-        pairId,
-        entryTokenAddress,
-        tradeAmount,
-        marginAmount,
-        takeProfitPrice,
-        stopLossPrice,
-        slippageTolerance,
-        validatorAddress,
-        validationData,
-      ],
-    ] = decoded
+    const order = decoded[0] as PerpOrderParams
 
-    return new PerpOrder(
-      {
-        orderInfo: new OrderInfo(market, trader, nonce, deadline.toNumber()),
-        pairId: pairId.toNumber(),
-        tradeAmount,
-        marginAmount,
-        entryTokenAddress,
-        takeProfitPrice,
-        stopLossPrice,
-        slippageTolerance: slippageTolerance.toNumber(),
-        validatorAddress,
-        validationData,
-        chainId,
-      },
-      chainId,
-      permit2
-    )
+    return new PerpOrder(order, chainId, permit2)
   }
 
-  private witnessInfo() {
+  public witnessInfo() {
     return {
-      info: {
-        market: this.perpOrder.orderInfo.market,
-        trader: this.perpOrder.orderInfo.trader,
-        nonce: this.perpOrder.orderInfo.nonce,
-        deadline: this.perpOrder.orderInfo.deadline,
-      },
+      info: this.perpOrder.info,
       pairId: this.perpOrder.pairId,
       entryTokenAddress: this.perpOrder.entryTokenAddress,
       tradeAmount: this.perpOrder.tradeAmount,
@@ -156,23 +112,30 @@ export class PerpOrder {
     }
   }
 
-  witnessInfoForViem() {
+  public witnessInfoLegacy() {
     return {
-      info: this.perpOrder.orderInfo.toWitnessDataForViem(),
-      pairId: BigInt(this.perpOrder.pairId),
+      info: {
+        market: this.perpOrder.info.market,
+        trader: this.perpOrder.info.trader,
+        nonce: BigNumber.from(this.perpOrder.info.nonce.toString()),
+        deadline: this.perpOrder.info.deadline,
+      },
+      pairId: BigNumber.from(this.perpOrder.pairId.toString()),
       entryTokenAddress: this.perpOrder.entryTokenAddress,
-      tradeAmount: BigInt(this.perpOrder.tradeAmount.toString()),
-      marginAmount: BigInt(this.perpOrder.marginAmount.toString()),
-      takeProfitPrice: BigInt(this.perpOrder.takeProfitPrice.toString()),
-      stopLossPrice: BigInt(this.perpOrder.stopLossPrice.toString()),
-      slippageTolerance: BigInt(this.perpOrder.slippageTolerance),
+      tradeAmount: BigNumber.from(this.perpOrder.tradeAmount.toString()),
+      marginAmount: BigNumber.from(this.perpOrder.marginAmount.toString()),
+      takeProfitPrice: BigNumber.from(
+        this.perpOrder.takeProfitPrice.toString()
+      ),
+      stopLossPrice: BigNumber.from(this.perpOrder.stopLossPrice.toString()),
+      slippageTolerance: this.perpOrder.slippageTolerance,
       validatorAddress: this.perpOrder.validatorAddress,
       validationData: this.perpOrder.validationData,
     }
   }
 
   /// @dev Returns the EIP712 typed data and value for ethers.js
-  permitData(): PermitTransferFromData {
+  permitDataForEthers(): PermitTransferFromData {
     return SignatureTransfer.getPermitData(
       this.toPermit(),
       this.permit2Address,
@@ -185,18 +148,17 @@ export class PerpOrder {
     return {
       permitted: {
         token: this.perpOrder.entryTokenAddress,
-        amount: this.perpOrder.marginAmount.gt(0)
-          ? this.perpOrder.marginAmount
-          : BigNumber.from(0),
+        amount:
+          this.perpOrder.marginAmount > 0n ? this.perpOrder.marginAmount : 0n,
       },
-      spender: this.perpOrder.orderInfo.market,
-      nonce: this.perpOrder.orderInfo.nonce,
-      deadline: this.perpOrder.orderInfo.deadline,
+      spender: this.perpOrder.info.market,
+      nonce: this.perpOrder.info.nonce,
+      deadline: this.perpOrder.info.deadline,
     }
   }
 
   /// @dev Returns the EIP712 typed data and value for viem
-  permitDataForViem() {
+  permitData() {
     const permit = this.toPermit()
 
     return {
@@ -208,29 +170,20 @@ export class PerpOrder {
       },
       types: PERP_ORDER_PERMIT2_TYPES,
       message: {
-        deadline: BigInt(permit.deadline.toString()),
-        nonce: BigInt(permit.nonce.toString()),
-        permitted: {
-          token: permit.permitted.token,
-          amount: BigInt(permit.permitted.amount.toString()),
-        },
+        deadline: permit.deadline,
+        nonce: permit.nonce,
+        permitted: permit.permitted,
         spender: permit.spender,
-        witness: this.witnessInfoForViem(),
+        witness: this.witnessInfo(),
       },
     }
   }
 
   private witness(): Witness {
     return {
-      witness: this.witnessInfo(),
+      witness: this.witnessInfoLegacy(),
       witnessTypeName: 'PerpOrder',
       witnessType: PERP_ORDER_TYPES,
     }
-  }
-
-  hash(): string {
-    return ethers.utils._TypedDataEncoder
-      .from(PERP_ORDER_TYPES)
-      .hash(this.witnessInfo())
   }
 }

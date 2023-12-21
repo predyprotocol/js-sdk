@@ -14,6 +14,7 @@ describe('PerpOrder', () => {
           takeProfitPrice: 0n,
           stopLossPrice: 0n,
           slippageTolerance: 0n,
+          leverage: 0,
           validatorAddress: ZERO_ADDRESS,
           validationData: '0x',
           info: {
@@ -49,6 +50,7 @@ describe('PerpOrder', () => {
           takeProfitPrice: 0n,
           stopLossPrice: 0n,
           slippageTolerance: 0n,
+          leverage: 0,
           validatorAddress: ZERO_ADDRESS,
           validationData: '0x',
           info: {

@@ -19,6 +19,7 @@ const PERP_ORDER_TYPES_SINGLE = [
   { name: 'takeProfitPrice', type: 'uint256' },
   { name: 'stopLossPrice', type: 'uint256' },
   { name: 'slippageTolerance', type: 'uint64' },
+  { name: 'leverage', type: 'uint8' },
   { name: 'validatorAddress', type: 'address' },
   { name: 'validationData', type: 'bytes' },
 ]
@@ -57,6 +58,7 @@ const PERP_ORDER_ABI = [
       { name: 'takeProfitPrice', type: 'uint256' },
       { name: 'stopLossPrice', type: 'uint256' },
       { name: 'slippageTolerance', type: 'uint64' },
+      { name: 'leverage', type: 'uint8' },
       { name: 'validatorAddress', type: 'address' },
       { name: 'validationData', type: 'bytes' },
     ],
@@ -100,6 +102,7 @@ export class PerpOrder {
       takeProfitPrice: this.perpOrder.takeProfitPrice,
       stopLossPrice: this.perpOrder.stopLossPrice,
       slippageTolerance: this.perpOrder.slippageTolerance,
+      leverage: this.perpOrder.leverage,
       validatorAddress: this.perpOrder.validatorAddress,
       validationData: this.perpOrder.validationData,
     }

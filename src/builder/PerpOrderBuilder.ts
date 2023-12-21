@@ -6,11 +6,11 @@ import { PerpOrderParams } from '../order/types'
 import { Address } from '../types'
 
 export class PerpOrderBuilder {
-  protected gammaOrder: Partial<PerpOrderParams>
+  protected perpOrder: Partial<PerpOrderParams>
 
   constructor(private chainId: number, private permit2Address?: string) {
     // set defaults
-    this.gammaOrder = {
+    this.perpOrder = {
       takeProfitPrice: 0n,
       stopLossPrice: 0n,
       validatorAddress: ZERO_ADDRESS,
@@ -25,82 +25,88 @@ export class PerpOrderBuilder {
   }
 
   market(market: Address): PerpOrderBuilder {
-    if (this.gammaOrder.info) {
-      this.gammaOrder.info.market = market
+    if (this.perpOrder.info) {
+      this.perpOrder.info.market = market
     }
 
     return this
   }
 
   trader(trader: Address): PerpOrderBuilder {
-    if (this.gammaOrder.info) {
-      this.gammaOrder.info.trader = trader
+    if (this.perpOrder.info) {
+      this.perpOrder.info.trader = trader
     }
 
     return this
   }
 
   deadline(deadline: bigint): PerpOrderBuilder {
-    if (this.gammaOrder.info) {
-      this.gammaOrder.info.deadline = deadline
+    if (this.perpOrder.info) {
+      this.perpOrder.info.deadline = deadline
     }
 
     return this
   }
 
   nonce(nonce: bigint): PerpOrderBuilder {
-    if (this.gammaOrder.info) {
-      this.gammaOrder.info.nonce = nonce
+    if (this.perpOrder.info) {
+      this.perpOrder.info.nonce = nonce
     }
 
     return this
   }
 
   tradeAmount(tradeAmount: bigint): PerpOrderBuilder {
-    this.gammaOrder.tradeAmount = tradeAmount
+    this.perpOrder.tradeAmount = tradeAmount
 
     return this
   }
 
   entryTokenAddress(entryTokenAddress: Address): PerpOrderBuilder {
-    this.gammaOrder.entryTokenAddress = entryTokenAddress
+    this.perpOrder.entryTokenAddress = entryTokenAddress
 
     return this
   }
 
   pairId(pairId: bigint): PerpOrderBuilder {
-    this.gammaOrder.pairId = pairId
+    this.perpOrder.pairId = pairId
 
     return this
   }
 
   marginAmount(marginAmount: bigint): PerpOrderBuilder {
-    this.gammaOrder.marginAmount = marginAmount
+    this.perpOrder.marginAmount = marginAmount
 
     return this
   }
 
   takeProfitPrice(takeProfitPrice: bigint): PerpOrderBuilder {
-    this.gammaOrder.takeProfitPrice = takeProfitPrice
+    this.perpOrder.takeProfitPrice = takeProfitPrice
 
     return this
   }
 
   stopLossPrice(stopLossPrice: bigint): PerpOrderBuilder {
-    this.gammaOrder.stopLossPrice = stopLossPrice
+    this.perpOrder.stopLossPrice = stopLossPrice
 
     return this
   }
 
   slippageTolerance(slippageTolerance: bigint): PerpOrderBuilder {
-    this.gammaOrder.slippageTolerance = slippageTolerance
+    this.perpOrder.slippageTolerance = slippageTolerance
+
+    return this
+  }
+
+  leverage(leverage: number): PerpOrderBuilder {
+    this.perpOrder.leverage = leverage
 
     return this
   }
 
   build(): PerpOrder {
     return new PerpOrder(
-      Object.assign(this.gammaOrder),
+      Object.assign(this.perpOrder),
       this.chainId,
       this.permit2Address
     )
@@ -116,7 +122,7 @@ export class PerpDutchOrderBuilder extends PerpOrderBuilder {
     super(chainId, permit2Address)
 
     if (validatorAddress) {
-      this.gammaOrder.validatorAddress = validatorAddress || ZERO_ADDRESS
+      this.perpOrder.validatorAddress = validatorAddress || ZERO_ADDRESS
     }
   }
 
@@ -133,7 +139,7 @@ export class PerpDutchOrderBuilder extends PerpOrderBuilder {
       endTime
     )
 
-    this.gammaOrder.validationData = validationData.serialize()
+    this.perpOrder.validationData = validationData.serialize()
 
     return this
   }
@@ -148,7 +154,7 @@ export class PerpLimitOrderBuilder extends PerpOrderBuilder {
     super(chainId, permit2Address)
 
     if (validatorAddress) {
-      this.gammaOrder.validatorAddress = validatorAddress || ZERO_ADDRESS
+      this.perpOrder.validatorAddress = validatorAddress || ZERO_ADDRESS
     }
   }
 
@@ -163,7 +169,7 @@ export class PerpLimitOrderBuilder extends PerpOrderBuilder {
       0n
     )
 
-    this.gammaOrder.validationData = validationData.serialize()
+    this.perpOrder.validationData = validationData.serialize()
 
     return this
   }

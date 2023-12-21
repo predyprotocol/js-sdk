@@ -16,6 +16,7 @@ export interface PerpOrderParams {
   takeProfitPrice: bigint
   stopLossPrice: bigint
   slippageTolerance: bigint
+  leverage: number
   validatorAddress: Address
   validationData: Bytes
 }
@@ -56,7 +57,7 @@ export interface GammaOrderParams {
   validationData: Bytes
 }
 
-export abstract class BaseOrder {}
+export abstract class BaseOrder { }
 
 export abstract class BaseValidationData {
   abstract serialize(): Bytes

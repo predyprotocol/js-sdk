@@ -535,6 +535,11 @@ export const PerpMarketABI = [
             name: 'slippageTolerance',
             type: 'uint64',
           },
+          {
+            internalType: 'uint8',
+            name: 'lastLeverage',
+            type: 'uint8',
+          },
         ],
         internalType: 'struct PerpMarket.UserPosition',
         name: 'userPosition',
@@ -929,6 +934,11 @@ export const PerpMarketABI = [
             type: 'uint64',
           },
           {
+            internalType: 'uint8',
+            name: 'leverage',
+            type: 'uint8',
+          },
+          {
             internalType: 'address',
             name: 'validatorAddress',
             type: 'address',
@@ -1039,6 +1049,11 @@ export const PerpMarketABI = [
         internalType: 'uint64',
         name: 'slippageTolerance',
         type: 'uint64',
+      },
+      {
+        internalType: 'uint8',
+        name: 'lastLeverage',
+        type: 'uint8',
       },
     ],
     stateMutability: 'view',

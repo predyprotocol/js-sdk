@@ -90,6 +90,11 @@ export const PerpMarketQuoterABI = [
             type: 'uint64',
           },
           {
+            internalType: 'uint8',
+            name: 'leverage',
+            type: 'uint8',
+          },
+          {
             internalType: 'address',
             name: 'validatorAddress',
             type: 'address',

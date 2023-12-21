@@ -3,7 +3,7 @@ export const PredictMarketQuoterABI = [
     inputs: [
       {
         internalType: 'contract PredictMarket',
-        name: '_perpMarket',
+        name: '_predictMarket',
         type: 'address',
       },
     ],

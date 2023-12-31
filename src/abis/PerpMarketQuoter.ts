@@ -113,7 +113,7 @@ export const PerpMarketQuoterABI = [
         components: [
           {
             internalType: 'address',
-            name: 'settlementContractAddress',
+            name: 'contractAddress',
             type: 'address',
           },
           {
@@ -121,10 +121,30 @@ export const PerpMarketQuoterABI = [
             name: 'encodedData',
             type: 'bytes',
           },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
         ],
-        internalType: 'struct ISettlement.SettlementData',
-        name: 'settlementData',
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
         type: 'tuple',
+      },
+      {
+        internalType: 'address',
+        name: 'filler',
+        type: 'address',
       },
     ],
     name: 'quoteExecuteOrder',

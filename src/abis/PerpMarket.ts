@@ -1,29 +1,125 @@
 export const PerpMarketABI = [
   {
+    anonymous: false,
     inputs: [
       {
-        internalType: 'contract IPredyPool',
-        name: 'predyPool',
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
         type: 'address',
       },
       {
+        indexed: true,
         internalType: 'address',
-        name: 'permit2Address',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'whitelistFiller',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'quoterAddress',
+        name: 'newOwner',
         type: 'address',
       },
     ],
+    name: 'OwnershipTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousImplementation',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newImplementation',
+        type: 'address',
+      },
+    ],
+    name: 'ProxyImplementationUpdated',
+    type: 'event',
+  },
+  {
+    stateMutability: 'payable',
+    type: 'fallback',
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes4',
+        name: 'id',
+        type: 'bytes4',
+      },
+    ],
+    name: 'supportsInterface',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'transferOwnership',
+    outputs: [],
     stateMutability: 'nonpayable',
-    type: 'constructor',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newImplementation',
+        type: 'address',
+      },
+    ],
+    name: 'upgradeTo',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newImplementation',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+    ],
+    name: 'upgradeToAndCall',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    stateMutability: 'payable',
+    type: 'receive',
   },
   {
     inputs: [],
@@ -66,22 +162,21 @@ export const PerpMarketABI = [
     type: 'error',
   },
   {
+    inputs: [],
+    name: 'TPSLConditionDoesNotMatch',
+    type: 'error',
+  },
+  {
     anonymous: false,
     inputs: [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
+        indexed: false,
+        internalType: 'uint8',
+        name: 'version',
+        type: 'uint8',
       },
     ],
-    name: 'OwnershipTransferred',
+    name: 'Initialized',
     type: 'event',
   },
   {
@@ -287,7 +382,7 @@ export const PerpMarketABI = [
         components: [
           {
             internalType: 'address',
-            name: 'settlementContractAddress',
+            name: 'contractAddress',
             type: 'address',
           },
           {
@@ -295,9 +390,24 @@ export const PerpMarketABI = [
             name: 'encodedData',
             type: 'bytes',
           },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
         ],
-        internalType: 'struct ISettlement.SettlementData',
-        name: 'settlementData',
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
         type: 'tuple',
       },
     ],
@@ -384,6 +494,131 @@ export const PerpMarketABI = [
   {
     inputs: [
       {
+        internalType: 'uint256',
+        name: 'vaultId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'closeRatio',
+        type: 'uint256',
+      },
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'contractAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'bytes',
+            name: 'encodedData',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
+        ],
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
+        type: 'tuple',
+      },
+    ],
+    name: 'execLiquidationCall',
+    outputs: [
+      {
+        components: [
+          {
+            components: [
+              {
+                internalType: 'int256',
+                name: 'perpEntryUpdate',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'sqrtEntryUpdate',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'sqrtRebalanceEntryUpdateUnderlying',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'sqrtRebalanceEntryUpdateStable',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'perpPayoff',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'sqrtPayoff',
+                type: 'int256',
+              },
+            ],
+            internalType: 'struct IPredyPool.Payoff',
+            name: 'payoff',
+            type: 'tuple',
+          },
+          {
+            internalType: 'uint256',
+            name: 'vaultId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
+          {
+            internalType: 'int256',
+            name: 'minMargin',
+            type: 'int256',
+          },
+          {
+            internalType: 'int256',
+            name: 'averagePrice',
+            type: 'int256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'sqrtTwap',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'sqrtPrice',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct IPredyPool.TradeResult',
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         components: [
           {
             internalType: 'bytes',
@@ -404,7 +639,7 @@ export const PerpMarketABI = [
         components: [
           {
             internalType: 'address',
-            name: 'settlementContractAddress',
+            name: 'contractAddress',
             type: 'address',
           },
           {
@@ -412,9 +647,24 @@ export const PerpMarketABI = [
             name: 'encodedData',
             type: 'bytes',
           },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
         ],
-        internalType: 'struct ISettlement.SettlementData',
-        name: 'settlementData',
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
         type: 'tuple',
       },
     ],
@@ -741,16 +991,59 @@ export const PerpMarketABI = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'owner',
-    outputs: [
+    inputs: [
+      {
+        internalType: 'contract IPredyPool',
+        name: 'predyPool',
+        type: 'address',
+      },
       {
         internalType: 'address',
-        name: '',
+        name: 'permit2Address',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'whitelistFiller',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'quoterAddress',
         type: 'address',
       },
     ],
-    stateMutability: 'view',
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'quoteToken',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'baseToken',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'settlementData',
+        type: 'bytes',
+      },
+      {
+        internalType: 'int256',
+        name: 'baseAmountDelta',
+        type: 'int256',
+      },
+    ],
+    name: 'predySettlementCallback',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -957,7 +1250,7 @@ export const PerpMarketABI = [
         components: [
           {
             internalType: 'address',
-            name: 'settlementContractAddress',
+            name: 'contractAddress',
             type: 'address',
           },
           {
@@ -965,10 +1258,30 @@ export const PerpMarketABI = [
             name: 'encodedData',
             type: 'bytes',
           },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
         ],
-        internalType: 'struct ISettlement.SettlementData',
-        name: 'settlementData',
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
         type: 'tuple',
+      },
+      {
+        internalType: 'address',
+        name: 'filler',
+        type: 'address',
       },
     ],
     name: 'quoteExecuteOrder',
@@ -979,13 +1292,51 @@ export const PerpMarketABI = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
+        internalType: 'uint256',
+        name: 'pairId',
+        type: 'uint256',
+      },
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'contractAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'bytes',
+            name: 'encodedData',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
+        ],
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
+        type: 'tuple',
       },
     ],
-    name: 'transferOwnership',
-    outputs: [],
+    name: 'reallocate',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: 'relocationOccurred',
+        type: 'bool',
+      },
+    ],
     stateMutability: 'nonpayable',
     type: 'function',
   },
@@ -1071,5 +1422,26 @@ export const PerpMarketABI = [
     ],
     stateMutability: 'view',
     type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'implementationAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'ownerAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'constructor',
   },
 ] as const

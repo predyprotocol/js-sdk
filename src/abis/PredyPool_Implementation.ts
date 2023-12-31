@@ -184,24 +184,6 @@ export const PredyPool_ImplementationABI = [
   {
     inputs: [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: 'trader',
-        type: 'address',
-      },
-    ],
-    name: 'addWhitelistAddress',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
         internalType: 'address',
         name: 'trader',
         type: 'address',
@@ -274,21 +256,9 @@ export const PredyPool_ImplementationABI = [
         type: 'uint256',
       },
       {
-        components: [
-          {
-            internalType: 'address',
-            name: 'settlementContractAddress',
-            type: 'address',
-          },
-          {
-            internalType: 'bytes',
-            name: 'encodedData',
-            type: 'bytes',
-          },
-        ],
-        internalType: 'struct ISettlement.SettlementData',
+        internalType: 'bytes',
         name: 'settlementData',
-        type: 'tuple',
+        type: 'bytes',
       },
     ],
     name: 'execLiquidationCall',
@@ -1045,21 +1015,9 @@ export const PredyPool_ImplementationABI = [
         type: 'uint256',
       },
       {
-        components: [
-          {
-            internalType: 'address',
-            name: 'settlementContractAddress',
-            type: 'address',
-          },
-          {
-            internalType: 'bytes',
-            name: 'encodedData',
-            type: 'bytes',
-          },
-        ],
-        internalType: 'struct ISettlement.SettlementData',
+        internalType: 'bytes',
         name: 'settlementData',
-        type: 'tuple',
+        type: 'bytes',
       },
     ],
     name: 'reallocate',
@@ -1336,21 +1294,9 @@ export const PredyPool_ImplementationABI = [
         type: 'tuple',
       },
       {
-        components: [
-          {
-            internalType: 'address',
-            name: 'settlementContractAddress',
-            type: 'address',
-          },
-          {
-            internalType: 'bytes',
-            name: 'encodedData',
-            type: 'bytes',
-          },
-        ],
-        internalType: 'struct ISettlement.SettlementData',
+        internalType: 'bytes',
         name: 'settlementData',
-        type: 'tuple',
+        type: 'bytes',
       },
     ],
     name: 'trade',
@@ -1618,6 +1564,29 @@ export const PredyPool_ImplementationABI = [
       },
     ],
     name: 'updateRecepient',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'pairId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'trader',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: 'enabled',
+        type: 'bool',
+      },
+    ],
+    name: 'updateWhitelistAddress',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

@@ -1,8 +1,6 @@
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
-
 import { Address, Bytes } from '../types'
-
 import {
   GammaOrderParams,
   ORDER_INFO_TYPES,
@@ -19,6 +17,7 @@ const GAMMA_ORDER_TYPES_SINGLE = [
   { name: 'marginAmount', type: 'int256' },
   { name: 'hedgeInterval', type: 'uint256' },
   { name: 'sqrtPriceTrigger', type: 'uint256' },
+  { name: 'minSlippageTolerance', type: 'uint64' },
   { name: 'maxSlippageTolerance', type: 'uint64' },
   { name: 'validatorAddress', type: 'address' },
   { name: 'validationData', type: 'bytes' },
@@ -58,6 +57,7 @@ const GAMMA_ORDER_ABI = [
       { name: 'marginAmount', type: 'int256' },
       { name: 'hedgeInterval', type: 'uint256' },
       { name: 'sqrtPriceTrigger', type: 'uint256' },
+      { name: 'minSlippageTolerance', type: 'uint64' },
       { name: 'maxSlippageTolerance', type: 'uint64' },
       { name: 'validatorAddress', type: 'address' },
       { name: 'validationData', type: 'bytes' },
@@ -102,6 +102,7 @@ export class GammaOrder {
       marginAmount: this.gammaOrder.marginAmount,
       hedgeInterval: this.gammaOrder.hedgeInterval,
       sqrtPriceTrigger: this.gammaOrder.sqrtPriceTrigger,
+      minSlippageTolerance: this.gammaOrder.minSlippageTolerance,
       maxSlippageTolerance: this.gammaOrder.maxSlippageTolerance,
       validatorAddress: this.gammaOrder.validatorAddress,
       validationData: this.gammaOrder.validationData,

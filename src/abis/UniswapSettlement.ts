@@ -2,11 +2,6 @@ export const UniswapSettlementABI = [
   {
     inputs: [
       {
-        internalType: 'contract ILendingPool',
-        name: 'predyPool',
-        type: 'address',
-      },
-      {
         internalType: 'address',
         name: 'swapRouterAddress',
         type: 'address',
@@ -16,99 +11,31 @@ export const UniswapSettlementABI = [
         name: 'quoterAddress',
         type: 'address',
       },
-      {
-        internalType: 'address',
-        name: '_filler',
-        type: 'address',
-      },
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
   },
   {
-    inputs: [],
-    name: 'CallerIsNotLendingPool',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'filler',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [
       {
         internalType: 'bytes',
-        name: 'path',
+        name: 'data',
         type: 'bytes',
       },
       {
         internalType: 'uint256',
-        name: 'amountOutMinimumOrInMaximum',
+        name: 'amountIn',
         type: 'uint256',
       },
-      {
-        internalType: 'address',
-        name: 'quoteTokenAddress',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'baseTokenAddress',
-        type: 'address',
-      },
-      {
-        internalType: 'int256',
-        name: 'fee',
-        type: 'int256',
-      },
     ],
-    name: 'getSettlementParams',
+    name: 'quoteSwapExactIn',
     outputs: [
       {
-        components: [
-          {
-            internalType: 'address',
-            name: 'settlementContractAddress',
-            type: 'address',
-          },
-          {
-            internalType: 'bytes',
-            name: 'encodedData',
-            type: 'bytes',
-          },
-        ],
-        internalType: 'struct ISettlement.SettlementData',
-        name: '',
-        type: 'tuple',
+        internalType: 'uint256',
+        name: 'amountOut',
+        type: 'uint256',
       },
     ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'bytes',
-        name: 'settlementData',
-        type: 'bytes',
-      },
-      {
-        internalType: 'int256',
-        name: 'baseAmountDelta',
-        type: 'int256',
-      },
-    ],
-    name: 'predySettlementCallback',
-    outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
@@ -116,17 +43,111 @@ export const UniswapSettlementABI = [
     inputs: [
       {
         internalType: 'bytes',
-        name: 'settlementData',
+        name: 'data',
         type: 'bytes',
       },
       {
-        internalType: 'int256',
-        name: 'baseAmountDelta',
-        type: 'int256',
+        internalType: 'uint256',
+        name: 'amountOut',
+        type: 'uint256',
       },
     ],
-    name: 'quoteSettlement',
-    outputs: [],
+    name: 'quoteSwapExactOut',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'amountIn',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'baseToken',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amountIn',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amountOutMinimum',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'recipient',
+        type: 'address',
+      },
+    ],
+    name: 'swapExactIn',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'amountOut',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'quoteToken',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amountOut',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amountInMaximum',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'recipient',
+        type: 'address',
+      },
+    ],
+    name: 'swapExactOut',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'amountIn',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'nonpayable',
     type: 'function',
   },

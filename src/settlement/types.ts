@@ -1,10 +1,9 @@
 import { Address, Bytes } from '../types'
 
 export interface SettlementData {
-  settlementContractAddress: Address
+  contractAddress: Address
   encodedData: Bytes
-}
-
-export abstract class BaseSettlement {
-  abstract serialize(): SettlementData
+  maxQuoteAmount: bigint
+  price: bigint
+  fee: bigint
 }

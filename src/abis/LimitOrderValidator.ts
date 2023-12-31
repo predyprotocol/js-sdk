@@ -108,7 +108,7 @@ export const LimitOrderValidatorABI = [
     ],
     name: 'validate',
     outputs: [],
-    stateMutability: 'view',
+    stateMutability: 'pure',
     type: 'function',
   },
 ] as const

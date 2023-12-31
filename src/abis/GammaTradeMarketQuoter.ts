@@ -91,6 +91,11 @@ export const GammaTradeMarketQuoterABI = [
           },
           {
             internalType: 'uint64',
+            name: 'minSlippageTolerance',
+            type: 'uint64',
+          },
+          {
+            internalType: 'uint64',
             name: 'maxSlippageTolerance',
             type: 'uint64',
           },
@@ -113,7 +118,7 @@ export const GammaTradeMarketQuoterABI = [
         components: [
           {
             internalType: 'address',
-            name: 'settlementContractAddress',
+            name: 'contractAddress',
             type: 'address',
           },
           {
@@ -121,8 +126,23 @@ export const GammaTradeMarketQuoterABI = [
             name: 'encodedData',
             type: 'bytes',
           },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
         ],
-        internalType: 'struct ISettlement.SettlementData',
+        internalType: 'struct IFillerMarket.SettlementParams',
         name: 'settlementData',
         type: 'tuple',
       },

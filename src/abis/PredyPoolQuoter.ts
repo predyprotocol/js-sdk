@@ -6,11 +6,6 @@ export const PredyPoolQuoterABI = [
         name: '_predyPool',
         type: 'address',
       },
-      {
-        internalType: 'address',
-        name: 'revertSettlement',
-        type: 'address',
-      },
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
@@ -19,6 +14,34 @@ export const PredyPoolQuoterABI = [
     inputs: [],
     name: 'CallerIsNotPredyPool',
     type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'quoteToken',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'baseToken',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+      {
+        internalType: 'int256',
+        name: 'baseAmountDelta',
+        type: 'int256',
+      },
+    ],
+    name: 'predySettlementCallback',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
@@ -609,7 +632,7 @@ export const PredyPoolQuoterABI = [
         components: [
           {
             internalType: 'address',
-            name: 'settlementContractAddress',
+            name: 'contractAddress',
             type: 'address',
           },
           {
@@ -617,9 +640,24 @@ export const PredyPoolQuoterABI = [
             name: 'encodedData',
             type: 'bytes',
           },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
         ],
-        internalType: 'struct ISettlement.SettlementData',
-        name: 'settlementData',
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
         type: 'tuple',
       },
     ],

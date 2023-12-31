@@ -278,7 +278,7 @@ export const GammaTradeMarketABI = [
         components: [
           {
             internalType: 'address',
-            name: 'settlementContractAddress',
+            name: 'contractAddress',
             type: 'address',
           },
           {
@@ -286,9 +286,24 @@ export const GammaTradeMarketABI = [
             name: 'encodedData',
             type: 'bytes',
           },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
         ],
-        internalType: 'struct ISettlement.SettlementData',
-        name: 'settlementData',
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
         type: 'tuple',
       },
     ],
@@ -375,6 +390,131 @@ export const GammaTradeMarketABI = [
   {
     inputs: [
       {
+        internalType: 'uint256',
+        name: 'vaultId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'closeRatio',
+        type: 'uint256',
+      },
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'contractAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'bytes',
+            name: 'encodedData',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
+        ],
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
+        type: 'tuple',
+      },
+    ],
+    name: 'execLiquidationCall',
+    outputs: [
+      {
+        components: [
+          {
+            components: [
+              {
+                internalType: 'int256',
+                name: 'perpEntryUpdate',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'sqrtEntryUpdate',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'sqrtRebalanceEntryUpdateUnderlying',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'sqrtRebalanceEntryUpdateStable',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'perpPayoff',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'sqrtPayoff',
+                type: 'int256',
+              },
+            ],
+            internalType: 'struct IPredyPool.Payoff',
+            name: 'payoff',
+            type: 'tuple',
+          },
+          {
+            internalType: 'uint256',
+            name: 'vaultId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
+          {
+            internalType: 'int256',
+            name: 'minMargin',
+            type: 'int256',
+          },
+          {
+            internalType: 'int256',
+            name: 'averagePrice',
+            type: 'int256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'sqrtTwap',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'sqrtPrice',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct IPredyPool.TradeResult',
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         components: [
           {
             internalType: 'bytes',
@@ -395,7 +535,7 @@ export const GammaTradeMarketABI = [
         components: [
           {
             internalType: 'address',
-            name: 'settlementContractAddress',
+            name: 'contractAddress',
             type: 'address',
           },
           {
@@ -403,9 +543,24 @@ export const GammaTradeMarketABI = [
             name: 'encodedData',
             type: 'bytes',
           },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
         ],
-        internalType: 'struct ISettlement.SettlementData',
-        name: 'settlementData',
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
         type: 'tuple',
       },
     ],
@@ -530,6 +685,11 @@ export const GammaTradeMarketABI = [
             internalType: 'uint256',
             name: 'sqrtPriceTrigger',
             type: 'uint256',
+          },
+          {
+            internalType: 'uint64',
+            name: 'minSlippageTolerance',
+            type: 'uint64',
           },
           {
             internalType: 'uint64',
@@ -752,6 +912,34 @@ export const GammaTradeMarketABI = [
   {
     inputs: [
       {
+        internalType: 'address',
+        name: 'quoteToken',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'baseToken',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'settlementData',
+        type: 'bytes',
+      },
+      {
+        internalType: 'int256',
+        name: 'baseAmountDelta',
+        type: 'int256',
+      },
+    ],
+    name: 'predySettlementCallback',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         components: [
           {
             internalType: 'uint256',
@@ -931,6 +1119,11 @@ export const GammaTradeMarketABI = [
           },
           {
             internalType: 'uint64',
+            name: 'minSlippageTolerance',
+            type: 'uint64',
+          },
+          {
+            internalType: 'uint64',
             name: 'maxSlippageTolerance',
             type: 'uint64',
           },
@@ -953,7 +1146,7 @@ export const GammaTradeMarketABI = [
         components: [
           {
             internalType: 'address',
-            name: 'settlementContractAddress',
+            name: 'contractAddress',
             type: 'address',
           },
           {
@@ -961,14 +1154,80 @@ export const GammaTradeMarketABI = [
             name: 'encodedData',
             type: 'bytes',
           },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
         ],
-        internalType: 'struct ISettlement.SettlementData',
-        name: 'settlementData',
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
         type: 'tuple',
       },
     ],
     name: 'quoteExecuteOrder',
     outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'pairId',
+        type: 'uint256',
+      },
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'contractAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'bytes',
+            name: 'encodedData',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
+        ],
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
+        type: 'tuple',
+      },
+    ],
+    name: 'reallocate',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: 'relocationOccurred',
+        type: 'bool',
+      },
+    ],
     stateMutability: 'nonpayable',
     type: 'function',
   },
@@ -1050,6 +1309,11 @@ export const GammaTradeMarketABI = [
         internalType: 'uint256',
         name: 'sqrtPriceTrigger',
         type: 'uint256',
+      },
+      {
+        internalType: 'uint64',
+        name: 'minSlippageTolerance',
+        type: 'uint64',
       },
       {
         internalType: 'uint64',

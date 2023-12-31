@@ -82,11 +82,6 @@ export const SpotDutchOrderValidatorABI = [
       },
       {
         internalType: 'int256',
-        name: 'baseTokenAmount',
-        type: 'int256',
-      },
-      {
-        internalType: 'int256',
         name: 'quoteTokenAmount',
         type: 'int256',
       },

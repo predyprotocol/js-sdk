@@ -52,6 +52,7 @@ export interface GammaOrderParams {
   marginAmount: bigint
   hedgeInterval: bigint
   sqrtPriceTrigger: bigint
+  minSlippageTolerance: bigint
   maxSlippageTolerance: bigint
   validatorAddress: Address
   validationData: Bytes

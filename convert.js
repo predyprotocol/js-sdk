@@ -16,10 +16,12 @@ const sourceAbis = fs.readdirSync(source).map(filename => {
   }
 }).filter(item => item !== null)
 
+console.log(`${sourceAbis.length} contracts found`)
+
 sourceAbis.forEach(item => {
   fs.writeFileSync(
     path.join(__dirname, './src/abis/', item.contractName + '.ts'),
-    `export const ${item.contractName}ABI = ${JSON.stringify(item.body.abi, undefined, 2)} as const\n`
+    `export const ${item.contractName}ABI = ${JSON.stringify(item.body.abi, undefined, 2)} as const \n`
   )
 })
 

@@ -31,17 +31,6 @@ export const SpotMarketABI = [
     type: 'error',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    name: 'LockedBy',
-    type: 'error',
-  },
-  {
     inputs: [],
     name: 'RequiredQuoteAmountExceedsMax',
     type: 'error',
@@ -123,7 +112,7 @@ export const SpotMarketABI = [
         components: [
           {
             internalType: 'address',
-            name: 'settlementContractAddress',
+            name: 'contractAddress',
             type: 'address',
           },
           {
@@ -131,9 +120,24 @@ export const SpotMarketABI = [
             name: 'encodedData',
             type: 'bytes',
           },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
         ],
-        internalType: 'struct ISettlement.SettlementData',
-        name: 'settlementData',
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
         type: 'tuple',
       },
     ],
@@ -151,22 +155,44 @@ export const SpotMarketABI = [
   {
     inputs: [
       {
-        internalType: 'bool',
-        name: 'isQuoteAsset',
-        type: 'bool',
+        components: [
+          {
+            internalType: 'address',
+            name: 'contractAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'bytes',
+            name: 'encodedData',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'fee',
+            type: 'int256',
+          },
+        ],
+        internalType: 'struct IFillerMarket.SettlementParams',
+        name: 'settlementParams',
+        type: 'tuple',
       },
       {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
+        internalType: 'int256',
+        name: 'baseAmountDelta',
+        type: 'int256',
       },
     ],
-    name: 'take',
+    name: 'quoteSettlement',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

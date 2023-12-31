@@ -1,27 +1,6 @@
-export const PredictMarketABI = [
+export const PerpMarket_ImplementationABI = [
   {
-    inputs: [
-      {
-        internalType: 'contract IPredyPool',
-        name: 'predyPool',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'permit2Address',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'whitelistFiller',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'quoterAddress',
-        type: 'address',
-      },
-    ],
+    inputs: [],
     stateMutability: 'nonpayable',
     type: 'constructor',
   },
@@ -37,22 +16,7 @@ export const PredictMarketABI = [
   },
   {
     inputs: [],
-    name: 'CloseAfterExpiration',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'CloseBeforeExpiration',
-    type: 'error',
-  },
-  {
-    inputs: [],
     name: 'DeadlinePassed',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'DurationTooLong',
     type: 'error',
   },
   {
@@ -63,11 +27,6 @@ export const PredictMarketABI = [
   {
     inputs: [],
     name: 'InvalidMarket',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'NullOwner',
     type: 'error',
   },
   {
@@ -86,38 +45,43 @@ export const PredictMarketABI = [
     type: 'error',
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
-    ],
-    name: 'OwnershipTransferred',
-    type: 'event',
+    inputs: [],
+    name: 'TPSLConditionDoesNotMatch',
+    type: 'error',
   },
   {
     anonymous: false,
     inputs: [
       {
         indexed: false,
-        internalType: 'uint256',
-        name: 'vaultId',
-        type: 'uint256',
+        internalType: 'uint8',
+        name: 'version',
+        type: 'uint8',
+      },
+    ],
+    name: 'Initialized',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'trader',
+        type: 'address',
       },
       {
         indexed: false,
         internalType: 'uint256',
-        name: 'closeValue',
+        name: 'pairId',
         type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'int256',
+        name: 'tradeAmount',
+        type: 'int256',
       },
       {
         components: [
@@ -163,8 +127,14 @@ export const PredictMarketABI = [
         name: 'fee',
         type: 'int256',
       },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'closeValue',
+        type: 'uint256',
+      },
     ],
-    name: 'PredictPositionClosed',
+    name: 'PerpClosedByTPSLOrder',
     type: 'event',
   },
   {
@@ -172,12 +142,6 @@ export const PredictMarketABI = [
     inputs: [
       {
         indexed: true,
-        internalType: 'uint256',
-        name: 'vaultId',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
         internalType: 'address',
         name: 'trader',
         type: 'address',
@@ -191,8 +155,45 @@ export const PredictMarketABI = [
       {
         indexed: false,
         internalType: 'uint256',
-        name: 'openValue',
+        name: 'takeProfitPrice',
         type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'stopLossPrice',
+        type: 'uint256',
+      },
+    ],
+    name: 'PerpTPSLOrderUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'trader',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'pairId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'vaultId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'int256',
+        name: 'tradeAmount',
+        type: 'int256',
       },
       {
         components: [
@@ -234,38 +235,31 @@ export const PredictMarketABI = [
       },
       {
         indexed: false,
-        internalType: 'uint256',
-        name: 'expiration',
-        type: 'uint256',
+        internalType: 'int256',
+        name: 'fee',
+        type: 'int256',
       },
       {
         indexed: false,
-        internalType: 'uint256',
-        name: 'duration',
-        type: 'uint256',
+        internalType: 'int256',
+        name: 'marginAmount',
+        type: 'int256',
       },
     ],
-    name: 'PredictPositionOpened',
+    name: 'PerpTraded',
     type: 'event',
   },
   {
     inputs: [
       {
-        components: [
-          {
-            internalType: 'bytes',
-            name: 'order',
-            type: 'bytes',
-          },
-          {
-            internalType: 'bytes',
-            name: 'sig',
-            type: 'bytes',
-          },
-        ],
-        internalType: 'struct IFillerMarket.SignedOrder',
-        name: 'order',
-        type: 'tuple',
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'pairId',
+        type: 'uint256',
       },
       {
         components: [
@@ -301,126 +295,6 @@ export const PredictMarketABI = [
       },
     ],
     name: 'close',
-    outputs: [
-      {
-        components: [
-          {
-            components: [
-              {
-                internalType: 'int256',
-                name: 'perpEntryUpdate',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'sqrtEntryUpdate',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'sqrtRebalanceEntryUpdateUnderlying',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'sqrtRebalanceEntryUpdateStable',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'perpPayoff',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'sqrtPayoff',
-                type: 'int256',
-              },
-            ],
-            internalType: 'struct IPredyPool.Payoff',
-            name: 'payoff',
-            type: 'tuple',
-          },
-          {
-            internalType: 'uint256',
-            name: 'vaultId',
-            type: 'uint256',
-          },
-          {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
-          },
-          {
-            internalType: 'int256',
-            name: 'minMargin',
-            type: 'int256',
-          },
-          {
-            internalType: 'int256',
-            name: 'averagePrice',
-            type: 'int256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'sqrtTwap',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'sqrtPrice',
-            type: 'uint256',
-          },
-        ],
-        internalType: 'struct IPredyPool.TradeResult',
-        name: 'tradeResult',
-        type: 'tuple',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'positionId',
-        type: 'uint256',
-      },
-      {
-        components: [
-          {
-            internalType: 'address',
-            name: 'contractAddress',
-            type: 'address',
-          },
-          {
-            internalType: 'bytes',
-            name: 'encodedData',
-            type: 'bytes',
-          },
-          {
-            internalType: 'uint256',
-            name: 'maxQuoteAmount',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'price',
-            type: 'uint256',
-          },
-          {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
-          },
-        ],
-        internalType: 'struct IFillerMarket.SettlementParams',
-        name: 'settlementParams',
-        type: 'tuple',
-      },
-    ],
-    name: 'closeAfterExpiration',
     outputs: [
       {
         components: [
@@ -758,16 +632,273 @@ export const PredictMarketABI = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'owner',
-    outputs: [
+    inputs: [
       {
         internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'pairId',
+        type: 'uint256',
+      },
+    ],
+    name: 'getUserPosition',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'vaultId',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'takeProfitPrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'stopLossPrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint64',
+            name: 'slippageTolerance',
+            type: 'uint64',
+          },
+          {
+            internalType: 'uint8',
+            name: 'lastLeverage',
+            type: 'uint8',
+          },
+        ],
+        internalType: 'struct PerpMarket.UserPosition',
+        name: 'userPosition',
+        type: 'tuple',
+      },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'id',
+            type: 'uint256',
+          },
+          {
+            internalType: 'int256',
+            name: 'vaultValue',
+            type: 'int256',
+          },
+          {
+            internalType: 'int256',
+            name: 'minMargin',
+            type: 'int256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'oraclePrice',
+            type: 'uint256',
+          },
+          {
+            components: [
+              {
+                internalType: 'int256',
+                name: 'feeAmountBase',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'feeAmountQuote',
+                type: 'int256',
+              },
+            ],
+            internalType: 'struct DataType.FeeAmount',
+            name: 'FeeAmount',
+            type: 'tuple',
+          },
+        ],
+        internalType: 'struct IPredyPool.VaultStatus',
         name: '',
+        type: 'tuple',
+      },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'id',
+            type: 'uint256',
+          },
+          {
+            internalType: 'address',
+            name: 'marginId',
+            type: 'address',
+          },
+          {
+            internalType: 'address',
+            name: 'owner',
+            type: 'address',
+          },
+          {
+            internalType: 'address',
+            name: 'recipient',
+            type: 'address',
+          },
+          {
+            internalType: 'int256',
+            name: 'margin',
+            type: 'int256',
+          },
+          {
+            components: [
+              {
+                internalType: 'uint256',
+                name: 'pairId',
+                type: 'uint256',
+              },
+              {
+                internalType: 'int24',
+                name: 'rebalanceLastTickLower',
+                type: 'int24',
+              },
+              {
+                internalType: 'int24',
+                name: 'rebalanceLastTickUpper',
+                type: 'int24',
+              },
+              {
+                internalType: 'uint64',
+                name: 'lastNumRebalance',
+                type: 'uint64',
+              },
+              {
+                components: [
+                  {
+                    internalType: 'int256',
+                    name: 'amount',
+                    type: 'int256',
+                  },
+                  {
+                    internalType: 'int256',
+                    name: 'entryValue',
+                    type: 'int256',
+                  },
+                ],
+                internalType: 'struct Perp.PositionStatus',
+                name: 'perp',
+                type: 'tuple',
+              },
+              {
+                components: [
+                  {
+                    internalType: 'int256',
+                    name: 'amount',
+                    type: 'int256',
+                  },
+                  {
+                    internalType: 'int256',
+                    name: 'entryValue',
+                    type: 'int256',
+                  },
+                  {
+                    internalType: 'int256',
+                    name: 'quoteRebalanceEntryValue',
+                    type: 'int256',
+                  },
+                  {
+                    internalType: 'int256',
+                    name: 'baseRebalanceEntryValue',
+                    type: 'int256',
+                  },
+                  {
+                    internalType: 'uint256',
+                    name: 'entryTradeFee0',
+                    type: 'uint256',
+                  },
+                  {
+                    internalType: 'uint256',
+                    name: 'entryTradeFee1',
+                    type: 'uint256',
+                  },
+                ],
+                internalType: 'struct Perp.SqrtPositionStatus',
+                name: 'sqrtPerp',
+                type: 'tuple',
+              },
+              {
+                components: [
+                  {
+                    internalType: 'int256',
+                    name: 'positionAmount',
+                    type: 'int256',
+                  },
+                  {
+                    internalType: 'uint256',
+                    name: 'lastFeeGrowth',
+                    type: 'uint256',
+                  },
+                ],
+                internalType: 'struct ScaledAsset.UserStatus',
+                name: 'basePosition',
+                type: 'tuple',
+              },
+              {
+                components: [
+                  {
+                    internalType: 'int256',
+                    name: 'positionAmount',
+                    type: 'int256',
+                  },
+                  {
+                    internalType: 'uint256',
+                    name: 'lastFeeGrowth',
+                    type: 'uint256',
+                  },
+                ],
+                internalType: 'struct ScaledAsset.UserStatus',
+                name: 'stablePosition',
+                type: 'tuple',
+              },
+            ],
+            internalType: 'struct Perp.UserStatus',
+            name: 'openPosition',
+            type: 'tuple',
+          },
+        ],
+        internalType: 'struct DataType.Vault',
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'contract IPredyPool',
+        name: 'predyPool',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'permit2Address',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'whitelistFiller',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'quoterAddress',
         type: 'address',
       },
     ],
-    stateMutability: 'view',
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -949,11 +1080,6 @@ export const PredictMarketABI = [
             type: 'uint64',
           },
           {
-            internalType: 'uint64',
-            name: 'duration',
-            type: 'uint64',
-          },
-          {
             internalType: 'address',
             name: 'entryTokenAddress',
             type: 'address',
@@ -965,13 +1091,28 @@ export const PredictMarketABI = [
           },
           {
             internalType: 'int256',
-            name: 'tradeAmountSqrt',
+            name: 'marginAmount',
             type: 'int256',
           },
           {
             internalType: 'uint256',
-            name: 'marginAmount',
+            name: 'takeProfitPrice',
             type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'stopLossPrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint64',
+            name: 'slippageTolerance',
+            type: 'uint64',
+          },
+          {
+            internalType: 'uint8',
+            name: 'leverage',
+            type: 'uint8',
           },
           {
             internalType: 'address',
@@ -984,8 +1125,8 @@ export const PredictMarketABI = [
             type: 'bytes',
           },
         ],
-        internalType: 'struct PredictOrder',
-        name: 'predictOrder',
+        internalType: 'struct PerpOrder',
+        name: 'perpOrder',
         type: 'tuple',
       },
       {
@@ -1019,6 +1160,11 @@ export const PredictMarketABI = [
         internalType: 'struct IFillerMarket.SettlementParams',
         name: 'settlementParams',
         type: 'tuple',
+      },
+      {
+        internalType: 'address',
+        name: 'filler',
+        type: 'address',
       },
     ],
     name: 'quoteExecuteOrder',
@@ -1080,19 +1226,6 @@ export const PredictMarketABI = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
-    ],
-    name: 'transferOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
         internalType: 'uint256',
         name: 'pairId',
         type: 'uint256',
@@ -1119,22 +1252,42 @@ export const PredictMarketABI = [
   {
     inputs: [
       {
-        internalType: 'uint256',
-        name: 'vaultId',
-        type: 'uint256',
-      },
-    ],
-    name: 'userPositions',
-    outputs: [
-      {
         internalType: 'address',
         name: 'owner',
         type: 'address',
       },
       {
         internalType: 'uint256',
-        name: 'expiration',
+        name: 'pairId',
         type: 'uint256',
+      },
+    ],
+    name: 'userPositions',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'vaultId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'takeProfitPrice',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'stopLossPrice',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint64',
+        name: 'slippageTolerance',
+        type: 'uint64',
+      },
+      {
+        internalType: 'uint8',
+        name: 'lastLeverage',
+        type: 'uint8',
       },
     ],
     stateMutability: 'view',

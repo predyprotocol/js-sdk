@@ -1,9 +1,14 @@
 import { Address, Bytes } from '../types'
 
-export interface SettlementData {
+export interface SettlementParams {
+  price: bigint
+  fee: bigint
+  items: SettlementParamsItem[]
+}
+
+interface SettlementParamsItem {
   contractAddress: Address
   encodedData: Bytes
   maxQuoteAmount: bigint
-  price: bigint
-  fee: bigint
+  partialBaseAmount: bigint
 }

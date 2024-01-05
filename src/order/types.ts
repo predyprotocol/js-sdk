@@ -58,8 +58,6 @@ export interface GammaOrderParams {
   validationData: Bytes
 }
 
-export abstract class BaseOrder { }
-
 export abstract class BaseValidationData {
   abstract serialize(): Bytes
 }

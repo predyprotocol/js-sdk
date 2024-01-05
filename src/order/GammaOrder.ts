@@ -1,6 +1,8 @@
 import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
+
 import { Address, Bytes } from '../types'
+
 import {
   GammaOrderParams,
   ORDER_INFO_TYPES,

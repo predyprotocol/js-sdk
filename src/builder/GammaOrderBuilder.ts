@@ -1,6 +1,6 @@
 import { ZERO_ADDRESS } from '../constants'
-import { GeneralDutchOrderValidationData } from '../order/GeneralDutchOrderValidationData'
 import { GammaOrder } from '../order/GammaOrder'
+import { GeneralDutchOrderValidationData } from '../order/GeneralDutchOrderValidationData'
 import { GammaOrderParams } from '../order/types'
 import { Address } from '../types'
 

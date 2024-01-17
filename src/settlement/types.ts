@@ -6,7 +6,7 @@ export interface SettlementParams {
   items: SettlementParamsItem[]
 }
 
-interface SettlementParamsItem {
+export interface SettlementParamsItem {
   contractAddress: Address
   encodedData: Bytes
   maxQuoteAmount: bigint

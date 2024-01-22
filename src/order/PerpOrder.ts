@@ -1,4 +1,3 @@
-import { PERMIT2_MAPPING } from '@uniswap/uniswapx-sdk'
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { Address, Bytes } from '../types'
@@ -9,6 +8,7 @@ import {
   PerpOrderParams,
   TOKEN_PERMISSION_TYPES,
 } from './types'
+import { PERMIT2_MAPPING } from '../constants'
 
 const PERP_ORDER_TYPES_SINGLE = [
   { name: 'info', type: 'OrderInfo' },

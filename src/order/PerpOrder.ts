@@ -1,5 +1,6 @@
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
+import { PERMIT2_MAPPING } from '../constants'
 import { Address, Bytes } from '../types'
 
 import {
@@ -8,7 +9,6 @@ import {
   PerpOrderParams,
   TOKEN_PERMISSION_TYPES,
 } from './types'
-import { PERMIT2_MAPPING } from '../constants'
 
 const PERP_ORDER_TYPES_SINGLE = [
   { name: 'info', type: 'OrderInfo' },

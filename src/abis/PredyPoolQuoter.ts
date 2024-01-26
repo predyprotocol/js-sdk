@@ -799,7 +799,34 @@ export const PredyPoolQuoterABI = [
               },
             ],
             internalType: 'struct DataType.FeeAmount',
-            name: 'FeeAmount',
+            name: 'feeAmount',
+            type: 'tuple',
+          },
+          {
+            components: [
+              {
+                internalType: 'int256',
+                name: 'margin',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'amountQuote',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'amountSqrt',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'amountBase',
+                type: 'int256',
+              },
+            ],
+            internalType: 'struct IPredyPool.Position',
+            name: 'position',
             type: 'tuple',
           },
         ],

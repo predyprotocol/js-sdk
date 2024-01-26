@@ -1,5 +1,6 @@
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
+import { PERMIT2_MAPPING } from '../constants'
 import { Address, Bytes } from '../types'
 
 import {
@@ -8,7 +9,6 @@ import {
   PERMIT_WITNESS_TRANSFER_FROM_TYPES,
   TOKEN_PERMISSION_TYPES,
 } from './types'
-import { PERMIT2_MAPPING } from '../constants'
 
 const GAMMA_ORDER_TYPES_SINGLE = [
   { name: 'info', type: 'OrderInfo' },

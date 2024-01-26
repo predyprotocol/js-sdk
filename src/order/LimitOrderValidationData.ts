@@ -1,10 +1,10 @@
-import { encodeAbiParameters } from 'viem'
+import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { Bytes } from '../types'
 
 import { BaseValidationData } from './types'
 
-const LIMIT_ORDER_VALIDATION_ABI = [
+export const LIMIT_ORDER_VALIDATION_ABI = [
   {
     name: 'LimitOrderValidationData',
     type: 'tuple',
@@ -36,5 +36,24 @@ export class LimitOrderValidationData extends BaseValidationData {
         limitPriceSqrt: this.limitPriceSqrt,
       },
     ]) as Bytes
+  }
+
+  static deserialize(validationData: Bytes) {
+    const decoded = decodeAbiParameters(
+      LIMIT_ORDER_VALIDATION_ABI,
+      validationData
+    )[0] as {
+      triggerPrice: bigint
+      triggerPriceSqrt: bigint
+      limitPrice: bigint
+      limitPriceSqrt: bigint
+    }
+
+    return new LimitOrderValidationData(
+      decoded.triggerPrice,
+      decoded.triggerPriceSqrt,
+      decoded.limitPrice,
+      decoded.limitPriceSqrt
+    )
   }
 }

@@ -1,4 +1,8 @@
-import { DUTCH_ORDER_VALIDATOR_MAPPING, LIMIT_ORDER_VALIDATOR_MAPPING, ZERO_ADDRESS } from '../constants'
+import {
+  DUTCH_ORDER_VALIDATOR_MAPPING,
+  LIMIT_ORDER_VALIDATOR_MAPPING,
+  ZERO_ADDRESS,
+} from '../constants'
 import { DutchOrderValidationData } from '../order/DutchOrderValidationData'
 import { LimitOrderValidationData } from '../order/LimitOrderValidationData'
 import { PerpOrder } from '../order/PerpOrder'
@@ -122,7 +126,8 @@ export class PerpDutchOrderBuilder extends PerpOrderBuilder {
     super(chainId, permit2Address)
 
     if (validatorAddress) {
-      this.perpOrder.validatorAddress = validatorAddress || DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
+      this.perpOrder.validatorAddress =
+        validatorAddress || DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
     }
   }
 
@@ -154,7 +159,8 @@ export class PerpLimitOrderBuilder extends PerpOrderBuilder {
     super(chainId, permit2Address)
 
     if (validatorAddress) {
-      this.perpOrder.validatorAddress = validatorAddress || LIMIT_ORDER_VALIDATOR_MAPPING[chainId]
+      this.perpOrder.validatorAddress =
+        validatorAddress || LIMIT_ORDER_VALIDATOR_MAPPING[chainId]
     }
   }
 

@@ -51,11 +51,13 @@ export const PermitABI = [
       },
     ],
     name: 'nonces',
-    outputs: [{
-      internalType: 'uint256',
-      name: '',
-      type: 'uint256',
-    }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },

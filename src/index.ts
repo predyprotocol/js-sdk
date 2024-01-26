@@ -1,5 +1,6 @@
 export * from './builder'
 export * from './order'
+export * from './predy'
 export * from './settlement'
 export * from './types'
 export * from './constants'

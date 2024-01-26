@@ -1671,6 +1671,24 @@ export const PredyPoolABI = [
     inputs: [
       {
         internalType: 'uint256',
+        name: 'pairId',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'priceOracle',
+        type: 'address',
+      },
+    ],
+    name: 'updatePriceOracle',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
         name: 'vaultId',
         type: 'uint256',
       },

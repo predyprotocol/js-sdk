@@ -1,4 +1,7 @@
-import { GENERAL_DUTCH_ORDER_VALIDATOR_MAPPING, ZERO_ADDRESS } from '../constants'
+import {
+  GENERAL_DUTCH_ORDER_VALIDATOR_MAPPING,
+  ZERO_ADDRESS,
+} from '../constants'
 import { GeneralDutchOrderValidationData } from '../order/GeneralDutchOrderValidationData'
 import { PredictOrder } from '../order/PredictOrder'
 import { PredictOrderParams } from '../order/types'
@@ -107,7 +110,8 @@ export class PredictDutchOrderBuilder extends PredictOrderBuilder {
     super(chainId, permit2Address)
 
     if (validatorAddress) {
-      this.predictOrder.validatorAddress = validatorAddress || GENERAL_DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
+      this.predictOrder.validatorAddress =
+        validatorAddress || GENERAL_DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
     }
   }
 

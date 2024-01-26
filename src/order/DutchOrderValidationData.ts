@@ -1,10 +1,10 @@
-import { encodeAbiParameters } from 'viem'
+import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { Bytes } from '../types'
 
 import { BaseValidationData } from './types'
 
-const DUTCH_ORDER_VALIDATION_ABI = [
+export const DUTCH_ORDER_VALIDATION_ABI = [
   {
     name: 'DutchOrderValidationData',
     type: 'tuple',
@@ -36,5 +36,24 @@ export class DutchOrderValidationData extends BaseValidationData {
         endTime: this.endTime,
       },
     ]) as Bytes
+  }
+
+  static deserialize(validationData: Bytes) {
+    const decoded = decodeAbiParameters(
+      DUTCH_ORDER_VALIDATION_ABI,
+      validationData
+    )[0] as {
+      startPrice: bigint
+      endPrice: bigint
+      startTime: number
+      endTime: number
+    }
+
+    return new DutchOrderValidationData(
+      decoded.startPrice,
+      decoded.endPrice,
+      decoded.startTime,
+      decoded.endTime
+    )
   }
 }

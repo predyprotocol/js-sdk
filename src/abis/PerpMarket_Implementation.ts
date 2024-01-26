@@ -36,6 +36,11 @@ export const PerpMarket_ImplementationABI = [
   },
   {
     inputs: [],
+    name: 'SettlementContractIsNotWhitelisted',
+    type: 'error',
+  },
+  {
+    inputs: [],
     name: 'SignerIsNotVaultOwner',
     type: 'error',
   },
@@ -750,7 +755,34 @@ export const PerpMarket_ImplementationABI = [
               },
             ],
             internalType: 'struct DataType.FeeAmount',
-            name: 'FeeAmount',
+            name: 'feeAmount',
+            type: 'tuple',
+          },
+          {
+            components: [
+              {
+                internalType: 'int256',
+                name: 'margin',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'amountQuote',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'amountSqrt',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'amountBase',
+                type: 'int256',
+              },
+            ],
+            internalType: 'struct IPredyPool.Position',
+            name: 'position',
             type: 'tuple',
           },
         ],
@@ -1305,6 +1337,24 @@ export const PerpMarket_ImplementationABI = [
       },
     ],
     name: 'updateWhitelistFiller',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'settlementContractAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: 'isEnabled',
+        type: 'bool',
+      },
+    ],
+    name: 'updateWhitelistSettlement',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

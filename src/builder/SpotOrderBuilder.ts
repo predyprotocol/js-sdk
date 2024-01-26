@@ -1,4 +1,8 @@
-import { SPOT_DUTCH_ORDER_VALIDATOR_MAPPING, SPOT_LIMIT_ORDER_VALIDATOR_MAPPING, ZERO_ADDRESS } from '../constants'
+import {
+  SPOT_DUTCH_ORDER_VALIDATOR_MAPPING,
+  SPOT_LIMIT_ORDER_VALIDATOR_MAPPING,
+  ZERO_ADDRESS,
+} from '../constants'
 import {
   SpotDutchOrderValidationData,
   SpotLimitOrderValidationData,
@@ -97,7 +101,8 @@ export class SpotDutchOrderBuilder extends SpotOrderBuilder {
   ) {
     super(chainId, permit2Address)
 
-    this.spotOrder.validatorAddress = validatorAddress || SPOT_DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
+    this.spotOrder.validatorAddress =
+      validatorAddress || SPOT_DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
   }
 
   validationData(
@@ -127,7 +132,8 @@ export class SpotLimitOrderBuilder extends SpotOrderBuilder {
   ) {
     super(chainId, permit2Address)
 
-    this.spotOrder.validatorAddress = validatorAddress || SPOT_LIMIT_ORDER_VALIDATOR_MAPPING[chainId]
+    this.spotOrder.validatorAddress =
+      validatorAddress || SPOT_LIMIT_ORDER_VALIDATOR_MAPPING[chainId]
   }
 
   validationData(filler: string, limitPrice: bigint): SpotLimitOrderBuilder {

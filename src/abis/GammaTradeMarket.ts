@@ -1,29 +1,125 @@
 export const GammaTradeMarketABI = [
   {
+    anonymous: false,
     inputs: [
       {
-        internalType: 'contract IPredyPool',
-        name: 'predyPool',
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
         type: 'address',
       },
       {
+        indexed: true,
         internalType: 'address',
-        name: 'permit2Address',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'whitelistFiller',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'quoterAddress',
+        name: 'newOwner',
         type: 'address',
       },
     ],
+    name: 'OwnershipTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousImplementation',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newImplementation',
+        type: 'address',
+      },
+    ],
+    name: 'ProxyImplementationUpdated',
+    type: 'event',
+  },
+  {
+    stateMutability: 'payable',
+    type: 'fallback',
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes4',
+        name: 'id',
+        type: 'bytes4',
+      },
+    ],
+    name: 'supportsInterface',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'transferOwnership',
+    outputs: [],
     stateMutability: 'nonpayable',
-    type: 'constructor',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newImplementation',
+        type: 'address',
+      },
+    ],
+    name: 'upgradeTo',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newImplementation',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+    ],
+    name: 'upgradeToAndCall',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    stateMutability: 'payable',
+    type: 'receive',
   },
   {
     inputs: [],
@@ -62,6 +158,11 @@ export const GammaTradeMarketABI = [
   },
   {
     inputs: [],
+    name: 'SettlementContractIsNotWhitelisted',
+    type: 'error',
+  },
+  {
+    inputs: [],
     name: 'SignerIsNotVaultOwner',
     type: 'error',
   },
@@ -72,7 +173,7 @@ export const GammaTradeMarketABI = [
   },
   {
     inputs: [],
-    name: 'TooSmallHedgeInterval',
+    name: 'TooShortHedgeInterval',
     type: 'error',
   },
   {
@@ -247,19 +348,13 @@ export const GammaTradeMarketABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
+        indexed: false,
+        internalType: 'uint8',
+        name: 'version',
+        type: 'uint8',
       },
     ],
-    name: 'OwnershipTransferred',
+    name: 'Initialized',
     type: 'event',
   },
   {
@@ -773,7 +868,34 @@ export const GammaTradeMarketABI = [
               },
             ],
             internalType: 'struct DataType.FeeAmount',
-            name: 'FeeAmount',
+            name: 'feeAmount',
+            type: 'tuple',
+          },
+          {
+            components: [
+              {
+                internalType: 'int256',
+                name: 'margin',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'amountQuote',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'amountSqrt',
+                type: 'int256',
+              },
+              {
+                internalType: 'int256',
+                name: 'amountBase',
+                type: 'int256',
+              },
+            ],
+            internalType: 'struct IPredyPool.Position',
+            name: 'position',
             type: 'tuple',
           },
         ],
@@ -933,16 +1055,31 @@ export const GammaTradeMarketABI = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'owner',
-    outputs: [
+    inputs: [
+      {
+        internalType: 'contract IPredyPool',
+        name: 'predyPool',
+        type: 'address',
+      },
       {
         internalType: 'address',
-        name: '',
+        name: 'permit2Address',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'whitelistFiller',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'quoterAddress',
         type: 'address',
       },
     ],
-    stateMutability: 'view',
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -1294,19 +1431,6 @@ export const GammaTradeMarketABI = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
-    ],
-    name: 'transferOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
         internalType: 'uint256',
         name: 'pairId',
         type: 'uint256',
@@ -1326,6 +1450,24 @@ export const GammaTradeMarketABI = [
       },
     ],
     name: 'updateWhitelistFiller',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'settlementContractAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: 'isEnabled',
+        type: 'bool',
+      },
+    ],
+    name: 'updateWhitelistSettlement',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -1396,5 +1538,26 @@ export const GammaTradeMarketABI = [
     ],
     stateMutability: 'view',
     type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'implementationAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'ownerAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'constructor',
   },
 ] as const

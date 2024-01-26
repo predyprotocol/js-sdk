@@ -1,5 +1,6 @@
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
+import { PERMIT2_MAPPING } from '../constants'
 import { Address, Bytes } from '../types'
 import { abs } from '../utils'
 
@@ -10,7 +11,6 @@ import {
   SpotOrderParams,
   TOKEN_PERMISSION_TYPES,
 } from './types'
-import { PERMIT2_MAPPING } from '../constants'
 
 const SPOT_ORDER_TYPES_SINGLE = [
   { name: 'info', type: 'OrderInfo' },
@@ -142,7 +142,7 @@ export class SpotOrder {
   }
 }
 
-const SPOT_DUTCH_ORDER_VALIDATION_ABI = [
+export const SPOT_DUTCH_ORDER_VALIDATION_ABI = [
   {
     name: 'SpotDutchOrderValidationData',
     type: 'tuple',
@@ -175,9 +175,28 @@ export class SpotDutchOrderValidationData extends BaseValidationData {
       },
     ]) as Bytes
   }
+
+  static deserialize(validationData: Bytes) {
+    const decoded = decodeAbiParameters(
+      SPOT_LIMIT_ORDER_VALIDATION_ABI,
+      validationData
+    )[0] as {
+      startPrice: bigint
+      endPrice: bigint
+      startTime: number
+      endTime: number
+    }
+
+    return new SpotDutchOrderValidationData(
+      decoded.startPrice,
+      decoded.endPrice,
+      decoded.startTime,
+      decoded.endTime
+    )
+  }
 }
 
-const LIMIT_ORDER_VALIDATION_ABI = [
+export const SPOT_LIMIT_ORDER_VALIDATION_ABI = [
   {
     name: 'LimitOrderValidationData',
     type: 'tuple',
@@ -194,8 +213,23 @@ export class SpotLimitOrderValidationData extends BaseValidationData {
   }
 
   serialize(): Bytes {
-    return encodeAbiParameters(LIMIT_ORDER_VALIDATION_ABI, [
+    return encodeAbiParameters(SPOT_LIMIT_ORDER_VALIDATION_ABI, [
       { filler: this.filler, limitQuoteTokenAmount: this.limitQuoteTokenAmount },
     ]) as Bytes
+  }
+
+  static deserialize(validationData: Bytes) {
+    const decoded = decodeAbiParameters(
+      SPOT_LIMIT_ORDER_VALIDATION_ABI,
+      validationData
+    )[0] as {
+      filler: string
+      limitQuoteTokenAmount: bigint
+    }
+
+    return new SpotLimitOrderValidationData(
+      decoded.filler,
+      decoded.limitQuoteTokenAmount
+    )
   }
 }

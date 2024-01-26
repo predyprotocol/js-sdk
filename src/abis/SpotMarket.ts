@@ -37,8 +37,32 @@ export const SpotMarketABI = [
   },
   {
     inputs: [],
+    name: 'SettlementContractIsNotWhitelisted',
+    type: 'error',
+  },
+  {
+    inputs: [],
     name: 'SignerIsNotVaultOwner',
     type: 'error',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipTransferred',
+    type: 'event',
   },
   {
     anonymous: false,
@@ -165,6 +189,19 @@ export const SpotMarketABI = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'owner',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       {
         components: [
@@ -217,6 +254,37 @@ export const SpotMarketABI = [
       },
     ],
     name: 'quoteSettlement',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'settlementContractAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: 'isEnabled',
+        type: 'bool',
+      },
+    ],
+    name: 'updateWhitelistSettlement',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

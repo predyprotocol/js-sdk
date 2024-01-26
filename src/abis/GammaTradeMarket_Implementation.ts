@@ -1,125 +1,8 @@
-export const PerpMarketABI = [
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'previousOwner',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
-    ],
-    name: 'OwnershipTransferred',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'previousImplementation',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'newImplementation',
-        type: 'address',
-      },
-    ],
-    name: 'ProxyImplementationUpdated',
-    type: 'event',
-  },
-  {
-    stateMutability: 'payable',
-    type: 'fallback',
-  },
+export const GammaTradeMarket_ImplementationABI = [
   {
     inputs: [],
-    name: 'owner',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'bytes4',
-        name: 'id',
-        type: 'bytes4',
-      },
-    ],
-    name: 'supportsInterface',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
-    ],
-    name: 'transferOwnership',
-    outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'newImplementation',
-        type: 'address',
-      },
-    ],
-    name: 'upgradeTo',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'newImplementation',
-        type: 'address',
-      },
-      {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
-    ],
-    name: 'upgradeToAndCall',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-  {
-    stateMutability: 'payable',
-    type: 'receive',
+    type: 'constructor',
   },
   {
     inputs: [],
@@ -134,6 +17,11 @@ export const PerpMarketABI = [
   {
     inputs: [],
     name: 'DeadlinePassed',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'HedgeTriggerNotMatched',
     type: 'error',
   },
   {
@@ -168,21 +56,8 @@ export const PerpMarketABI = [
   },
   {
     inputs: [],
-    name: 'TPSLConditionDoesNotMatch',
+    name: 'TooShortHedgeInterval',
     type: 'error',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: 'uint8',
-        name: 'version',
-        type: 'uint8',
-      },
-    ],
-    name: 'Initialized',
-    type: 'event',
   },
   {
     anonymous: false,
@@ -201,8 +76,20 @@ export const PerpMarketABI = [
       },
       {
         indexed: false,
+        internalType: 'uint256',
+        name: 'vaultId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'sqrtPrice',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
         internalType: 'int256',
-        name: 'tradeAmount',
+        name: 'delta',
         type: 'int256',
       },
       {
@@ -249,45 +136,8 @@ export const PerpMarketABI = [
         name: 'fee',
         type: 'int256',
       },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'closeValue',
-        type: 'uint256',
-      },
     ],
-    name: 'PerpClosedByTPSLOrder',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'trader',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'takeProfitPrice',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'stopLossPrice',
-        type: 'uint256',
-      },
-    ],
-    name: 'PerpTPSLOrderUpdated',
+    name: 'GammaPositionHedged',
     type: 'event',
   },
   {
@@ -313,9 +163,15 @@ export const PerpMarketABI = [
       },
       {
         indexed: false,
-        internalType: 'int256',
-        name: 'tradeAmount',
-        type: 'int256',
+        internalType: 'uint256',
+        name: 'hedgeInterval',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'sqrtPriceTrigger',
+        type: 'uint256',
       },
       {
         components: [
@@ -368,7 +224,20 @@ export const PerpMarketABI = [
         type: 'int256',
       },
     ],
-    name: 'PerpTraded',
+    name: 'GammaPositionTraded',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint8',
+        name: 'version',
+        type: 'uint8',
+      },
+    ],
+    name: 'Initialized',
     type: 'event',
   },
   {
@@ -428,7 +297,7 @@ export const PerpMarketABI = [
         type: 'tuple',
       },
     ],
-    name: 'close',
+    name: 'execDeltaHedge',
     outputs: [
       {
         components: [
@@ -813,26 +682,36 @@ export const PerpMarketABI = [
           },
           {
             internalType: 'uint256',
-            name: 'takeProfitPrice',
+            name: 'lastHedgedTime',
             type: 'uint256',
           },
           {
             internalType: 'uint256',
-            name: 'stopLossPrice',
+            name: 'hedgeInterval',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'lastHedgedSqrtPrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'sqrtPriceTrigger',
             type: 'uint256',
           },
           {
             internalType: 'uint64',
-            name: 'slippageTolerance',
+            name: 'minSlippageTolerance',
             type: 'uint64',
           },
           {
-            internalType: 'uint8',
-            name: 'lastLeverage',
-            type: 'uint8',
+            internalType: 'uint64',
+            name: 'maxSlippageTolerance',
+            type: 'uint64',
           },
         ],
-        internalType: 'struct PerpMarket.UserPosition',
+        internalType: 'struct GammaTradeMarket.UserPosition',
         name: 'userPosition',
         type: 'tuple',
       },
@@ -1276,28 +1155,33 @@ export const PerpMarketABI = [
           },
           {
             internalType: 'int256',
+            name: 'tradeAmountSqrt',
+            type: 'int256',
+          },
+          {
+            internalType: 'int256',
             name: 'marginAmount',
             type: 'int256',
           },
           {
             internalType: 'uint256',
-            name: 'takeProfitPrice',
+            name: 'hedgeInterval',
             type: 'uint256',
           },
           {
             internalType: 'uint256',
-            name: 'stopLossPrice',
+            name: 'sqrtPriceTrigger',
             type: 'uint256',
           },
           {
             internalType: 'uint64',
-            name: 'slippageTolerance',
+            name: 'minSlippageTolerance',
             type: 'uint64',
           },
           {
-            internalType: 'uint8',
-            name: 'leverage',
-            type: 'uint8',
+            internalType: 'uint64',
+            name: 'maxSlippageTolerance',
+            type: 'uint64',
           },
           {
             internalType: 'address',
@@ -1310,8 +1194,8 @@ export const PerpMarketABI = [
             type: 'bytes',
           },
         ],
-        internalType: 'struct PerpOrder',
-        name: 'perpOrder',
+        internalType: 'struct GammaOrder',
+        name: 'gammaOrder',
         type: 'tuple',
       },
       {
@@ -1357,11 +1241,6 @@ export const PerpMarketABI = [
         internalType: 'struct IFillerMarket.SettlementParams',
         name: 'settlementParams',
         type: 'tuple',
-      },
-      {
-        internalType: 'address',
-        name: 'filler',
-        type: 'address',
       },
     ],
     name: 'quoteExecuteOrder',
@@ -1498,23 +1377,33 @@ export const PerpMarketABI = [
       },
       {
         internalType: 'uint256',
-        name: 'takeProfitPrice',
+        name: 'lastHedgedTime',
         type: 'uint256',
       },
       {
         internalType: 'uint256',
-        name: 'stopLossPrice',
+        name: 'hedgeInterval',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'lastHedgedSqrtPrice',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'sqrtPriceTrigger',
         type: 'uint256',
       },
       {
         internalType: 'uint64',
-        name: 'slippageTolerance',
+        name: 'minSlippageTolerance',
         type: 'uint64',
       },
       {
-        internalType: 'uint8',
-        name: 'lastLeverage',
-        type: 'uint8',
+        internalType: 'uint64',
+        name: 'maxSlippageTolerance',
+        type: 'uint64',
       },
     ],
     stateMutability: 'view',
@@ -1532,26 +1421,5 @@ export const PerpMarketABI = [
     ],
     stateMutability: 'view',
     type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'implementationAddress',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'ownerAddress',
-        type: 'address',
-      },
-      {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
-    ],
-    stateMutability: 'payable',
-    type: 'constructor',
   },
 ] as const

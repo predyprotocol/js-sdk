@@ -182,4 +182,23 @@ export const AddPairLogicABI = [
     name: 'PoolOwnerUpdated',
     type: 'event',
   },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'pairId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'priceOracle',
+        type: 'address',
+      },
+    ],
+    name: 'PriceOracleUpdated',
+    type: 'event',
+  },
 ] as const

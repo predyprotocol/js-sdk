@@ -94,15 +94,15 @@ export class PerpOrder {
   }
 
   public getOptimizedParams() {
-    return [
-      this.perpOrder.info.trader,
-      this.perpOrder.info.nonce,
-      this.getOptimizedDeadlinePairIdLev(),
-      this.perpOrder.tradeAmount,
-      this.perpOrder.marginAmount,
-      this.perpOrder.validatorAddress,
-      this.perpOrder.validationData,
-    ]
+    return {
+      trader: this.perpOrder.info.trader,
+      nonce: this.perpOrder.info.nonce,
+      deadlinePairIdLev: this.getOptimizedDeadlinePairIdLev(),
+      tradeAmount: this.perpOrder.tradeAmount,
+      marginAmount: this.perpOrder.marginAmount,
+      validatorAddress: this.perpOrder.validatorAddress,
+      validationData: this.perpOrder.validationData,
+    }
   }
 
   getOptimizedDeadlinePairIdLev() {

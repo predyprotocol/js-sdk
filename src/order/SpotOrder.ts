@@ -88,16 +88,16 @@ export class SpotOrder {
   public getOptimizedParams() {
     const compressed = this.getCompressedParams()
 
-    return [
-      this.spotOrder.info.trader,
-      this.spotOrder.info.nonce,
-      this.spotOrder.quoteToken,
-      this.spotOrder.baseToken,
-      this.spotOrder.baseTokenAmount,
-      this.spotOrder.quoteTokenAmount,
-      compressed[0],
-      compressed[1],
-    ]
+    return {
+      trader: this.spotOrder.info.trader,
+      nonce: this.spotOrder.info.nonce,
+      quoteToken: this.spotOrder.quoteToken,
+      baseToken: this.spotOrder.baseToken,
+      baseTokenAmount: this.spotOrder.baseTokenAmount,
+      quoteTokenAmount: this.spotOrder.quoteTokenAmount,
+      params1: compressed[0],
+      params2: compressed[1],
+    }
   }
 
   getCompressedParams() {

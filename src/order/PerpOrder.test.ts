@@ -71,4 +71,34 @@ describe('PerpOrder', () => {
       expect(decoded.perpOrder).toEqual(order.perpOrder)
     })
   })
+
+  describe('getOptimizedDeadlinePairIdLev', () => {
+    it('succeeds to get optimized params', () => {
+      const order = new PerpOrder(
+        {
+          pairId: 2n,
+          entryTokenAddress: ZERO_ADDRESS,
+          tradeAmount: 0n,
+          marginAmount: 0n,
+          takeProfitPrice: 0n,
+          stopLossPrice: 0n,
+          slippageTolerance: 0n,
+          leverage: 3,
+          validatorAddress: ZERO_ADDRESS,
+          validationData: '0x',
+          info: {
+            market: ZERO_ADDRESS,
+            trader: ZERO_ADDRESS,
+            nonce: 0n,
+            deadline: 1n,
+          },
+        },
+        1,
+        ''
+      )
+
+      const params = order.getOptimizedDeadlinePairIdLev()
+      expect(params).toEqual('0x0000000000000000000000000000000300000000000000020000000000000001')
+    })
+  })
 })

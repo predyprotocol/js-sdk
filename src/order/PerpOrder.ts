@@ -106,11 +106,12 @@ export class PerpOrder {
   }
 
   getOptimizedDeadlinePairIdLev() {
-    return solidityPack(['uint64', 'uint64', 'uint8'], [
-      this.perpOrder.info.deadline,
-      this.perpOrder.pairId,
+    return solidityPack(['uint120', 'uint8', 'uint64', 'uint64'], [
+      0,
       this.perpOrder.leverage,
-    ])
+      this.perpOrder.pairId,
+      this.perpOrder.info.deadline,
+    ]) as Bytes
   }
 
   public witnessInfo() {

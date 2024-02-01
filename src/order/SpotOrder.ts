@@ -95,8 +95,8 @@ export class SpotOrder {
       baseToken: this.spotOrder.baseToken,
       baseTokenAmount: this.spotOrder.baseTokenAmount,
       quoteTokenAmount: this.spotOrder.quoteTokenAmount,
-      params1: compressed[0],
-      params2: compressed[1],
+      params1: compressed.param1,
+      params2: compressed.param2,
     }
   }
 
@@ -104,29 +104,29 @@ export class SpotOrder {
     if (isAddressEqual(this.spotOrder.validatorAddress, SPOT_DUTCH_ORDER_VALIDATOR_MAPPING[this.chainId])) {
       const validationParams = SpotDutchOrderValidationData.deserialize(this.spotOrder.validationData)
 
-      const param1 = solidityPack(['uint64', 'uint64', 'uint64', 'uint32', 'uint32'], [
-        this.spotOrder.info.deadline,
-        validationParams.startTime,
-        validationParams.endTime,
-        validationParams.endPrice * 10000n / validationParams.startPrice,
+      const param1 = solidityPack(['uint32', 'uint32', 'uint64', 'uint64', 'uint64'], [
         0,
-      ])
+        validationParams.endPrice * 10000n / validationParams.startPrice,
+        validationParams.endTime,
+        validationParams.startTime,
+        this.spotOrder.info.deadline,
+      ]) as Bytes
       const param2 = validationParams.startPrice
 
-      return [param1, param2]
+      return { param1, param2 }
     } else {
       const validationParams = SpotLimitOrderValidationData.deserialize(this.spotOrder.validationData)
 
-      const param1 = solidityPack(['uint64', 'uint64', 'uint64', 'uint32', 'uint32'], [
+      const param1 = solidityPack(['uint32', 'uint32', 'uint64', 'uint64', 'uint64'], [
+        1,
+        0,
+        0,
+        0,
         this.spotOrder.info.deadline,
-        0,
-        0,
-        0,
-        1
-      ])
+      ]) as Bytes
       const param2 = validationParams.limitQuoteTokenAmount
 
-      return [param1, param2]
+      return { param1, param2 }
     }
   }
 

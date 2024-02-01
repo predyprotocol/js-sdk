@@ -1,9 +1,4 @@
-export const SpotDutchOrderValidatorABI = [
-  {
-    "inputs": [],
-    "name": "EndTimeBeforeStartTime",
-    "type": "error"
-  },
+export const SpotLimitOrderValidatorABI = [
   {
     "inputs": [],
     "name": "PriceGreaterThanLimit",
@@ -93,7 +88,7 @@ export const SpotDutchOrderValidatorABI = [
     ],
     "name": "validate",
     "outputs": [],
-    "stateMutability": "view",
+    "stateMutability": "pure",
     "type": "function"
   }
 ] as const 

@@ -109,10 +109,8 @@ export class PredictDutchOrderBuilder extends PredictOrderBuilder {
   ) {
     super(chainId, permit2Address)
 
-    if (validatorAddress) {
-      this.predictOrder.validatorAddress =
-        validatorAddress || GENERAL_DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
-    }
+    this.predictOrder.validatorAddress =
+      validatorAddress || GENERAL_DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
   }
 
   validationData(

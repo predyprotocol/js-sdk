@@ -1,1820 +1,1820 @@
 export const PredyPoolABI = [
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'previousOwner',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
-    name: 'OwnershipTransferred',
-    type: 'event',
+    "name": "OwnershipTransferred",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'previousImplementation',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousImplementation",
+        "type": "address"
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'newImplementation',
-        type: 'address',
-      },
+        "indexed": true,
+        "internalType": "address",
+        "name": "newImplementation",
+        "type": "address"
+      }
     ],
-    name: 'ProxyImplementationUpdated',
-    type: 'event',
+    "name": "ProxyImplementationUpdated",
+    "type": "event"
   },
   {
-    stateMutability: 'payable',
-    type: 'fallback',
+    "stateMutability": "payable",
+    "type": "fallback"
   },
   {
-    inputs: [],
-    name: 'owner',
-    outputs: [
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'bytes4',
-        name: 'id',
-        type: 'bytes4',
-      },
+        "internalType": "bytes4",
+        "name": "id",
+        "type": "bytes4"
+      }
     ],
-    name: 'supportsInterface',
-    outputs: [
+    "name": "supportsInterface",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
-    name: 'transferOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'newImplementation',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "newImplementation",
+        "type": "address"
+      }
     ],
-    name: 'upgradeTo',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "upgradeTo",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'newImplementation',
-        type: 'address',
+        "internalType": "address",
+        "name": "newImplementation",
+        "type": "address"
       },
       {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
     ],
-    name: 'upgradeToAndCall',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function',
+    "name": "upgradeToAndCall",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
   },
   {
-    stateMutability: 'payable',
-    type: 'receive',
+    "stateMutability": "payable",
+    "type": "receive"
   },
   {
-    inputs: [],
-    name: 'BaseTokenNotSettled',
-    type: 'error',
+    "inputs": [],
+    "name": "BaseTokenNotSettled",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'CallerIsNotOperator',
-    type: 'error',
+    "inputs": [],
+    "name": "CallerIsNotOperator",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'CallerIsNotPoolCreator',
-    type: 'error',
+    "inputs": [],
+    "name": "CallerIsNotPoolCreator",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'CallerIsNotVaultOwner',
-    type: 'error',
+    "inputs": [],
+    "name": "CallerIsNotVaultOwner",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'InvalidAmount',
-    type: 'error',
+    "inputs": [],
+    "name": "InvalidAmount",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'InvalidPairId',
-    type: 'error',
+    "inputs": [],
+    "name": "InvalidPairId",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'locker',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "locker",
+        "type": "address"
+      }
     ],
-    name: 'LockedBy',
-    type: 'error',
+    "name": "LockedBy",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'QuoteTokenNotSettled',
-    type: 'error',
+    "inputs": [],
+    "name": "QuoteTokenNotSettled",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'T',
-    type: 'error',
+    "inputs": [],
+    "name": "T",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'TraderNotAllowed',
-    type: 'error',
+    "inputs": [],
+    "name": "TraderNotAllowed",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'VaultAlreadyHasAnotherMarginId',
-    type: 'error',
+    "inputs": [],
+    "name": "VaultAlreadyHasAnotherMarginId",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'VaultAlreadyHasAnotherPair',
-    type: 'error',
+    "inputs": [],
+    "name": "VaultAlreadyHasAnotherPair",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'int256',
-        name: 'vaultValue',
-        type: 'int256',
+        "internalType": "int256",
+        "name": "vaultValue",
+        "type": "int256"
       },
       {
-        internalType: 'int256',
-        name: 'minMargin',
-        type: 'int256',
-      },
+        "internalType": "int256",
+        "name": "minMargin",
+        "type": "int256"
+      }
     ],
-    name: 'VaultIsNotDanger',
-    type: 'error',
+    "name": "VaultIsNotDanger",
+    "type": "error"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        indexed: false,
-        internalType: 'bool',
-        name: 'isStable',
-        type: 'bool',
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isStable",
+        "type": "bool"
       },
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
     ],
-    name: 'CreatorRevenueWithdrawn',
-    type: 'event',
+    "name": "CreatorRevenueWithdrawn",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'uint8',
-        name: 'version',
-        type: 'uint8',
-      },
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "version",
+        "type": "uint8"
+      }
     ],
-    name: 'Initialized',
-    type: 'event',
+    "name": "Initialized",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'operator',
-        type: 'address',
-      },
+        "indexed": false,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
     ],
-    name: 'OperatorUpdated',
-    type: 'event',
+    "name": "OperatorUpdated",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        indexed: false,
-        internalType: 'bool',
-        name: 'isStable',
-        type: 'bool',
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isStable",
+        "type": "bool"
       },
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
     ],
-    name: 'ProtocolRevenueWithdrawn',
-    type: 'event',
+    "name": "ProtocolRevenueWithdrawn",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'vaultId',
-        type: 'uint256',
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "vaultId",
+        "type": "uint256"
       },
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'recipient',
-        type: 'address',
-      },
+        "indexed": false,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      }
     ],
-    name: 'RecepientUpdated',
-    type: 'event',
+    "name": "RecepientUpdated",
+    "type": "event"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'trader',
-        type: 'address',
+        "internalType": "address",
+        "name": "trader",
+        "type": "address"
       },
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
+      }
     ],
-    name: 'allowedTraders',
-    outputs: [
+    "name": "allowedTraders",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    name: 'allowedUniswapPools',
-    outputs: [
+    "name": "allowedUniswapPools",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
+      }
     ],
-    name: 'createVault',
-    outputs: [
+    "name": "createVault",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'vaultId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "vaultId",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: 'closeRatio',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "closeRatio",
+        "type": "uint256"
       },
       {
-        internalType: 'bytes',
-        name: 'settlementData',
-        type: 'bytes',
-      },
+        "internalType": "bytes",
+        "name": "settlementData",
+        "type": "bytes"
+      }
     ],
-    name: 'execLiquidationCall',
-    outputs: [
+    "name": "execLiquidationCall",
+    "outputs": [
       {
-        components: [
+        "components": [
           {
-            components: [
+            "components": [
               {
-                internalType: 'int256',
-                name: 'perpEntryUpdate',
-                type: 'int256',
+                "internalType": "int256",
+                "name": "perpEntryUpdate",
+                "type": "int256"
               },
               {
-                internalType: 'int256',
-                name: 'sqrtEntryUpdate',
-                type: 'int256',
+                "internalType": "int256",
+                "name": "sqrtEntryUpdate",
+                "type": "int256"
               },
               {
-                internalType: 'int256',
-                name: 'sqrtRebalanceEntryUpdateUnderlying',
-                type: 'int256',
+                "internalType": "int256",
+                "name": "sqrtRebalanceEntryUpdateUnderlying",
+                "type": "int256"
               },
               {
-                internalType: 'int256',
-                name: 'sqrtRebalanceEntryUpdateStable',
-                type: 'int256',
+                "internalType": "int256",
+                "name": "sqrtRebalanceEntryUpdateStable",
+                "type": "int256"
               },
               {
-                internalType: 'int256',
-                name: 'perpPayoff',
-                type: 'int256',
+                "internalType": "int256",
+                "name": "perpPayoff",
+                "type": "int256"
               },
               {
-                internalType: 'int256',
-                name: 'sqrtPayoff',
-                type: 'int256',
-              },
+                "internalType": "int256",
+                "name": "sqrtPayoff",
+                "type": "int256"
+              }
             ],
-            internalType: 'struct IPredyPool.Payoff',
-            name: 'payoff',
-            type: 'tuple',
+            "internalType": "struct IPredyPool.Payoff",
+            "name": "payoff",
+            "type": "tuple"
           },
           {
-            internalType: 'uint256',
-            name: 'vaultId',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "vaultId",
+            "type": "uint256"
           },
           {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "fee",
+            "type": "int256"
           },
           {
-            internalType: 'int256',
-            name: 'minMargin',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "minMargin",
+            "type": "int256"
           },
           {
-            internalType: 'int256',
-            name: 'averagePrice',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "averagePrice",
+            "type": "int256"
           },
           {
-            internalType: 'uint256',
-            name: 'sqrtTwap',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "sqrtTwap",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'sqrtPrice',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "sqrtPrice",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct IPredyPool.TradeResult',
-        name: 'tradeResult',
-        type: 'tuple',
-      },
+        "internalType": "struct IPredyPool.TradeResult",
+        "name": "tradeResult",
+        "type": "tuple"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
+      }
     ],
-    name: 'getPairStatus',
-    outputs: [
+    "name": "getPairStatus",
+    "outputs": [
       {
-        components: [
+        "components": [
           {
-            internalType: 'uint256',
-            name: 'id',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
           },
           {
-            internalType: 'address',
-            name: 'marginId',
-            type: 'address',
+            "internalType": "address",
+            "name": "marginId",
+            "type": "address"
           },
           {
-            internalType: 'address',
-            name: 'poolOwner',
-            type: 'address',
+            "internalType": "address",
+            "name": "poolOwner",
+            "type": "address"
           },
           {
-            components: [
+            "components": [
               {
-                internalType: 'address',
-                name: 'token',
-                type: 'address',
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
               },
               {
-                internalType: 'address',
-                name: 'supplyTokenAddress',
-                type: 'address',
+                "internalType": "address",
+                "name": "supplyTokenAddress",
+                "type": "address"
               },
               {
-                components: [
+                "components": [
                   {
-                    internalType: 'uint256',
-                    name: 'totalCompoundDeposited',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "totalCompoundDeposited",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'totalNormalDeposited',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "totalNormalDeposited",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'totalNormalBorrowed',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "totalNormalBorrowed",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'assetScaler',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "assetScaler",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'assetGrowth',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "assetGrowth",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'debtGrowth',
-                    type: 'uint256',
-                  },
+                    "internalType": "uint256",
+                    "name": "debtGrowth",
+                    "type": "uint256"
+                  }
                 ],
-                internalType: 'struct ScaledAsset.AssetStatus',
-                name: 'tokenStatus',
-                type: 'tuple',
+                "internalType": "struct ScaledAsset.AssetStatus",
+                "name": "tokenStatus",
+                "type": "tuple"
               },
               {
-                components: [
+                "components": [
                   {
-                    internalType: 'uint256',
-                    name: 'baseRate',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "baseRate",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'kinkRate',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "kinkRate",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'slope1',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "slope1",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'slope2',
-                    type: 'uint256',
-                  },
+                    "internalType": "uint256",
+                    "name": "slope2",
+                    "type": "uint256"
+                  }
                 ],
-                internalType: 'struct InterestRateModel.IRMParams',
-                name: 'irmParams',
-                type: 'tuple',
+                "internalType": "struct InterestRateModel.IRMParams",
+                "name": "irmParams",
+                "type": "tuple"
               },
               {
-                internalType: 'uint256',
-                name: 'accumulatedProtocolRevenue',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "accumulatedProtocolRevenue",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'accumulatedCreatorRevenue',
-                type: 'uint256',
-              },
+                "internalType": "uint256",
+                "name": "accumulatedCreatorRevenue",
+                "type": "uint256"
+              }
             ],
-            internalType: 'struct Perp.AssetPoolStatus',
-            name: 'quotePool',
-            type: 'tuple',
+            "internalType": "struct Perp.AssetPoolStatus",
+            "name": "quotePool",
+            "type": "tuple"
           },
           {
-            components: [
+            "components": [
               {
-                internalType: 'address',
-                name: 'token',
-                type: 'address',
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
               },
               {
-                internalType: 'address',
-                name: 'supplyTokenAddress',
-                type: 'address',
+                "internalType": "address",
+                "name": "supplyTokenAddress",
+                "type": "address"
               },
               {
-                components: [
+                "components": [
                   {
-                    internalType: 'uint256',
-                    name: 'totalCompoundDeposited',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "totalCompoundDeposited",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'totalNormalDeposited',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "totalNormalDeposited",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'totalNormalBorrowed',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "totalNormalBorrowed",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'assetScaler',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "assetScaler",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'assetGrowth',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "assetGrowth",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'debtGrowth',
-                    type: 'uint256',
-                  },
+                    "internalType": "uint256",
+                    "name": "debtGrowth",
+                    "type": "uint256"
+                  }
                 ],
-                internalType: 'struct ScaledAsset.AssetStatus',
-                name: 'tokenStatus',
-                type: 'tuple',
+                "internalType": "struct ScaledAsset.AssetStatus",
+                "name": "tokenStatus",
+                "type": "tuple"
               },
               {
-                components: [
+                "components": [
                   {
-                    internalType: 'uint256',
-                    name: 'baseRate',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "baseRate",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'kinkRate',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "kinkRate",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'slope1',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "slope1",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'slope2',
-                    type: 'uint256',
-                  },
+                    "internalType": "uint256",
+                    "name": "slope2",
+                    "type": "uint256"
+                  }
                 ],
-                internalType: 'struct InterestRateModel.IRMParams',
-                name: 'irmParams',
-                type: 'tuple',
+                "internalType": "struct InterestRateModel.IRMParams",
+                "name": "irmParams",
+                "type": "tuple"
               },
               {
-                internalType: 'uint256',
-                name: 'accumulatedProtocolRevenue',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "accumulatedProtocolRevenue",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'accumulatedCreatorRevenue',
-                type: 'uint256',
-              },
+                "internalType": "uint256",
+                "name": "accumulatedCreatorRevenue",
+                "type": "uint256"
+              }
             ],
-            internalType: 'struct Perp.AssetPoolStatus',
-            name: 'basePool',
-            type: 'tuple',
+            "internalType": "struct Perp.AssetPoolStatus",
+            "name": "basePool",
+            "type": "tuple"
           },
           {
-            components: [
+            "components": [
               {
-                internalType: 'uint256',
-                name: 'riskRatio',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "riskRatio",
+                "type": "uint256"
               },
               {
-                internalType: 'int24',
-                name: 'rangeSize',
-                type: 'int24',
+                "internalType": "int24",
+                "name": "rangeSize",
+                "type": "int24"
               },
               {
-                internalType: 'int24',
-                name: 'rebalanceThreshold',
-                type: 'int24',
+                "internalType": "int24",
+                "name": "rebalanceThreshold",
+                "type": "int24"
               },
               {
-                internalType: 'uint64',
-                name: 'minSlippage',
-                type: 'uint64',
+                "internalType": "uint64",
+                "name": "minSlippage",
+                "type": "uint64"
               },
               {
-                internalType: 'uint64',
-                name: 'maxSlippage',
-                type: 'uint64',
-              },
+                "internalType": "uint64",
+                "name": "maxSlippage",
+                "type": "uint64"
+              }
             ],
-            internalType: 'struct Perp.AssetRiskParams',
-            name: 'riskParams',
-            type: 'tuple',
+            "internalType": "struct Perp.AssetRiskParams",
+            "name": "riskParams",
+            "type": "tuple"
           },
           {
-            components: [
+            "components": [
               {
-                internalType: 'address',
-                name: 'uniswapPool',
-                type: 'address',
+                "internalType": "address",
+                "name": "uniswapPool",
+                "type": "address"
               },
               {
-                internalType: 'int24',
-                name: 'tickLower',
-                type: 'int24',
+                "internalType": "int24",
+                "name": "tickLower",
+                "type": "int24"
               },
               {
-                internalType: 'int24',
-                name: 'tickUpper',
-                type: 'int24',
+                "internalType": "int24",
+                "name": "tickUpper",
+                "type": "int24"
               },
               {
-                internalType: 'uint64',
-                name: 'numRebalance',
-                type: 'uint64',
+                "internalType": "uint64",
+                "name": "numRebalance",
+                "type": "uint64"
               },
               {
-                internalType: 'uint256',
-                name: 'totalAmount',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "totalAmount",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'borrowedAmount',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "borrowedAmount",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'lastRebalanceTotalSquartAmount',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "lastRebalanceTotalSquartAmount",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'lastFee0Growth',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "lastFee0Growth",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'lastFee1Growth',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "lastFee1Growth",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'borrowPremium0Growth',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "borrowPremium0Growth",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'borrowPremium1Growth',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "borrowPremium1Growth",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'fee0Growth',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "fee0Growth",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'fee1Growth',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "fee1Growth",
+                "type": "uint256"
               },
               {
-                components: [
+                "components": [
                   {
-                    internalType: 'int256',
-                    name: 'positionAmount',
-                    type: 'int256',
+                    "internalType": "int256",
+                    "name": "positionAmount",
+                    "type": "int256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'lastFeeGrowth',
-                    type: 'uint256',
-                  },
+                    "internalType": "uint256",
+                    "name": "lastFeeGrowth",
+                    "type": "uint256"
+                  }
                 ],
-                internalType: 'struct ScaledAsset.UserStatus',
-                name: 'rebalancePositionBase',
-                type: 'tuple',
+                "internalType": "struct ScaledAsset.UserStatus",
+                "name": "rebalancePositionBase",
+                "type": "tuple"
               },
               {
-                components: [
+                "components": [
                   {
-                    internalType: 'int256',
-                    name: 'positionAmount',
-                    type: 'int256',
+                    "internalType": "int256",
+                    "name": "positionAmount",
+                    "type": "int256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'lastFeeGrowth',
-                    type: 'uint256',
-                  },
+                    "internalType": "uint256",
+                    "name": "lastFeeGrowth",
+                    "type": "uint256"
+                  }
                 ],
-                internalType: 'struct ScaledAsset.UserStatus',
-                name: 'rebalancePositionQuote',
-                type: 'tuple',
+                "internalType": "struct ScaledAsset.UserStatus",
+                "name": "rebalancePositionQuote",
+                "type": "tuple"
               },
               {
-                internalType: 'int256',
-                name: 'rebalanceInterestGrowthBase',
-                type: 'int256',
+                "internalType": "int256",
+                "name": "rebalanceInterestGrowthBase",
+                "type": "int256"
               },
               {
-                internalType: 'int256',
-                name: 'rebalanceInterestGrowthQuote',
-                type: 'int256',
-              },
+                "internalType": "int256",
+                "name": "rebalanceInterestGrowthQuote",
+                "type": "int256"
+              }
             ],
-            internalType: 'struct Perp.SqrtPerpAssetStatus',
-            name: 'sqrtAssetStatus',
-            type: 'tuple',
+            "internalType": "struct Perp.SqrtPerpAssetStatus",
+            "name": "sqrtAssetStatus",
+            "type": "tuple"
           },
           {
-            internalType: 'address',
-            name: 'priceFeed',
-            type: 'address',
+            "internalType": "address",
+            "name": "priceFeed",
+            "type": "address"
           },
           {
-            internalType: 'bool',
-            name: 'isQuoteZero',
-            type: 'bool',
+            "internalType": "bool",
+            "name": "isQuoteZero",
+            "type": "bool"
           },
           {
-            internalType: 'bool',
-            name: 'whitelistEnabled',
-            type: 'bool',
+            "internalType": "bool",
+            "name": "whitelistEnabled",
+            "type": "bool"
           },
           {
-            internalType: 'uint8',
-            name: 'feeRatio',
-            type: 'uint8',
+            "internalType": "uint8",
+            "name": "feeRatio",
+            "type": "uint8"
           },
           {
-            internalType: 'uint256',
-            name: 'lastUpdateTimestamp',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "lastUpdateTimestamp",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct DataType.PairStatus',
-        name: '',
-        type: 'tuple',
-      },
+        "internalType": "struct DataType.PairStatus",
+        "name": "",
+        "type": "tuple"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
+      }
     ],
-    name: 'getSqrtIndexPrice',
-    outputs: [
+    "name": "getSqrtIndexPrice",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
+      }
     ],
-    name: 'getSqrtPrice',
-    outputs: [
+    "name": "getSqrtPrice",
+    "outputs": [
       {
-        internalType: 'uint160',
-        name: '',
-        type: 'uint160',
-      },
+        "internalType": "uint160",
+        "name": "",
+        "type": "uint160"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'vaultId',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "vaultId",
+        "type": "uint256"
+      }
     ],
-    name: 'getVault',
-    outputs: [
+    "name": "getVault",
+    "outputs": [
       {
-        components: [
+        "components": [
           {
-            internalType: 'uint256',
-            name: 'id',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
           },
           {
-            internalType: 'address',
-            name: 'marginId',
-            type: 'address',
+            "internalType": "address",
+            "name": "marginId",
+            "type": "address"
           },
           {
-            internalType: 'address',
-            name: 'owner',
-            type: 'address',
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
           },
           {
-            internalType: 'address',
-            name: 'recipient',
-            type: 'address',
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
           },
           {
-            internalType: 'int256',
-            name: 'margin',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "margin",
+            "type": "int256"
           },
           {
-            components: [
+            "components": [
               {
-                internalType: 'uint256',
-                name: 'pairId',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "pairId",
+                "type": "uint256"
               },
               {
-                internalType: 'int24',
-                name: 'rebalanceLastTickLower',
-                type: 'int24',
+                "internalType": "int24",
+                "name": "rebalanceLastTickLower",
+                "type": "int24"
               },
               {
-                internalType: 'int24',
-                name: 'rebalanceLastTickUpper',
-                type: 'int24',
+                "internalType": "int24",
+                "name": "rebalanceLastTickUpper",
+                "type": "int24"
               },
               {
-                internalType: 'uint64',
-                name: 'lastNumRebalance',
-                type: 'uint64',
+                "internalType": "uint64",
+                "name": "lastNumRebalance",
+                "type": "uint64"
               },
               {
-                components: [
+                "components": [
                   {
-                    internalType: 'int256',
-                    name: 'amount',
-                    type: 'int256',
+                    "internalType": "int256",
+                    "name": "amount",
+                    "type": "int256"
                   },
                   {
-                    internalType: 'int256',
-                    name: 'entryValue',
-                    type: 'int256',
-                  },
+                    "internalType": "int256",
+                    "name": "entryValue",
+                    "type": "int256"
+                  }
                 ],
-                internalType: 'struct Perp.PositionStatus',
-                name: 'perp',
-                type: 'tuple',
+                "internalType": "struct Perp.PositionStatus",
+                "name": "perp",
+                "type": "tuple"
               },
               {
-                components: [
+                "components": [
                   {
-                    internalType: 'int256',
-                    name: 'amount',
-                    type: 'int256',
+                    "internalType": "int256",
+                    "name": "amount",
+                    "type": "int256"
                   },
                   {
-                    internalType: 'int256',
-                    name: 'entryValue',
-                    type: 'int256',
+                    "internalType": "int256",
+                    "name": "entryValue",
+                    "type": "int256"
                   },
                   {
-                    internalType: 'int256',
-                    name: 'quoteRebalanceEntryValue',
-                    type: 'int256',
+                    "internalType": "int256",
+                    "name": "quoteRebalanceEntryValue",
+                    "type": "int256"
                   },
                   {
-                    internalType: 'int256',
-                    name: 'baseRebalanceEntryValue',
-                    type: 'int256',
+                    "internalType": "int256",
+                    "name": "baseRebalanceEntryValue",
+                    "type": "int256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'entryTradeFee0',
-                    type: 'uint256',
+                    "internalType": "uint256",
+                    "name": "entryTradeFee0",
+                    "type": "uint256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'entryTradeFee1',
-                    type: 'uint256',
-                  },
+                    "internalType": "uint256",
+                    "name": "entryTradeFee1",
+                    "type": "uint256"
+                  }
                 ],
-                internalType: 'struct Perp.SqrtPositionStatus',
-                name: 'sqrtPerp',
-                type: 'tuple',
+                "internalType": "struct Perp.SqrtPositionStatus",
+                "name": "sqrtPerp",
+                "type": "tuple"
               },
               {
-                components: [
+                "components": [
                   {
-                    internalType: 'int256',
-                    name: 'positionAmount',
-                    type: 'int256',
+                    "internalType": "int256",
+                    "name": "positionAmount",
+                    "type": "int256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'lastFeeGrowth',
-                    type: 'uint256',
-                  },
+                    "internalType": "uint256",
+                    "name": "lastFeeGrowth",
+                    "type": "uint256"
+                  }
                 ],
-                internalType: 'struct ScaledAsset.UserStatus',
-                name: 'basePosition',
-                type: 'tuple',
+                "internalType": "struct ScaledAsset.UserStatus",
+                "name": "basePosition",
+                "type": "tuple"
               },
               {
-                components: [
+                "components": [
                   {
-                    internalType: 'int256',
-                    name: 'positionAmount',
-                    type: 'int256',
+                    "internalType": "int256",
+                    "name": "positionAmount",
+                    "type": "int256"
                   },
                   {
-                    internalType: 'uint256',
-                    name: 'lastFeeGrowth',
-                    type: 'uint256',
-                  },
+                    "internalType": "uint256",
+                    "name": "lastFeeGrowth",
+                    "type": "uint256"
+                  }
                 ],
-                internalType: 'struct ScaledAsset.UserStatus',
-                name: 'stablePosition',
-                type: 'tuple',
-              },
+                "internalType": "struct ScaledAsset.UserStatus",
+                "name": "stablePosition",
+                "type": "tuple"
+              }
             ],
-            internalType: 'struct Perp.UserStatus',
-            name: 'openPosition',
-            type: 'tuple',
-          },
+            "internalType": "struct Perp.UserStatus",
+            "name": "openPosition",
+            "type": "tuple"
+          }
         ],
-        internalType: 'struct DataType.Vault',
-        name: '',
-        type: 'tuple',
-      },
+        "internalType": "struct DataType.Vault",
+        "name": "",
+        "type": "tuple"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'globalData',
-    outputs: [
+    "inputs": [],
+    "name": "globalData",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: 'pairsCount',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "pairsCount",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: 'vaultCount',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "vaultCount",
+        "type": "uint256"
       },
       {
-        internalType: 'address',
-        name: 'uniswapFactory',
-        type: 'address',
+        "internalType": "address",
+        "name": "uniswapFactory",
+        "type": "address"
       },
       {
-        components: [
+        "components": [
           {
-            internalType: 'address',
-            name: 'locker',
-            type: 'address',
+            "internalType": "address",
+            "name": "locker",
+            "type": "address"
           },
           {
-            internalType: 'uint256',
-            name: 'quoteReserve',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "quoteReserve",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'baseReserve',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "baseReserve",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'pairId',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "pairId",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct LockDataLibrary.LockData',
-        name: 'lockData',
-        type: 'tuple',
-      },
+        "internalType": "struct LockDataLibrary.LockData",
+        "name": "lockData",
+        "type": "tuple"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'uniswapFactory',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "uniswapFactory",
+        "type": "address"
+      }
     ],
-    name: 'initialize',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'operator',
-    outputs: [
+    "inputs": [],
+    "name": "operator",
+    "outputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        internalType: 'bytes',
-        name: 'settlementData',
-        type: 'bytes',
-      },
+        "internalType": "bytes",
+        "name": "settlementData",
+        "type": "bytes"
+      }
     ],
-    name: 'reallocate',
-    outputs: [
+    "name": "reallocate",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: 'relocationOccurred',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "relocationOccurred",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        components: [
+        "components": [
           {
-            internalType: 'address',
-            name: 'marginId',
-            type: 'address',
+            "internalType": "address",
+            "name": "marginId",
+            "type": "address"
           },
           {
-            internalType: 'address',
-            name: 'poolOwner',
-            type: 'address',
+            "internalType": "address",
+            "name": "poolOwner",
+            "type": "address"
           },
           {
-            internalType: 'address',
-            name: 'uniswapPool',
-            type: 'address',
+            "internalType": "address",
+            "name": "uniswapPool",
+            "type": "address"
           },
           {
-            internalType: 'address',
-            name: 'priceFeed',
-            type: 'address',
+            "internalType": "address",
+            "name": "priceFeed",
+            "type": "address"
           },
           {
-            internalType: 'bool',
-            name: 'whitelistEnabled',
-            type: 'bool',
+            "internalType": "bool",
+            "name": "whitelistEnabled",
+            "type": "bool"
           },
           {
-            internalType: 'uint8',
-            name: 'fee',
-            type: 'uint8',
+            "internalType": "uint8",
+            "name": "fee",
+            "type": "uint8"
           },
           {
-            components: [
+            "components": [
               {
-                internalType: 'uint256',
-                name: 'riskRatio',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "riskRatio",
+                "type": "uint256"
               },
               {
-                internalType: 'int24',
-                name: 'rangeSize',
-                type: 'int24',
+                "internalType": "int24",
+                "name": "rangeSize",
+                "type": "int24"
               },
               {
-                internalType: 'int24',
-                name: 'rebalanceThreshold',
-                type: 'int24',
+                "internalType": "int24",
+                "name": "rebalanceThreshold",
+                "type": "int24"
               },
               {
-                internalType: 'uint64',
-                name: 'minSlippage',
-                type: 'uint64',
+                "internalType": "uint64",
+                "name": "minSlippage",
+                "type": "uint64"
               },
               {
-                internalType: 'uint64',
-                name: 'maxSlippage',
-                type: 'uint64',
-              },
+                "internalType": "uint64",
+                "name": "maxSlippage",
+                "type": "uint64"
+              }
             ],
-            internalType: 'struct Perp.AssetRiskParams',
-            name: 'assetRiskParams',
-            type: 'tuple',
+            "internalType": "struct Perp.AssetRiskParams",
+            "name": "assetRiskParams",
+            "type": "tuple"
           },
           {
-            components: [
+            "components": [
               {
-                internalType: 'uint256',
-                name: 'baseRate',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "baseRate",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'kinkRate',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "kinkRate",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'slope1',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "slope1",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'slope2',
-                type: 'uint256',
-              },
+                "internalType": "uint256",
+                "name": "slope2",
+                "type": "uint256"
+              }
             ],
-            internalType: 'struct InterestRateModel.IRMParams',
-            name: 'quoteIrmParams',
-            type: 'tuple',
+            "internalType": "struct InterestRateModel.IRMParams",
+            "name": "quoteIrmParams",
+            "type": "tuple"
           },
           {
-            components: [
+            "components": [
               {
-                internalType: 'uint256',
-                name: 'baseRate',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "baseRate",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'kinkRate',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "kinkRate",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'slope1',
-                type: 'uint256',
+                "internalType": "uint256",
+                "name": "slope1",
+                "type": "uint256"
               },
               {
-                internalType: 'uint256',
-                name: 'slope2',
-                type: 'uint256',
-              },
+                "internalType": "uint256",
+                "name": "slope2",
+                "type": "uint256"
+              }
             ],
-            internalType: 'struct InterestRateModel.IRMParams',
-            name: 'baseIrmParams',
-            type: 'tuple',
-          },
+            "internalType": "struct InterestRateModel.IRMParams",
+            "name": "baseIrmParams",
+            "type": "tuple"
+          }
         ],
-        internalType: 'struct AddPairLogic.AddPairParams',
-        name: 'addPairParam',
-        type: 'tuple',
-      },
+        "internalType": "struct AddPairLogic.AddPairParams",
+        "name": "addPairParam",
+        "type": "tuple"
+      }
     ],
-    name: 'registerPair',
-    outputs: [
+    "name": "registerPair",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
+      }
     ],
-    name: 'revertPairStatus',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "revertPairStatus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'vaultId',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "vaultId",
+        "type": "uint256"
+      }
     ],
-    name: 'revertVaultStatus',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "revertVaultStatus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'newOperator',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "newOperator",
+        "type": "address"
+      }
     ],
-    name: 'setOperator',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "setOperator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        internalType: 'bool',
-        name: 'isQuoteAsset',
-        type: 'bool',
+        "internalType": "bool",
+        "name": "isQuoteAsset",
+        "type": "bool"
       },
       {
-        internalType: 'uint256',
-        name: 'supplyAmount',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "supplyAmount",
+        "type": "uint256"
+      }
     ],
-    name: 'supply',
-    outputs: [
+    "name": "supply",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: 'finalSuppliedAmount',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "finalSuppliedAmount",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'bool',
-        name: 'isQuoteAsset',
-        type: 'bool',
+        "internalType": "bool",
+        "name": "isQuoteAsset",
+        "type": "bool"
       },
       {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
       },
       {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
     ],
-    name: 'take',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "take",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        components: [
+        "components": [
           {
-            internalType: 'uint256',
-            name: 'pairId',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "pairId",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'vaultId',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "vaultId",
+            "type": "uint256"
           },
           {
-            internalType: 'int256',
-            name: 'tradeAmount',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "tradeAmount",
+            "type": "int256"
           },
           {
-            internalType: 'int256',
-            name: 'tradeAmountSqrt',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "tradeAmountSqrt",
+            "type": "int256"
           },
           {
-            internalType: 'bytes',
-            name: 'extraData',
-            type: 'bytes',
-          },
+            "internalType": "bytes",
+            "name": "extraData",
+            "type": "bytes"
+          }
         ],
-        internalType: 'struct IPredyPool.TradeParams',
-        name: 'tradeParams',
-        type: 'tuple',
+        "internalType": "struct IPredyPool.TradeParams",
+        "name": "tradeParams",
+        "type": "tuple"
       },
       {
-        internalType: 'bytes',
-        name: 'settlementData',
-        type: 'bytes',
-      },
+        "internalType": "bytes",
+        "name": "settlementData",
+        "type": "bytes"
+      }
     ],
-    name: 'trade',
-    outputs: [
+    "name": "trade",
+    "outputs": [
       {
-        components: [
+        "components": [
           {
-            components: [
+            "components": [
               {
-                internalType: 'int256',
-                name: 'perpEntryUpdate',
-                type: 'int256',
+                "internalType": "int256",
+                "name": "perpEntryUpdate",
+                "type": "int256"
               },
               {
-                internalType: 'int256',
-                name: 'sqrtEntryUpdate',
-                type: 'int256',
+                "internalType": "int256",
+                "name": "sqrtEntryUpdate",
+                "type": "int256"
               },
               {
-                internalType: 'int256',
-                name: 'sqrtRebalanceEntryUpdateUnderlying',
-                type: 'int256',
+                "internalType": "int256",
+                "name": "sqrtRebalanceEntryUpdateUnderlying",
+                "type": "int256"
               },
               {
-                internalType: 'int256',
-                name: 'sqrtRebalanceEntryUpdateStable',
-                type: 'int256',
+                "internalType": "int256",
+                "name": "sqrtRebalanceEntryUpdateStable",
+                "type": "int256"
               },
               {
-                internalType: 'int256',
-                name: 'perpPayoff',
-                type: 'int256',
+                "internalType": "int256",
+                "name": "perpPayoff",
+                "type": "int256"
               },
               {
-                internalType: 'int256',
-                name: 'sqrtPayoff',
-                type: 'int256',
-              },
+                "internalType": "int256",
+                "name": "sqrtPayoff",
+                "type": "int256"
+              }
             ],
-            internalType: 'struct IPredyPool.Payoff',
-            name: 'payoff',
-            type: 'tuple',
+            "internalType": "struct IPredyPool.Payoff",
+            "name": "payoff",
+            "type": "tuple"
           },
           {
-            internalType: 'uint256',
-            name: 'vaultId',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "vaultId",
+            "type": "uint256"
           },
           {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "fee",
+            "type": "int256"
           },
           {
-            internalType: 'int256',
-            name: 'minMargin',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "minMargin",
+            "type": "int256"
           },
           {
-            internalType: 'int256',
-            name: 'averagePrice',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "averagePrice",
+            "type": "int256"
           },
           {
-            internalType: 'uint256',
-            name: 'sqrtTwap',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "sqrtTwap",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'sqrtPrice',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "sqrtPrice",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct IPredyPool.TradeResult',
-        name: 'tradeResult',
-        type: 'tuple',
-      },
+        "internalType": "struct IPredyPool.TradeResult",
+        "name": "tradeResult",
+        "type": "tuple"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'amount0',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "amount0",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: 'amount1',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "amount1",
+        "type": "uint256"
       },
       {
-        internalType: 'bytes',
-        name: '',
-        type: 'bytes',
-      },
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
     ],
-    name: 'uniswapV3MintCallback',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "uniswapV3MintCallback",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        components: [
+        "components": [
           {
-            internalType: 'uint256',
-            name: 'riskRatio',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "riskRatio",
+            "type": "uint256"
           },
           {
-            internalType: 'int24',
-            name: 'rangeSize',
-            type: 'int24',
+            "internalType": "int24",
+            "name": "rangeSize",
+            "type": "int24"
           },
           {
-            internalType: 'int24',
-            name: 'rebalanceThreshold',
-            type: 'int24',
+            "internalType": "int24",
+            "name": "rebalanceThreshold",
+            "type": "int24"
           },
           {
-            internalType: 'uint64',
-            name: 'minSlippage',
-            type: 'uint64',
+            "internalType": "uint64",
+            "name": "minSlippage",
+            "type": "uint64"
           },
           {
-            internalType: 'uint64',
-            name: 'maxSlippage',
-            type: 'uint64',
-          },
+            "internalType": "uint64",
+            "name": "maxSlippage",
+            "type": "uint64"
+          }
         ],
-        internalType: 'struct Perp.AssetRiskParams',
-        name: 'riskParams',
-        type: 'tuple',
-      },
+        "internalType": "struct Perp.AssetRiskParams",
+        "name": "riskParams",
+        "type": "tuple"
+      }
     ],
-    name: 'updateAssetRiskParams',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "updateAssetRiskParams",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        internalType: 'uint8',
-        name: 'feeRatio',
-        type: 'uint8',
-      },
+        "internalType": "uint8",
+        "name": "feeRatio",
+        "type": "uint8"
+      }
     ],
-    name: 'updateFeeRatio',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "updateFeeRatio",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        components: [
+        "components": [
           {
-            internalType: 'uint256',
-            name: 'baseRate',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "baseRate",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'kinkRate',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "kinkRate",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'slope1',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "slope1",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'slope2',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "slope2",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct InterestRateModel.IRMParams',
-        name: 'quoteIrmParams',
-        type: 'tuple',
+        "internalType": "struct InterestRateModel.IRMParams",
+        "name": "quoteIrmParams",
+        "type": "tuple"
       },
       {
-        components: [
+        "components": [
           {
-            internalType: 'uint256',
-            name: 'baseRate',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "baseRate",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'kinkRate',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "kinkRate",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'slope1',
-            type: 'uint256',
+            "internalType": "uint256",
+            "name": "slope1",
+            "type": "uint256"
           },
           {
-            internalType: 'uint256',
-            name: 'slope2',
-            type: 'uint256',
-          },
+            "internalType": "uint256",
+            "name": "slope2",
+            "type": "uint256"
+          }
         ],
-        internalType: 'struct InterestRateModel.IRMParams',
-        name: 'baseIrmParams',
-        type: 'tuple',
-      },
+        "internalType": "struct InterestRateModel.IRMParams",
+        "name": "baseIrmParams",
+        "type": "tuple"
+      }
     ],
-    name: 'updateIRMParams',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "updateIRMParams",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        internalType: 'address',
-        name: 'poolOwner',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "poolOwner",
+        "type": "address"
+      }
     ],
-    name: 'updatePoolOwner',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "updatePoolOwner",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        internalType: 'address',
-        name: 'priceOracle',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "priceOracle",
+        "type": "address"
+      }
     ],
-    name: 'updatePriceOracle',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "updatePriceOracle",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'vaultId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "vaultId",
+        "type": "uint256"
       },
       {
-        internalType: 'address',
-        name: 'recipient',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      }
     ],
-    name: 'updateRecepient',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "updateRecepient",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        internalType: 'address',
-        name: 'trader',
-        type: 'address',
+        "internalType": "address",
+        "name": "trader",
+        "type": "address"
       },
       {
-        internalType: 'bool',
-        name: 'enabled',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "enabled",
+        "type": "bool"
+      }
     ],
-    name: 'updateWhitelistAddress',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "updateWhitelistAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        internalType: 'bool',
-        name: 'isQuoteAsset',
-        type: 'bool',
+        "internalType": "bool",
+        "name": "isQuoteAsset",
+        "type": "bool"
       },
       {
-        internalType: 'uint256',
-        name: 'withdrawAmount',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "withdrawAmount",
+        "type": "uint256"
+      }
     ],
-    name: 'withdraw',
-    outputs: [
+    "name": "withdraw",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: 'finalBurnAmount',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "finalBurnAmount",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: 'finalWithdrawAmount',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "finalWithdrawAmount",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        internalType: 'bool',
-        name: 'isQuoteToken',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "isQuoteToken",
+        "type": "bool"
+      }
     ],
-    name: 'withdrawCreatorRevenue',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "withdrawCreatorRevenue",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        internalType: 'bool',
-        name: 'isQuoteToken',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "isQuoteToken",
+        "type": "bool"
+      }
     ],
-    name: 'withdrawProtocolRevenue',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "withdrawProtocolRevenue",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'implementationAddress',
-        type: 'address',
+        "internalType": "address",
+        "name": "implementationAddress",
+        "type": "address"
       },
       {
-        internalType: 'address',
-        name: 'ownerAddress',
-        type: 'address',
+        "internalType": "address",
+        "name": "ownerAddress",
+        "type": "address"
       },
       {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
     ],
-    stateMutability: 'payable',
-    type: 'constructor',
-  },
-] as const
+    "stateMutability": "payable",
+    "type": "constructor"
+  }
+] as const 

@@ -136,8 +136,8 @@ export class SpotLimitOrderBuilder extends SpotOrderBuilder {
       validatorAddress || SPOT_LIMIT_ORDER_VALIDATOR_MAPPING[chainId]
   }
 
-  validationData(filler: string, limitPrice: bigint): SpotLimitOrderBuilder {
-    const validationData = new SpotLimitOrderValidationData(filler, limitPrice)
+  validationData(limitPrice: bigint): SpotLimitOrderBuilder {
+    const validationData = new SpotLimitOrderValidationData(limitPrice)
 
     this.spotOrder.validationData = validationData.serialize()
 

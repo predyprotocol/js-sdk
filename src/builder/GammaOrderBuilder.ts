@@ -131,10 +131,8 @@ export class GammaDutchOrderBuilder extends GammaOrderBuilder {
   ) {
     super(chainId, permit2Address)
 
-    if (validatorAddress) {
-      this.gammaOrder.validatorAddress =
-        validatorAddress || GENERAL_DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
-    }
+    this.gammaOrder.validatorAddress =
+      validatorAddress || GENERAL_DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
   }
 
   validationData(

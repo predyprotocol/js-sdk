@@ -1,7 +1,7 @@
 export const ReaderLogicABI = [
   {
-    inputs: [],
-    name: 'T',
-    type: 'error',
-  },
-] as const
+    "inputs": [],
+    "name": "T",
+    "type": "error"
+  }
+] as const 

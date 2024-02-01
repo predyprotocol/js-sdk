@@ -9,6 +9,7 @@ import {
   PerpOrderParams,
   TOKEN_PERMISSION_TYPES,
 } from './types'
+import { solidityPack } from 'ethers/lib/utils'
 
 const PERP_ORDER_TYPES_SINGLE = [
   { name: 'info', type: 'OrderInfo' },
@@ -90,6 +91,26 @@ export class PerpOrder {
     const order = decoded[0] as PerpOrderParams
 
     return new PerpOrder(order, chainId, permit2)
+  }
+
+  public getOptimizedParams() {
+    return [
+      this.perpOrder.info.trader,
+      this.perpOrder.info.nonce,
+      this.getOptimizedDeadlinePairIdLev(),
+      this.perpOrder.tradeAmount,
+      this.perpOrder.marginAmount,
+      this.perpOrder.validatorAddress,
+      this.perpOrder.validationData,
+    ]
+  }
+
+  getOptimizedDeadlinePairIdLev() {
+    return solidityPack(['uint64', 'uint64', 'uint8'], [
+      this.perpOrder.info.deadline,
+      this.perpOrder.pairId,
+      this.perpOrder.leverage,
+    ])
   }
 
   public witnessInfo() {

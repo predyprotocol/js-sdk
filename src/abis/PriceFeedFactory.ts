@@ -1,62 +1,62 @@
 export const PriceFeedFactoryABI = [
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'quotePrice',
-        type: 'address',
+        "indexed": false,
+        "internalType": "address",
+        "name": "quotePrice",
+        "type": "address"
       },
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'basePrice',
-        type: 'address',
+        "indexed": false,
+        "internalType": "address",
+        "name": "basePrice",
+        "type": "address"
       },
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'decimalsDiff',
-        type: 'uint256',
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "decimalsDiff",
+        "type": "uint256"
       },
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'priceFeed',
-        type: 'address',
-      },
+        "indexed": false,
+        "internalType": "address",
+        "name": "priceFeed",
+        "type": "address"
+      }
     ],
-    name: 'PriceFeedCreated',
-    type: 'event',
+    "name": "PriceFeedCreated",
+    "type": "event"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'quotePrice',
-        type: 'address',
+        "internalType": "address",
+        "name": "quotePrice",
+        "type": "address"
       },
       {
-        internalType: 'address',
-        name: 'basePrice',
-        type: 'address',
+        "internalType": "address",
+        "name": "basePrice",
+        "type": "address"
       },
       {
-        internalType: 'uint256',
-        name: 'decimalsDiff',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "decimalsDiff",
+        "type": "uint256"
+      }
     ],
-    name: 'createPriceFeed',
-    outputs: [
+    "name": "createPriceFeed",
+    "outputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-] as const
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+] as const 

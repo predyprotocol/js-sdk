@@ -1,6 +1,6 @@
-import { decodeAbiParameters, encodeAbiParameters } from 'viem'
+import { decodeAbiParameters, encodeAbiParameters, isAddressEqual } from 'viem'
 
-import { PERMIT2_MAPPING } from '../constants'
+import { PERMIT2_MAPPING, SPOT_DUTCH_ORDER_VALIDATOR_MAPPING } from '../constants'
 import { Address, Bytes } from '../types'
 import { abs } from '../utils'
 
@@ -11,6 +11,7 @@ import {
   SpotOrderParams,
   TOKEN_PERMISSION_TYPES,
 } from './types'
+import { solidityPack } from 'ethers/lib/utils'
 
 const SPOT_ORDER_TYPES_SINGLE = [
   { name: 'info', type: 'OrderInfo' },
@@ -83,6 +84,50 @@ export class SpotOrder {
     const order = decoded[0] as SpotOrderParams
 
     return new SpotOrder(order, chainId, permit2)
+  }
+  public getOptimizedParams() {
+    const compressed = this.getCompressedParams()
+
+    return [
+      this.spotOrder.info.trader,
+      this.spotOrder.info.nonce,
+      this.spotOrder.quoteToken,
+      this.spotOrder.baseToken,
+      this.spotOrder.baseTokenAmount,
+      this.spotOrder.quoteTokenAmount,
+      compressed[0],
+      compressed[1],
+    ]
+  }
+
+  getCompressedParams() {
+    if (isAddressEqual(this.spotOrder.validatorAddress, SPOT_DUTCH_ORDER_VALIDATOR_MAPPING[this.chainId])) {
+      const validationParams = SpotDutchOrderValidationData.deserialize(this.spotOrder.validationData)
+
+      const param1 = solidityPack(['uint64', 'uint64', 'uint64', 'uint32', 'uint32'], [
+        this.spotOrder.info.deadline,
+        validationParams.startTime,
+        validationParams.endTime,
+        validationParams.endPrice * 10000n / validationParams.startPrice,
+        0,
+      ])
+      const param2 = validationParams.startPrice
+
+      return [param1, param2]
+    } else {
+      const validationParams = SpotLimitOrderValidationData.deserialize(this.spotOrder.validationData)
+
+      const param1 = solidityPack(['uint64', 'uint64', 'uint64', 'uint32', 'uint32'], [
+        this.spotOrder.info.deadline,
+        0,
+        0,
+        0,
+        1
+      ])
+      const param2 = validationParams.limitQuoteTokenAmount
+
+      return [param1, param2]
+    }
   }
 
   public witnessInfo() {
@@ -201,20 +246,19 @@ export const SPOT_LIMIT_ORDER_VALIDATION_ABI = [
     name: 'LimitOrderValidationData',
     type: 'tuple',
     components: [
-      { name: 'filler', type: 'address' },
       { name: 'limitQuoteTokenAmount', type: 'uint256' },
     ],
   },
 ]
 
 export class SpotLimitOrderValidationData extends BaseValidationData {
-  constructor(public filler: string, public limitQuoteTokenAmount: bigint) {
+  constructor(public limitQuoteTokenAmount: bigint) {
     super()
   }
 
   serialize(): Bytes {
     return encodeAbiParameters(SPOT_LIMIT_ORDER_VALIDATION_ABI, [
-      { filler: this.filler, limitQuoteTokenAmount: this.limitQuoteTokenAmount },
+      { limitQuoteTokenAmount: this.limitQuoteTokenAmount },
     ]) as Bytes
   }
 
@@ -223,12 +267,10 @@ export class SpotLimitOrderValidationData extends BaseValidationData {
       SPOT_LIMIT_ORDER_VALIDATION_ABI,
       validationData
     )[0] as {
-      filler: string
       limitQuoteTokenAmount: bigint
     }
 
     return new SpotLimitOrderValidationData(
-      decoded.filler,
       decoded.limitQuoteTokenAmount
     )
   }

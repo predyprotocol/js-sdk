@@ -1,43 +1,43 @@
 export const TradeABI = [
   {
-    inputs: [],
-    name: 'BaseTokenNotSettled',
-    type: 'error',
+    "inputs": [],
+    "name": "BaseTokenNotSettled",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'locker',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "locker",
+        "type": "address"
+      }
     ],
-    name: 'LockedBy',
-    type: 'error',
+    "name": "LockedBy",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'NoCFMMLiquidityError',
-    type: 'error',
+    "inputs": [],
+    "name": "NoCFMMLiquidityError",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'OutOfRangeError',
-    type: 'error',
+    "inputs": [],
+    "name": "OutOfRangeError",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'QuoteTokenNotSettled',
-    type: 'error',
+    "inputs": [],
+    "name": "QuoteTokenNotSettled",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'SqrtAssetCanNotCoverBorrow',
-    type: 'error',
+    "inputs": [],
+    "name": "SqrtAssetCanNotCoverBorrow",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'T',
-    type: 'error',
-  },
-] as const
+    "inputs": [],
+    "name": "T",
+    "type": "error"
+  }
+] as const 

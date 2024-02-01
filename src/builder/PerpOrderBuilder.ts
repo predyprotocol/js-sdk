@@ -125,10 +125,8 @@ export class PerpDutchOrderBuilder extends PerpOrderBuilder {
   ) {
     super(chainId, permit2Address)
 
-    if (validatorAddress) {
-      this.perpOrder.validatorAddress =
-        validatorAddress || DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
-    }
+    this.perpOrder.validatorAddress =
+      validatorAddress || DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
   }
 
   validationData(
@@ -158,10 +156,8 @@ export class PerpLimitOrderBuilder extends PerpOrderBuilder {
   ) {
     super(chainId, permit2Address)
 
-    if (validatorAddress) {
-      this.perpOrder.validatorAddress =
-        validatorAddress || LIMIT_ORDER_VALIDATOR_MAPPING[chainId]
-    }
+    this.perpOrder.validatorAddress =
+      validatorAddress || LIMIT_ORDER_VALIDATOR_MAPPING[chainId]
   }
 
   validationData(

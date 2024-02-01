@@ -1,122 +1,122 @@
 export const TradeLogicABI = [
   {
-    inputs: [],
-    name: 'BaseTokenNotSettled',
-    type: 'error',
+    "inputs": [],
+    "name": "BaseTokenNotSettled",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'locker',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "locker",
+        "type": "address"
+      }
     ],
-    name: 'LockedBy',
-    type: 'error',
+    "name": "LockedBy",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'NotSafe',
-    type: 'error',
+    "inputs": [],
+    "name": "NotSafe",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'T',
-    type: 'error',
+    "inputs": [],
+    "name": "T",
+    "type": "error"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'vaultId',
-        type: 'uint256',
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "vaultId",
+        "type": "uint256"
       },
       {
-        indexed: false,
-        internalType: 'int256',
-        name: 'updatedMarginAmount',
-        type: 'int256',
-      },
+        "indexed": false,
+        "internalType": "int256",
+        "name": "updatedMarginAmount",
+        "type": "int256"
+      }
     ],
-    name: 'MarginUpdated',
-    type: 'event',
+    "name": "MarginUpdated",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'vaultId',
-        type: 'uint256',
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "vaultId",
+        "type": "uint256"
       },
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "pairId",
+        "type": "uint256"
       },
       {
-        indexed: false,
-        internalType: 'int256',
-        name: 'tradeAmount',
-        type: 'int256',
+        "indexed": false,
+        "internalType": "int256",
+        "name": "tradeAmount",
+        "type": "int256"
       },
       {
-        indexed: false,
-        internalType: 'int256',
-        name: 'tradeSqrtAmount',
-        type: 'int256',
+        "indexed": false,
+        "internalType": "int256",
+        "name": "tradeSqrtAmount",
+        "type": "int256"
       },
       {
-        components: [
+        "components": [
           {
-            internalType: 'int256',
-            name: 'perpEntryUpdate',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "perpEntryUpdate",
+            "type": "int256"
           },
           {
-            internalType: 'int256',
-            name: 'sqrtEntryUpdate',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "sqrtEntryUpdate",
+            "type": "int256"
           },
           {
-            internalType: 'int256',
-            name: 'sqrtRebalanceEntryUpdateUnderlying',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "sqrtRebalanceEntryUpdateUnderlying",
+            "type": "int256"
           },
           {
-            internalType: 'int256',
-            name: 'sqrtRebalanceEntryUpdateStable',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "sqrtRebalanceEntryUpdateStable",
+            "type": "int256"
           },
           {
-            internalType: 'int256',
-            name: 'perpPayoff',
-            type: 'int256',
+            "internalType": "int256",
+            "name": "perpPayoff",
+            "type": "int256"
           },
           {
-            internalType: 'int256',
-            name: 'sqrtPayoff',
-            type: 'int256',
-          },
+            "internalType": "int256",
+            "name": "sqrtPayoff",
+            "type": "int256"
+          }
         ],
-        indexed: false,
-        internalType: 'struct IPredyPool.Payoff',
-        name: 'payoff',
-        type: 'tuple',
+        "indexed": false,
+        "internalType": "struct IPredyPool.Payoff",
+        "name": "payoff",
+        "type": "tuple"
       },
       {
-        indexed: false,
-        internalType: 'int256',
-        name: 'fee',
-        type: 'int256',
-      },
+        "indexed": false,
+        "internalType": "int256",
+        "name": "fee",
+        "type": "int256"
+      }
     ],
-    name: 'PositionUpdated',
-    type: 'event',
-  },
-] as const
+    "name": "PositionUpdated",
+    "type": "event"
+  }
+] as const 

@@ -1,6 +1,10 @@
+import { solidityPack } from 'ethers/lib/utils'
 import { decodeAbiParameters, encodeAbiParameters, isAddressEqual } from 'viem'
 
-import { PERMIT2_MAPPING, SPOT_DUTCH_ORDER_VALIDATOR_MAPPING } from '../constants'
+import {
+  PERMIT2_MAPPING,
+  SPOT_DUTCH_ORDER_VALIDATOR_MAPPING,
+} from '../constants'
 import { Address, Bytes } from '../types'
 import { abs } from '../utils'
 
@@ -11,7 +15,6 @@ import {
   SpotOrderParams,
   TOKEN_PERMISSION_TYPES,
 } from './types'
-import { solidityPack } from 'ethers/lib/utils'
 
 const SPOT_ORDER_TYPES_SINGLE = [
   { name: 'info', type: 'OrderInfo' },
@@ -101,29 +104,38 @@ export class SpotOrder {
   }
 
   getCompressedParams() {
-    if (isAddressEqual(this.spotOrder.validatorAddress, SPOT_DUTCH_ORDER_VALIDATOR_MAPPING[this.chainId])) {
-      const validationParams = SpotDutchOrderValidationData.deserialize(this.spotOrder.validationData)
+    if (
+      isAddressEqual(
+        this.spotOrder.validatorAddress,
+        SPOT_DUTCH_ORDER_VALIDATOR_MAPPING[this.chainId]
+      )
+    ) {
+      const validationParams = SpotDutchOrderValidationData.deserialize(
+        this.spotOrder.validationData
+      )
 
-      const param1 = solidityPack(['uint32', 'uint32', 'uint64', 'uint64', 'uint64'], [
-        0,
-        validationParams.endPrice * 10000n / validationParams.startPrice,
-        validationParams.endTime,
-        validationParams.startTime,
-        this.spotOrder.info.deadline,
-      ]) as Bytes
+      const param1 = solidityPack(
+        ['uint32', 'uint32', 'uint64', 'uint64', 'uint64'],
+        [
+          0,
+          (validationParams.endPrice * 10000n) / validationParams.startPrice,
+          validationParams.endTime,
+          validationParams.startTime,
+          this.spotOrder.info.deadline,
+        ]
+      ) as Bytes
       const param2 = validationParams.startPrice
 
       return { param1, param2 }
     } else {
-      const validationParams = SpotLimitOrderValidationData.deserialize(this.spotOrder.validationData)
+      const validationParams = SpotLimitOrderValidationData.deserialize(
+        this.spotOrder.validationData
+      )
 
-      const param1 = solidityPack(['uint32', 'uint32', 'uint64', 'uint64', 'uint64'], [
-        1,
-        0,
-        0,
-        0,
-        this.spotOrder.info.deadline,
-      ]) as Bytes
+      const param1 = solidityPack(
+        ['uint32', 'uint32', 'uint64', 'uint64', 'uint64'],
+        [1, 0, 0, 0, this.spotOrder.info.deadline]
+      ) as Bytes
       const param2 = validationParams.limitQuoteTokenAmount
 
       return { param1, param2 }
@@ -245,9 +257,7 @@ export const SPOT_LIMIT_ORDER_VALIDATION_ABI = [
   {
     name: 'LimitOrderValidationData',
     type: 'tuple',
-    components: [
-      { name: 'limitQuoteTokenAmount', type: 'uint256' },
-    ],
+    components: [{ name: 'limitQuoteTokenAmount', type: 'uint256' }],
   },
 ]
 
@@ -270,8 +280,6 @@ export class SpotLimitOrderValidationData extends BaseValidationData {
       limitQuoteTokenAmount: bigint
     }
 
-    return new SpotLimitOrderValidationData(
-      decoded.limitQuoteTokenAmount
-    )
+    return new SpotLimitOrderValidationData(decoded.limitQuoteTokenAmount)
   }
 }

@@ -1,3 +1,4 @@
+import { solidityPack } from 'ethers/lib/utils'
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { PERMIT2_MAPPING } from '../constants'
@@ -9,7 +10,6 @@ import {
   PerpOrderParams,
   TOKEN_PERMISSION_TYPES,
 } from './types'
-import { solidityPack } from 'ethers/lib/utils'
 
 const PERP_ORDER_TYPES_SINGLE = [
   { name: 'info', type: 'OrderInfo' },
@@ -106,12 +106,15 @@ export class PerpOrder {
   }
 
   getOptimizedDeadlinePairIdLev() {
-    return solidityPack(['uint120', 'uint8', 'uint64', 'uint64'], [
-      0,
-      this.perpOrder.leverage,
-      this.perpOrder.pairId,
-      this.perpOrder.info.deadline,
-    ]) as Bytes
+    return solidityPack(
+      ['uint120', 'uint8', 'uint64', 'uint64'],
+      [
+        0,
+        this.perpOrder.leverage,
+        this.perpOrder.pairId,
+        this.perpOrder.info.deadline,
+      ]
+    ) as Bytes
   }
 
   public witnessInfo() {

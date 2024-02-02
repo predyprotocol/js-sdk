@@ -98,7 +98,9 @@ describe('PerpOrder', () => {
       )
 
       const params = order.getOptimizedDeadlinePairIdLev()
-      expect(params).toEqual('0x0000000000000000000000000000000300000000000000020000000000000001')
+      expect(params).toEqual(
+        '0x0000000000000000000000000000000300000000000000020000000000000001'
+      )
     })
   })
 })

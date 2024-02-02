@@ -118,10 +118,10 @@ export class SpotOrder {
         ['uint32', 'uint32', 'uint64', 'uint64', 'uint64'],
         [
           0,
-          (validationParams.endPrice * 10000n) / validationParams.startPrice,
+          Number((validationParams.endPrice * 10000n) / validationParams.startPrice),
           validationParams.endTime,
           validationParams.startTime,
-          this.spotOrder.info.deadline,
+          Number(this.spotOrder.info.deadline),
         ]
       ) as Bytes
       const param2 = validationParams.startPrice
@@ -134,7 +134,7 @@ export class SpotOrder {
 
       const param1 = solidityPack(
         ['uint32', 'uint32', 'uint64', 'uint64', 'uint64'],
-        [1, 0, 0, 0, this.spotOrder.info.deadline]
+        [1, 0, 0, 0, Number(this.spotOrder.info.deadline)]
       ) as Bytes
       const param2 = validationParams.limitQuoteTokenAmount
 
@@ -235,20 +235,20 @@ export class SpotDutchOrderValidationData extends BaseValidationData {
 
   static deserialize(validationData: Bytes) {
     const decoded = decodeAbiParameters(
-      SPOT_LIMIT_ORDER_VALIDATION_ABI,
+      SPOT_DUTCH_ORDER_VALIDATION_ABI,
       validationData
     )[0] as {
       startPrice: bigint
       endPrice: bigint
-      startTime: number
-      endTime: number
+      startTime: bigint
+      endTime: bigint
     }
 
     return new SpotDutchOrderValidationData(
       decoded.startPrice,
       decoded.endPrice,
-      decoded.startTime,
-      decoded.endTime
+      Number(decoded.startTime),
+      Number(decoded.endTime)
     )
   }
 }

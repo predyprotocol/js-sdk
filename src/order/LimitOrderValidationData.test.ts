@@ -8,7 +8,7 @@ describe('LimitOrderValidationData', () => {
         data.serialize()
       )
 
-      expect(validationData.triggerPrice.toString()).toBe('1')
+      expect(validationData.triggerPrice).toBe(1n)
       expect(validationData.triggerPriceSqrt.toString()).toBe('2')
       expect(validationData.limitPrice.toString()).toBe('3')
       expect(validationData.limitPriceSqrt.toString()).toBe('4')

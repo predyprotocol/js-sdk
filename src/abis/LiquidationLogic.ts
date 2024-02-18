@@ -106,6 +106,12 @@ export const LiquidationLogicABI = [
         name: 'fee',
         type: 'int256',
       },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'marginAmount',
+        type: 'uint256',
+      },
     ],
     name: 'PositionLiquidated',
     type: 'event',

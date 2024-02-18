@@ -118,7 +118,9 @@ export class SpotOrder {
         ['uint32', 'uint32', 'uint64', 'uint64', 'uint64'],
         [
           0,
-          Number((validationParams.endPrice * 10000n) / validationParams.startPrice),
+          Number(
+            (validationParams.endPrice * 10000n) / validationParams.startPrice
+          ),
           validationParams.endTime,
           validationParams.startTime,
           Number(this.spotOrder.info.deadline),

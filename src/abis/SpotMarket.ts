@@ -226,9 +226,9 @@ export const SpotMarketABI = [
             type: 'bytes32',
           },
           {
-            internalType: 'uint256',
+            internalType: 'bytes32',
             name: 'params2',
-            type: 'uint256',
+            type: 'bytes32',
           },
         ],
         internalType: 'struct SpotOrderV2',

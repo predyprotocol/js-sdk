@@ -99,8 +99,8 @@ describe('SpotDutchOrderValidationData', () => {
         data.serialize()
       )
 
-      expect(validationData.startPrice).toBe(1n)
-      expect(validationData.endPrice).toBe(2n)
+      expect(validationData.startAmount).toBe(1n)
+      expect(validationData.endAmount).toBe(2n)
       expect(validationData.startTime).toBe(3)
       expect(validationData.endTime).toBe(4)
     })

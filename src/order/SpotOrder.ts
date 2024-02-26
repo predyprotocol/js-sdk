@@ -115,18 +115,18 @@ export class SpotOrder {
       )
 
       const param1 = solidityPack(
-        ['uint32', 'uint32', 'uint64', 'uint64', 'uint64'],
+        ['uint32', 'uint64', 'uint64', 'uint64'],
         [
           0,
-          Number(
-            (validationParams.endPrice * 10000n) / validationParams.startPrice
-          ),
           validationParams.endTime,
           validationParams.startTime,
           Number(this.spotOrder.info.deadline),
         ]
       ) as Bytes
-      const param2 = validationParams.startPrice
+      const param2 = solidityPack(
+        ['uint128', 'uint128'],
+        [validationParams.endAmount, validationParams.startAmount]
+      ) as Bytes
 
       return { param1, param2 }
     } else {
@@ -138,7 +138,10 @@ export class SpotOrder {
         ['uint32', 'uint32', 'uint64', 'uint64', 'uint64'],
         [1, 0, 0, 0, Number(this.spotOrder.info.deadline)]
       ) as Bytes
-      const param2 = validationParams.limitQuoteTokenAmount
+      const param2 = solidityPack(
+        ['uint128', 'uint128'],
+        [0, validationParams.limitQuoteTokenAmount]
+      ) as Bytes
 
       return { param1, param2 }
     }
@@ -206,8 +209,8 @@ export const SPOT_DUTCH_ORDER_VALIDATION_ABI = [
     name: 'SpotDutchOrderValidationData',
     type: 'tuple',
     components: [
-      { name: 'startPrice', type: 'uint256' },
-      { name: 'endPrice', type: 'uint256' },
+      { name: 'startAmount', type: 'uint256' },
+      { name: 'endAmount', type: 'uint256' },
       { name: 'startTime', type: 'uint256' },
       { name: 'endTime', type: 'uint256' },
     ],
@@ -216,8 +219,8 @@ export const SPOT_DUTCH_ORDER_VALIDATION_ABI = [
 
 export class SpotDutchOrderValidationData extends BaseValidationData {
   constructor(
-    public startPrice: bigint,
-    public endPrice: bigint,
+    public startAmount: bigint,
+    public endAmount: bigint,
     public startTime: number,
     public endTime: number
   ) {
@@ -227,8 +230,8 @@ export class SpotDutchOrderValidationData extends BaseValidationData {
   serialize(): Bytes {
     return encodeAbiParameters(SPOT_DUTCH_ORDER_VALIDATION_ABI, [
       {
-        startPrice: this.startPrice,
-        endPrice: this.endPrice,
+        startAmount: this.startAmount,
+        endAmount: this.endAmount,
         startTime: this.startTime,
         endTime: this.endTime,
       },
@@ -240,15 +243,15 @@ export class SpotDutchOrderValidationData extends BaseValidationData {
       SPOT_DUTCH_ORDER_VALIDATION_ABI,
       validationData
     )[0] as {
-      startPrice: bigint
-      endPrice: bigint
+      startAmount: bigint
+      endAmount: bigint
       startTime: bigint
       endTime: bigint
     }
 
     return new SpotDutchOrderValidationData(
-      decoded.startPrice,
-      decoded.endPrice,
+      decoded.startAmount,
+      decoded.endAmount,
       Number(decoded.startTime),
       Number(decoded.endTime)
     )

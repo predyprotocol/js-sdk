@@ -913,7 +913,7 @@ export const PerpMarket_ImplementationABI = [
           },
         ],
         internalType: 'struct IPredyPool.VaultStatus',
-        name: '',
+        name: 'vaultStatus',
         type: 'tuple',
       },
       {
@@ -1060,7 +1060,7 @@ export const PerpMarket_ImplementationABI = [
           },
         ],
         internalType: 'struct DataType.Vault',
-        name: '',
+        name: 'vault',
         type: 'tuple',
       },
     ],

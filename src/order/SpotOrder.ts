@@ -115,8 +115,9 @@ export class SpotOrder {
       )
 
       const param1 = solidityPack(
-        ['uint32', 'uint64', 'uint64', 'uint64'],
+        ['uint32', 'uint32', 'uint64', 'uint64', 'uint64'],
         [
+          0,
           0,
           validationParams.endTime,
           validationParams.startTime,
@@ -136,7 +137,7 @@ export class SpotOrder {
 
       const param1 = solidityPack(
         ['uint32', 'uint32', 'uint64', 'uint64', 'uint64'],
-        [1, 0, 0, 0, Number(this.spotOrder.info.deadline)]
+        [0, 1, 0, 0, Number(this.spotOrder.info.deadline)]
       ) as Bytes
       const param2 = solidityPack(
         ['uint128', 'uint128'],

@@ -85,7 +85,7 @@ describe('SpotOrder', () => {
 
       const params = order.getCompressedParams()
       expect(params.param1).toEqual(
-        '0x000000010000000000000000000000000000000000000000000000000000000a'
+        '0x000000000000000100000000000000000000000000000000000000000000000a'
       )
     })
   })

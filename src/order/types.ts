@@ -21,6 +21,20 @@ export interface PerpOrderParams {
   validationData: Bytes
 }
 
+export interface PerpOrderV3Params {
+  info: OrderInfo
+  pairId: bigint
+  entryTokenAddress: Address
+  tradeAmount: bigint
+  marginAmount: bigint
+  limitPrice: bigint
+  stopPrice: bigint
+  leverage: number
+  reduceOnly: boolean
+  closePosition: boolean
+  auctionData: Bytes
+}
+
 export interface PredictOrderParams {
   info: OrderInfo
   pairId: bigint

@@ -255,6 +255,21 @@ export const GammaTradeMarket_ImplementationABI = [
       {
         components: [
           {
+            internalType: 'address',
+            name: 'contractAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'bytes',
+            name: 'encodedData',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
             internalType: 'uint256',
             name: 'price',
             type: 'uint256',
@@ -263,33 +278,6 @@ export const GammaTradeMarket_ImplementationABI = [
             internalType: 'int256',
             name: 'fee',
             type: 'int256',
-          },
-          {
-            components: [
-              {
-                internalType: 'address',
-                name: 'contractAddress',
-                type: 'address',
-              },
-              {
-                internalType: 'bytes',
-                name: 'encodedData',
-                type: 'bytes',
-              },
-              {
-                internalType: 'uint256',
-                name: 'maxQuoteAmount',
-                type: 'uint256',
-              },
-              {
-                internalType: 'uint256',
-                name: 'partialBaseAmount',
-                type: 'uint256',
-              },
-            ],
-            internalType: 'struct IFillerMarket.SettlementParamsItem[]',
-            name: 'items',
-            type: 'tuple[]',
           },
         ],
         internalType: 'struct IFillerMarket.SettlementParams',
@@ -392,6 +380,21 @@ export const GammaTradeMarket_ImplementationABI = [
       {
         components: [
           {
+            internalType: 'address',
+            name: 'contractAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'bytes',
+            name: 'encodedData',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
             internalType: 'uint256',
             name: 'price',
             type: 'uint256',
@@ -400,33 +403,6 @@ export const GammaTradeMarket_ImplementationABI = [
             internalType: 'int256',
             name: 'fee',
             type: 'int256',
-          },
-          {
-            components: [
-              {
-                internalType: 'address',
-                name: 'contractAddress',
-                type: 'address',
-              },
-              {
-                internalType: 'bytes',
-                name: 'encodedData',
-                type: 'bytes',
-              },
-              {
-                internalType: 'uint256',
-                name: 'maxQuoteAmount',
-                type: 'uint256',
-              },
-              {
-                internalType: 'uint256',
-                name: 'partialBaseAmount',
-                type: 'uint256',
-              },
-            ],
-            internalType: 'struct IFillerMarket.SettlementParamsItem[]',
-            name: 'items',
-            type: 'tuple[]',
           },
         ],
         internalType: 'struct IFillerMarket.SettlementParams',
@@ -536,6 +512,21 @@ export const GammaTradeMarket_ImplementationABI = [
       {
         components: [
           {
+            internalType: 'address',
+            name: 'contractAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'bytes',
+            name: 'encodedData',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
             internalType: 'uint256',
             name: 'price',
             type: 'uint256',
@@ -544,33 +535,6 @@ export const GammaTradeMarket_ImplementationABI = [
             internalType: 'int256',
             name: 'fee',
             type: 'int256',
-          },
-          {
-            components: [
-              {
-                internalType: 'address',
-                name: 'contractAddress',
-                type: 'address',
-              },
-              {
-                internalType: 'bytes',
-                name: 'encodedData',
-                type: 'bytes',
-              },
-              {
-                internalType: 'uint256',
-                name: 'maxQuoteAmount',
-                type: 'uint256',
-              },
-              {
-                internalType: 'uint256',
-                name: 'partialBaseAmount',
-                type: 'uint256',
-              },
-            ],
-            internalType: 'struct IFillerMarket.SettlementParamsItem[]',
-            name: 'items',
-            type: 'tuple[]',
           },
         ],
         internalType: 'struct IFillerMarket.SettlementParams',
@@ -1201,6 +1165,21 @@ export const GammaTradeMarket_ImplementationABI = [
       {
         components: [
           {
+            internalType: 'address',
+            name: 'contractAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'bytes',
+            name: 'encodedData',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
             internalType: 'uint256',
             name: 'price',
             type: 'uint256',
@@ -1209,33 +1188,6 @@ export const GammaTradeMarket_ImplementationABI = [
             internalType: 'int256',
             name: 'fee',
             type: 'int256',
-          },
-          {
-            components: [
-              {
-                internalType: 'address',
-                name: 'contractAddress',
-                type: 'address',
-              },
-              {
-                internalType: 'bytes',
-                name: 'encodedData',
-                type: 'bytes',
-              },
-              {
-                internalType: 'uint256',
-                name: 'maxQuoteAmount',
-                type: 'uint256',
-              },
-              {
-                internalType: 'uint256',
-                name: 'partialBaseAmount',
-                type: 'uint256',
-              },
-            ],
-            internalType: 'struct IFillerMarket.SettlementParamsItem[]',
-            name: 'items',
-            type: 'tuple[]',
           },
         ],
         internalType: 'struct IFillerMarket.SettlementParams',
@@ -1258,6 +1210,21 @@ export const GammaTradeMarket_ImplementationABI = [
       {
         components: [
           {
+            internalType: 'address',
+            name: 'contractAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'bytes',
+            name: 'encodedData',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint256',
+            name: 'maxQuoteAmount',
+            type: 'uint256',
+          },
+          {
             internalType: 'uint256',
             name: 'price',
             type: 'uint256',
@@ -1266,33 +1233,6 @@ export const GammaTradeMarket_ImplementationABI = [
             internalType: 'int256',
             name: 'fee',
             type: 'int256',
-          },
-          {
-            components: [
-              {
-                internalType: 'address',
-                name: 'contractAddress',
-                type: 'address',
-              },
-              {
-                internalType: 'bytes',
-                name: 'encodedData',
-                type: 'bytes',
-              },
-              {
-                internalType: 'uint256',
-                name: 'maxQuoteAmount',
-                type: 'uint256',
-              },
-              {
-                internalType: 'uint256',
-                name: 'partialBaseAmount',
-                type: 'uint256',
-              },
-            ],
-            internalType: 'struct IFillerMarket.SettlementParamsItem[]',
-            name: 'items',
-            type: 'tuple[]',
           },
         ],
         internalType: 'struct IFillerMarket.SettlementParams',

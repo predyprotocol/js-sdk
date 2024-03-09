@@ -1,4 +1,4 @@
-import { solidityPack } from 'ethers/lib/utils'
+import { utils } from 'ethers'
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { PERMIT2_MAPPING } from '../constants'
@@ -106,7 +106,7 @@ export class PerpOrder {
   }
 
   getOptimizedDeadlinePairIdLev() {
-    return solidityPack(
+    return utils.solidityPack(
       ['uint120', 'uint8', 'uint64', 'uint64'],
       [
         0,

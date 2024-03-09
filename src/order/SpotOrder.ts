@@ -1,4 +1,4 @@
-import { solidityPack } from 'ethers/lib/utils'
+import { utils } from 'ethers'
 import { decodeAbiParameters, encodeAbiParameters, isAddressEqual } from 'viem'
 
 import {
@@ -114,7 +114,7 @@ export class SpotOrder {
         this.spotOrder.validationData
       )
 
-      const param1 = solidityPack(
+      const param1 = utils.solidityPack(
         ['uint32', 'uint32', 'uint64', 'uint64', 'uint64'],
         [
           0,
@@ -124,7 +124,7 @@ export class SpotOrder {
           Number(this.spotOrder.info.deadline),
         ]
       ) as Bytes
-      const param2 = solidityPack(
+      const param2 = utils.solidityPack(
         ['uint128', 'uint128'],
         [validationParams.endAmount, validationParams.startAmount]
       ) as Bytes
@@ -135,11 +135,11 @@ export class SpotOrder {
         this.spotOrder.validationData
       )
 
-      const param1 = solidityPack(
+      const param1 = utils.solidityPack(
         ['uint32', 'uint32', 'uint64', 'uint64', 'uint64'],
         [0, 1, 0, 0, Number(this.spotOrder.info.deadline)]
       ) as Bytes
-      const param2 = solidityPack(
+      const param2 = utils.solidityPack(
         ['uint128', 'uint128'],
         [0, validationParams.limitQuoteTokenAmount]
       ) as Bytes

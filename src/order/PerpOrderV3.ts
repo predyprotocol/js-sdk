@@ -1,4 +1,4 @@
-import { solidityPack } from 'ethers/lib/utils'
+import { utils } from 'ethers'
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { PERMIT2_MAPPING } from '../constants'
@@ -107,7 +107,7 @@ export class PerpOrderV3 {
   }
 
   getOptimizedData() {
-    return solidityPack(
+    return utils.solidityPack(
       ['uint104', 'uint8', 'uint8', 'uint8', 'uint64', 'uint64'],
       [
         0,

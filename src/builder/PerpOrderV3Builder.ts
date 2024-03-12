@@ -1,7 +1,7 @@
 import { Hex } from 'viem'
 
 import { ZERO_ADDRESS } from '../constants'
-import { PerpOrder } from '../order/PerpOrder'
+import { PerpOrderV3 } from '../order/PerpOrderV3'
 import { PerpOrderV3Params } from '../order/types'
 import { Address } from '../types'
 
@@ -118,8 +118,8 @@ export class PerpOrderV3Builder {
     return this
   }
 
-  build(): PerpOrder {
-    return new PerpOrder(
+  build(): PerpOrderV3 {
+    return new PerpOrderV3(
       Object.assign(this.perpOrder),
       this.chainId,
       this.permit2Address

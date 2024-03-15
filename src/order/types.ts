@@ -57,6 +57,16 @@ export interface SpotOrderParams {
   validationData: Bytes
 }
 
+export interface SpotOrderV3Params {
+  info: OrderInfo
+  quoteToken: Address
+  baseToken: Address
+  baseTokenAmount: bigint
+  quoteTokenAmount: bigint
+  limitQuoteTokenAmount: bigint
+  auctionData: Bytes
+}
+
 export interface GammaOrderParams {
   info: OrderInfo
   pairId: bigint

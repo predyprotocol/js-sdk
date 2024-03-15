@@ -1,6 +1,7 @@
 export * from './GammaOrder'
 export * from './PredictOrder'
 export * from './SpotOrder'
+export * from './SpotOrderV3'
 export * from './PerpOrder'
 export * from './PerpOrderV3'
 export * from './AuctionParams'

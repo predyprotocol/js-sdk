@@ -7,3 +7,12 @@ export interface SettlementParams {
   price: bigint
   fee: bigint
 }
+
+export interface SettlementParamsV2 {
+  contractAddress: Address
+  encodedData: Bytes
+  maxQuoteAmountPrice: bigint
+  price: bigint
+  feePrice: bigint
+  minFee: bigint
+}

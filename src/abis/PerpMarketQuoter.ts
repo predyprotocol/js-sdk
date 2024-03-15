@@ -327,7 +327,7 @@ export const PerpMarketQuoterABI = [
           },
           {
             internalType: 'uint256',
-            name: 'maxQuoteAmount',
+            name: 'maxQuoteAmountPrice',
             type: 'uint256',
           },
           {
@@ -336,12 +336,17 @@ export const PerpMarketQuoterABI = [
             type: 'uint256',
           },
           {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
+            internalType: 'uint256',
+            name: 'feePrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'minFee',
+            type: 'uint256',
           },
         ],
-        internalType: 'struct IFillerMarket.SettlementParams',
+        internalType: 'struct IFillerMarket.SettlementParamsV2',
         name: 'settlementParams',
         type: 'tuple',
       },

@@ -221,6 +221,12 @@ export const PerpMarketABI = [
       },
       {
         indexed: false,
+        internalType: 'uint256',
+        name: 'vaultId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
         internalType: 'int256',
         name: 'tradeAmount',
         type: 'int256',
@@ -271,43 +277,12 @@ export const PerpMarketABI = [
       },
       {
         indexed: false,
-        internalType: 'uint256',
-        name: 'closeValue',
-        type: 'uint256',
+        internalType: 'int256',
+        name: 'marginAmount',
+        type: 'int256',
       },
     ],
-    name: 'PerpClosedByTPSLOrder',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'trader',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'takeProfitPrice',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'stopLossPrice',
-        type: 'uint256',
-      },
-    ],
-    name: 'PerpTPSLOrderUpdated',
+    name: 'PerpTraded',
     type: 'event',
   },
   {
@@ -387,8 +362,14 @@ export const PerpMarketABI = [
         name: 'marginAmount',
         type: 'int256',
       },
+      {
+        indexed: false,
+        internalType: 'uint64',
+        name: 'orderId',
+        type: 'uint64',
+      },
     ],
-    name: 'PerpTraded',
+    name: 'PerpTraded2',
     type: 'event',
   },
   {
@@ -962,9 +943,9 @@ export const PerpMarketABI = [
             type: 'uint256',
           },
           {
-            internalType: 'int256',
-            name: 'tradeAmount',
-            type: 'int256',
+            internalType: 'uint256',
+            name: 'quantity',
+            type: 'uint256',
           },
           {
             internalType: 'uint256',
@@ -1037,6 +1018,11 @@ export const PerpMarketABI = [
         internalType: 'struct IFillerMarket.SettlementParamsV2',
         name: 'settlementParams',
         type: 'tuple',
+      },
+      {
+        internalType: 'uint64',
+        name: 'orderId',
+        type: 'uint64',
       },
     ],
     name: 'executeOrderV3L2',
@@ -1729,9 +1715,14 @@ export const PerpMarketABI = [
             type: 'address',
           },
           {
-            internalType: 'int256',
-            name: 'tradeAmount',
-            type: 'int256',
+            internalType: 'string',
+            name: 'side',
+            type: 'string',
+          },
+          {
+            internalType: 'uint256',
+            name: 'quantity',
+            type: 'uint256',
           },
           {
             internalType: 'uint256',

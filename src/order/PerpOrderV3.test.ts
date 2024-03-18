@@ -9,7 +9,8 @@ describe('PerpOrderV3', () => {
         {
           pairId: 2n,
           entryTokenAddress: ZERO_ADDRESS,
-          tradeAmount: 0n,
+          side: 'Buy',
+          quantity: 0n,
           marginAmount: 0n,
           limitPrice: 0n,
           stopPrice: 0n,
@@ -45,7 +46,8 @@ describe('PerpOrderV3', () => {
         {
           pairId: 2n,
           entryTokenAddress: ZERO_ADDRESS,
-          tradeAmount: 0n,
+          side: 'Buy',
+          quantity: 0n,
           marginAmount: 0n,
           limitPrice: 0n,
           stopPrice: 0n,
@@ -78,7 +80,8 @@ describe('PerpOrderV3', () => {
         {
           pairId: 2n,
           entryTokenAddress: ZERO_ADDRESS,
-          tradeAmount: 0n,
+          side: 'Buy',
+          quantity: 0n,
           marginAmount: 0n,
           limitPrice: 0n,
           stopPrice: 0n,
@@ -99,7 +102,7 @@ describe('PerpOrderV3', () => {
 
       const params = order.getOptimizedData()
       expect(params).toEqual(
-        '0x0000000000000000000000000001000300000000000000020000000000000001'
+        '0x0000000000000000000000000101000300000000000000020000000000000001'
       )
     })
   })

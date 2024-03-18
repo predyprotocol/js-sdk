@@ -15,7 +15,8 @@ const PERP_ORDER_V3_TYPES_SINGLE = [
   { name: 'info', type: 'OrderInfo' },
   { name: 'pairId', type: 'uint64' },
   { name: 'entryTokenAddress', type: 'address' },
-  { name: 'tradeAmount', type: 'int256' },
+  { name: 'side', type: 'string' },
+  { name: 'quantity', type: 'uint256' },
   { name: 'marginAmount', type: 'uint256' },
   { name: 'limitPrice', type: 'uint256' },
   { name: 'stopPrice', type: 'uint256' },
@@ -54,7 +55,8 @@ const PERP_ORDER_V3_ABI = [
       },
       { name: 'pairId', type: 'uint64' },
       { name: 'entryTokenAddress', type: 'address' },
-      { name: 'tradeAmount', type: 'int256' },
+      { name: 'side', type: 'string' },
+      { name: 'quantity', type: 'uint256' },
       { name: 'marginAmount', type: 'uint256' },
       { name: 'limitPrice', type: 'uint256' },
       { name: 'stopPrice', type: 'uint256' },
@@ -97,7 +99,7 @@ export class PerpOrderV3 {
     return {
       trader: this.perpOrder.info.trader,
       nonce: this.perpOrder.info.nonce,
-      tradeAmount: this.perpOrder.tradeAmount,
+      quantity: this.perpOrder.quantity,
       marginAmount: this.perpOrder.marginAmount,
       limitPrice: this.perpOrder.limitPrice,
       stopPrice: this.perpOrder.stopPrice,
@@ -108,9 +110,10 @@ export class PerpOrderV3 {
 
   getOptimizedData() {
     return utils.solidityPack(
-      ['uint104', 'uint8', 'uint8', 'uint8', 'uint64', 'uint64'],
+      ['uint96', 'uint8', 'uint8', 'uint8', 'uint8', 'uint64', 'uint64'],
       [
         0,
+        this.perpOrder.side === 'Buy' ? 1 : 0,
         this.perpOrder.closePosition ? 1 : 0,
         this.perpOrder.reduceOnly ? 1 : 0,
         this.perpOrder.leverage,
@@ -125,7 +128,8 @@ export class PerpOrderV3 {
       info: this.perpOrder.info,
       pairId: this.perpOrder.pairId,
       entryTokenAddress: this.perpOrder.entryTokenAddress,
-      tradeAmount: this.perpOrder.tradeAmount,
+      side: this.perpOrder.side,
+      quantity: this.perpOrder.quantity,
       marginAmount: this.perpOrder.marginAmount,
       limitPrice: this.perpOrder.limitPrice,
       stopPrice: this.perpOrder.stopPrice,

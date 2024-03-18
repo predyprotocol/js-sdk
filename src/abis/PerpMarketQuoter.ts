@@ -269,9 +269,14 @@ export const PerpMarketQuoterABI = [
             type: 'address',
           },
           {
-            internalType: 'int256',
-            name: 'tradeAmount',
-            type: 'int256',
+            internalType: 'string',
+            name: 'side',
+            type: 'string',
+          },
+          {
+            internalType: 'uint256',
+            name: 'quantity',
+            type: 'uint256',
           },
           {
             internalType: 'uint256',

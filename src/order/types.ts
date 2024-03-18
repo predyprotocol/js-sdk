@@ -25,7 +25,8 @@ export interface PerpOrderV3Params {
   info: OrderInfo
   pairId: bigint
   entryTokenAddress: Address
-  tradeAmount: bigint
+  side: 'Buy' | 'Sell'
+  quantity: bigint
   marginAmount: bigint
   limitPrice: bigint
   stopPrice: bigint

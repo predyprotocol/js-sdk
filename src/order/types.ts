@@ -68,19 +68,31 @@ export interface SpotOrderV3Params {
   auctionData: Bytes
 }
 
+export interface GammaModifyInfo {
+  isEnabled: boolean
+  expiration: bigint
+  lowerLimit: bigint
+  upperLimit: bigint
+  hedgeInterval: number
+  sqrtPriceTrigger: number
+  minSlippageTolerance: number
+  maxSlippageTolerance: number
+  auctionPeriod: number
+  auctionRange: number
+}
+
 export interface GammaOrderParams {
   info: OrderInfo
   pairId: bigint
+  positionId: bigint
   entryTokenAddress: Address
-  tradeAmount: bigint
-  tradeAmountSqrt: bigint
+  quantity: bigint
+  quantitySqrt: bigint
   marginAmount: bigint
-  hedgeInterval: bigint
-  sqrtPriceTrigger: bigint
-  minSlippageTolerance: bigint
-  maxSlippageTolerance: bigint
-  validatorAddress: Address
-  validationData: Bytes
+  closePosition: boolean
+  limitValue: bigint
+  leverage: number
+  modifyInfo: GammaModifyInfo
 }
 
 export abstract class BaseValidationData {

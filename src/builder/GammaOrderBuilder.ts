@@ -1,9 +1,5 @@
-import {
-  GENERAL_DUTCH_ORDER_VALIDATOR_MAPPING,
-  ZERO_ADDRESS,
-} from '../constants'
+import { ZERO_ADDRESS } from '../constants'
 import { GammaOrder } from '../order/GammaOrder'
-import { GeneralDutchOrderValidationData } from '../order/GeneralDutchOrderValidationData'
 import { GammaOrderParams } from '../order/types'
 import { Address } from '../types'
 
@@ -13,12 +9,26 @@ export class GammaOrderBuilder {
   constructor(private chainId: number, private permit2Address?: string) {
     // set defaults
     this.gammaOrder = {
-      sqrtPriceTrigger: 0n,
-      hedgeInterval: 0n,
-      minSlippageTolerance: 0n,
-      maxSlippageTolerance: 0n,
-      validatorAddress: ZERO_ADDRESS,
-      validationData: '0x',
+      pairId: 0n,
+      positionId: 0n,
+      entryTokenAddress: ZERO_ADDRESS,
+      quantity: 0n,
+      quantitySqrt: 0n,
+      marginAmount: 0n,
+      closePosition: false,
+      leverage: 1,
+      modifyInfo: {
+        isEnabled: false,
+        expiration: 0n,
+        lowerLimit: 0n,
+        upperLimit: 0n,
+        hedgeInterval: 0,
+        sqrtPriceTrigger: 0,
+        minSlippageTolerance: 0,
+        maxSlippageTolerance: 0,
+        auctionPeriod: 0,
+        auctionRange: 0,
+      },
       info: {
         market: ZERO_ADDRESS,
         trader: ZERO_ADDRESS,
@@ -60,14 +70,14 @@ export class GammaOrderBuilder {
     return this
   }
 
-  tradeAmount(tradeAmount: bigint): GammaOrderBuilder {
-    this.gammaOrder.tradeAmount = tradeAmount
+  pairId(pairId: bigint): GammaOrderBuilder {
+    this.gammaOrder.pairId = pairId
 
     return this
   }
 
-  tradeAmountSqrt(tradeAmountSqrt: bigint): GammaOrderBuilder {
-    this.gammaOrder.tradeAmountSqrt = tradeAmountSqrt
+  positionId(positionId: bigint): GammaOrderBuilder {
+    this.gammaOrder.positionId = positionId
 
     return this
   }
@@ -78,8 +88,14 @@ export class GammaOrderBuilder {
     return this
   }
 
-  pairId(pairId: bigint): GammaOrderBuilder {
-    this.gammaOrder.pairId = pairId
+  quantity(quantity: bigint): GammaOrderBuilder {
+    this.gammaOrder.quantity = quantity
+
+    return this
+  }
+
+  quantitySqrt(quantitySqrt: bigint): GammaOrderBuilder {
+    this.gammaOrder.quantitySqrt = quantitySqrt
 
     return this
   }
@@ -90,26 +106,104 @@ export class GammaOrderBuilder {
     return this
   }
 
-  hedgeInterval(hedgeInterval: bigint): GammaOrderBuilder {
-    this.gammaOrder.hedgeInterval = hedgeInterval
+  closePosition(closePosition: boolean): GammaOrderBuilder {
+    this.gammaOrder.closePosition = closePosition
 
     return this
   }
 
-  sqrtPriceTrigger(sqrtPriceTrigger: bigint): GammaOrderBuilder {
-    this.gammaOrder.sqrtPriceTrigger = sqrtPriceTrigger
+  leverage(leverage: number): GammaOrderBuilder {
+    this.gammaOrder.leverage = leverage
 
     return this
   }
 
-  minSlippageTolerance(minSlippageTolerance: bigint): GammaOrderBuilder {
-    this.gammaOrder.minSlippageTolerance = minSlippageTolerance
+  isEnabled(isEnabled: boolean): GammaOrderBuilder {
+    if (!this.gammaOrder.modifyInfo)
+      throw new Error('modifyInfo is not defined')
+
+    this.gammaOrder.modifyInfo.isEnabled = isEnabled
 
     return this
   }
 
-  maxSlippageTolerance(maxSlippageTolerance: bigint): GammaOrderBuilder {
-    this.gammaOrder.maxSlippageTolerance = maxSlippageTolerance
+  expiration(expiration: bigint): GammaOrderBuilder {
+    if (!this.gammaOrder.modifyInfo)
+      throw new Error('modifyInfo is not defined')
+
+    this.gammaOrder.modifyInfo.expiration = expiration
+
+    return this
+  }
+
+  lowerLimit(lowerLimit: bigint): GammaOrderBuilder {
+    if (!this.gammaOrder.modifyInfo)
+      throw new Error('modifyInfo is not defined')
+
+    this.gammaOrder.modifyInfo.lowerLimit = lowerLimit
+
+    return this
+  }
+
+  upperLimit(upperLimit: bigint): GammaOrderBuilder {
+    if (!this.gammaOrder.modifyInfo)
+      throw new Error('modifyInfo is not defined')
+
+    this.gammaOrder.modifyInfo.upperLimit = upperLimit
+
+    return this
+  }
+
+  hedgeInterval(hedgeInterval: number): GammaOrderBuilder {
+    if (!this.gammaOrder.modifyInfo)
+      throw new Error('modifyInfo is not defined')
+
+    this.gammaOrder.modifyInfo.hedgeInterval = hedgeInterval
+
+    return this
+  }
+
+  sqrtPriceTrigger(sqrtPriceTrigger: number): GammaOrderBuilder {
+    if (!this.gammaOrder.modifyInfo)
+      throw new Error('modifyInfo is not defined')
+
+    this.gammaOrder.modifyInfo.sqrtPriceTrigger = sqrtPriceTrigger
+
+    return this
+  }
+
+  minSlippageTolerance(minSlippageTolerance: number): GammaOrderBuilder {
+    if (!this.gammaOrder.modifyInfo)
+      throw new Error('modifyInfo is not defined')
+
+    this.gammaOrder.modifyInfo.minSlippageTolerance = minSlippageTolerance
+
+    return this
+  }
+
+  maxSlippageTolerance(maxSlippageTolerance: number): GammaOrderBuilder {
+    if (!this.gammaOrder.modifyInfo)
+      throw new Error('modifyInfo is not defined')
+
+    this.gammaOrder.modifyInfo.maxSlippageTolerance = maxSlippageTolerance
+
+    return this
+  }
+
+  auctionPeriod(auctionPeriod: number): GammaOrderBuilder {
+    if (!this.gammaOrder.modifyInfo)
+      throw new Error('modifyInfo is not defined')
+
+    this.gammaOrder.modifyInfo.auctionPeriod = auctionPeriod
+
+    return this
+  }
+
+  auctionRange(auctionRange: number): GammaOrderBuilder {
+    if (!this.gammaOrder.modifyInfo)
+      throw new Error('modifyInfo is not defined')
+
+    this.gammaOrder.modifyInfo.auctionRange = auctionRange
 
     return this
   }
@@ -120,40 +214,5 @@ export class GammaOrderBuilder {
       this.chainId,
       this.permit2Address
     )
-  }
-}
-
-export class GammaDutchOrderBuilder extends GammaOrderBuilder {
-  constructor(
-    chainId: number,
-    validatorAddress?: Address,
-    permit2Address?: Address
-  ) {
-    super(chainId, permit2Address)
-
-    this.gammaOrder.validatorAddress =
-      validatorAddress || GENERAL_DUTCH_ORDER_VALIDATOR_MAPPING[chainId]
-  }
-
-  validationData(
-    baseSqrtPrice: bigint,
-    startSlippageTolerance: number,
-    endSlippageTolerance: number,
-    maxAcceptableSqrtPriceRange: number,
-    startTime: number,
-    endTime: number
-  ): GammaDutchOrderBuilder {
-    const validationData = new GeneralDutchOrderValidationData(
-      baseSqrtPrice,
-      startSlippageTolerance,
-      endSlippageTolerance,
-      maxAcceptableSqrtPriceRange,
-      startTime,
-      endTime
-    )
-
-    this.gammaOrder.validationData = validationData.serialize()
-
-    return this
   }
 }

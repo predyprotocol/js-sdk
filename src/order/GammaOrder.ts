@@ -1,3 +1,4 @@
+import { utils } from 'ethers'
 import { decodeAbiParameters, encodeAbiParameters } from 'viem'
 
 import { PERMIT2_MAPPING } from '../constants'
@@ -10,30 +11,43 @@ import {
   TOKEN_PERMISSION_TYPES,
 } from './types'
 
+const GAMMA_MODIFY_INFO_TYPES = [
+  { name: 'isEnabled', type: 'bool' },
+  { name: 'expiration', type: 'uint64' },
+  { name: 'lowerLimit', type: 'uint256' },
+  { name: 'upperLimit', type: 'uint256' },
+  { name: 'hedgeInterval', type: 'uint32' },
+  { name: 'sqrtPriceTrigger', type: 'uint32' },
+  { name: 'minSlippageTolerance', type: 'uint32' },
+  { name: 'maxSlippageTolerance', type: 'uint32' },
+  { name: 'auctionPeriod', type: 'uint16' },
+  { name: 'auctionRange', type: 'uint32' },
+]
+
 const GAMMA_ORDER_TYPES_SINGLE = [
   { name: 'info', type: 'OrderInfo' },
-  { name: 'pairId', type: 'uint256' },
+  { name: 'pairId', type: 'uint64' },
+  { name: 'positionId', type: 'uint256' },
   { name: 'entryTokenAddress', type: 'address' },
-  { name: 'tradeAmount', type: 'int256' },
-  { name: 'tradeAmountSqrt', type: 'int256' },
+  { name: 'quantity', type: 'int256' },
+  { name: 'quantitySqrt', type: 'int256' },
   { name: 'marginAmount', type: 'int256' },
-  { name: 'hedgeInterval', type: 'uint256' },
-  { name: 'sqrtPriceTrigger', type: 'uint256' },
-  { name: 'minSlippageTolerance', type: 'uint64' },
-  { name: 'maxSlippageTolerance', type: 'uint64' },
-  { name: 'validatorAddress', type: 'address' },
-  { name: 'validationData', type: 'bytes' },
+  { name: 'closePosition', type: 'bool' },
+  { name: 'limitValue', type: 'int256' },
+  { name: 'leverage', type: 'uint8' },
+  { name: 'modifyInfo', type: 'GammaModifyInfo' },
 ]
 
 export const GAMMA_ORDER_TYPES = {
   GammaOrder: GAMMA_ORDER_TYPES_SINGLE,
+  GammaModifyInfo: GAMMA_MODIFY_INFO_TYPES,
   OrderInfo: ORDER_INFO_TYPES,
 }
 
 export const GAMMA_ORDER_PERMIT2_TYPES = {
   PermitWitnessTransferFrom: PERMIT_WITNESS_TRANSFER_FROM_TYPES('GammaOrder'),
-  OrderInfo: ORDER_INFO_TYPES,
-  GammaOrder: GAMMA_ORDER_TYPES_SINGLE,
+  // TODO: OrderInfo: ORDER_INFO_TYPES, is required?
+  GammaOrder: GAMMA_ORDER_TYPES,
   TokenPermissions: TOKEN_PERMISSION_TYPES,
 } as const
 
@@ -52,17 +66,31 @@ const GAMMA_ORDER_ABI = [
           { name: 'deadline', type: 'uint256' },
         ],
       },
-      { name: 'pairId', type: 'uint256' },
+      { name: 'pairId', type: 'uint64' },
+      { name: 'positionId', type: 'uint256' },
       { name: 'entryTokenAddress', type: 'address' },
-      { name: 'tradeAmount', type: 'int256' },
-      { name: 'tradeAmountSqrt', type: 'int256' },
+      { name: 'quantity', type: 'int256' },
+      { name: 'quantitySqrt', type: 'int256' },
       { name: 'marginAmount', type: 'int256' },
-      { name: 'hedgeInterval', type: 'uint256' },
-      { name: 'sqrtPriceTrigger', type: 'uint256' },
-      { name: 'minSlippageTolerance', type: 'uint64' },
-      { name: 'maxSlippageTolerance', type: 'uint64' },
-      { name: 'validatorAddress', type: 'address' },
-      { name: 'validationData', type: 'bytes' },
+      { name: 'closePosition', type: 'bool' },
+      { name: 'limitValue', type: 'int256' },
+      { name: 'leverage', type: 'uint8' },
+      {
+        name: 'modifyInfo',
+        type: 'tuple',
+        components: [
+          { name: 'isEnabled', type: 'bool' },
+          { name: 'expiration', type: 'uint64' },
+          { name: 'lowerLimit', type: 'uint256' },
+          { name: 'upperLimit', type: 'uint256' },
+          { name: 'hedgeInterval', type: 'uint32' },
+          { name: 'sqrtPriceTrigger', type: 'uint32' },
+          { name: 'minSlippageTolerance', type: 'uint32' },
+          { name: 'maxSlippageTolerance', type: 'uint32' },
+          { name: 'auctionPeriod', type: 'uint16' },
+          { name: 'auctionRange', type: 'uint32' },
+        ],
+      },
     ],
   },
 ]
@@ -98,16 +126,15 @@ export class GammaOrder {
     return {
       info: this.gammaOrder.info,
       pairId: this.gammaOrder.pairId,
+      positionId: this.gammaOrder.positionId,
       entryTokenAddress: this.gammaOrder.entryTokenAddress,
-      tradeAmount: this.gammaOrder.tradeAmount,
-      tradeAmountSqrt: this.gammaOrder.tradeAmountSqrt,
+      quantity: this.gammaOrder.quantity,
+      quantitySqrt: this.gammaOrder.quantitySqrt,
       marginAmount: this.gammaOrder.marginAmount,
-      hedgeInterval: this.gammaOrder.hedgeInterval,
-      sqrtPriceTrigger: this.gammaOrder.sqrtPriceTrigger,
-      minSlippageTolerance: this.gammaOrder.minSlippageTolerance,
-      maxSlippageTolerance: this.gammaOrder.maxSlippageTolerance,
-      validatorAddress: this.gammaOrder.validatorAddress,
-      validationData: this.gammaOrder.validationData,
+      closePosition: this.gammaOrder.closePosition,
+      limitValue: this.gammaOrder.limitValue,
+      leverage: this.gammaOrder.leverage,
+      modifyInfo: this.gammaOrder.modifyInfo,
     }
   }
 
@@ -144,5 +171,61 @@ export class GammaOrder {
         witness: this.witnessInfo(),
       },
     }
+  }
+
+  public getOptimizedTradeParams() {
+    return {
+      trader: this.gammaOrder.info.trader,
+      nonce: this.gammaOrder.info.nonce,
+      deadline: this.gammaOrder.info.deadline,
+      positionId: this.gammaOrder.positionId,
+      quantity: this.gammaOrder.quantity,
+      quantitySqrt: this.gammaOrder.quantitySqrt,
+      marginAmount: this.gammaOrder.marginAmount,
+      closePosition: this.gammaOrder.closePosition,
+      limitValue: this.gammaOrder.limitValue,
+      leverage: this.gammaOrder.leverage,
+      param: this.getOptimizedData(),
+      lowerLimit: this.gammaOrder.modifyInfo.lowerLimit,
+      upperLimit: this.gammaOrder.modifyInfo.upperLimit,
+    }
+  }
+
+  public getOptimizedModifyParams() {
+    return {
+      trader: this.gammaOrder.info.trader,
+      nonce: this.gammaOrder.info.nonce,
+      deadline: this.gammaOrder.info.deadline,
+      positionId: this.gammaOrder.positionId,
+      param: this.getOptimizedData(),
+      lowerLimit: this.gammaOrder.modifyInfo.lowerLimit,
+      upperLimit: this.gammaOrder.modifyInfo.upperLimit,
+    }
+  }
+
+  getOptimizedData() {
+    return utils.solidityPack(
+      [
+        'uint16',
+        'uint32',
+        'uint16',
+        'uint32',
+        'uint32',
+        'uint32',
+        'uint32',
+        'uint64',
+      ],
+      [
+        0,
+        this.gammaOrder.modifyInfo.auctionPeriod,
+        this.gammaOrder.modifyInfo.isEnabled ? 1 : 0,
+        this.gammaOrder.modifyInfo.auctionRange,
+        this.gammaOrder.modifyInfo.maxSlippageTolerance,
+        this.gammaOrder.modifyInfo.minSlippageTolerance,
+        this.gammaOrder.modifyInfo.sqrtPriceTrigger,
+        this.gammaOrder.modifyInfo.hedgeInterval,
+        this.gammaOrder.modifyInfo.expiration,
+      ]
+    ) as Bytes
   }
 }

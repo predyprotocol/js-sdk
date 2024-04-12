@@ -207,8 +207,8 @@ export class GammaOrder {
     return utils.solidityPack(
       [
         'uint16',
-        'uint32',
         'uint16',
+        'uint32',
         'uint32',
         'uint32',
         'uint32',
@@ -216,7 +216,6 @@ export class GammaOrder {
         'uint64',
       ],
       [
-        0,
         this.gammaOrder.modifyInfo.auctionPeriod,
         this.gammaOrder.modifyInfo.isEnabled ? 1 : 0,
         this.gammaOrder.modifyInfo.auctionRange,

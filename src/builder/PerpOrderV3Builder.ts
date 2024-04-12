@@ -58,8 +58,14 @@ export class PerpOrderV3Builder {
     return this
   }
 
-  tradeAmount(tradeAmount: bigint): PerpOrderV3Builder {
-    this.perpOrder.tradeAmount = tradeAmount
+  side(side: 'Buy' | 'Sell'): PerpOrderV3Builder {
+    this.perpOrder.side = side
+
+    return this
+  }
+
+  quantity(quantity: bigint): PerpOrderV3Builder {
+    this.perpOrder.quantity = quantity
 
     return this
   }

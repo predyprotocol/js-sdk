@@ -221,6 +221,12 @@ export const PerpMarketABI = [
       },
       {
         indexed: false,
+        internalType: 'uint256',
+        name: 'vaultId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
         internalType: 'int256',
         name: 'tradeAmount',
         type: 'int256',
@@ -271,43 +277,12 @@ export const PerpMarketABI = [
       },
       {
         indexed: false,
-        internalType: 'uint256',
-        name: 'closeValue',
-        type: 'uint256',
+        internalType: 'int256',
+        name: 'marginAmount',
+        type: 'int256',
       },
     ],
-    name: 'PerpClosedByTPSLOrder',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'trader',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'pairId',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'takeProfitPrice',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'stopLossPrice',
-        type: 'uint256',
-      },
-    ],
-    name: 'PerpTPSLOrderUpdated',
+    name: 'PerpTraded',
     type: 'event',
   },
   {
@@ -387,8 +362,14 @@ export const PerpMarketABI = [
         name: 'marginAmount',
         type: 'int256',
       },
+      {
+        indexed: false,
+        internalType: 'uint64',
+        name: 'orderId',
+        type: 'uint64',
+      },
     ],
-    name: 'PerpTraded',
+    name: 'PerpTraded2',
     type: 'event',
   },
   {
@@ -417,7 +398,12 @@ export const PerpMarketABI = [
           },
           {
             internalType: 'uint256',
-            name: 'maxQuoteAmount',
+            name: 'maxQuoteAmountPrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'minQuoteAmountPrice',
             type: 'uint256',
           },
           {
@@ -426,12 +412,17 @@ export const PerpMarketABI = [
             type: 'uint256',
           },
           {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
+            internalType: 'uint256',
+            name: 'feePrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'minFee',
+            type: 'uint256',
           },
         ],
-        internalType: 'struct IFillerMarket.SettlementParams',
+        internalType: 'struct IFillerMarket.SettlementParamsV3',
         name: 'settlementParams',
         type: 'tuple',
       },
@@ -549,7 +540,12 @@ export const PerpMarketABI = [
           },
           {
             internalType: 'uint256',
-            name: 'maxQuoteAmount',
+            name: 'maxQuoteAmountPrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'minQuoteAmountPrice',
             type: 'uint256',
           },
           {
@@ -558,306 +554,17 @@ export const PerpMarketABI = [
             type: 'uint256',
           },
           {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
-          },
-        ],
-        internalType: 'struct IFillerMarket.SettlementParams',
-        name: 'settlementParams',
-        type: 'tuple',
-      },
-    ],
-    name: 'executeOrder',
-    outputs: [
-      {
-        components: [
-          {
-            components: [
-              {
-                internalType: 'int256',
-                name: 'perpEntryUpdate',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'sqrtEntryUpdate',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'sqrtRebalanceEntryUpdateUnderlying',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'sqrtRebalanceEntryUpdateStable',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'perpPayoff',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'sqrtPayoff',
-                type: 'int256',
-              },
-            ],
-            internalType: 'struct IPredyPool.Payoff',
-            name: 'payoff',
-            type: 'tuple',
-          },
-          {
             internalType: 'uint256',
-            name: 'vaultId',
-            type: 'uint256',
-          },
-          {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
-          },
-          {
-            internalType: 'int256',
-            name: 'minMargin',
-            type: 'int256',
-          },
-          {
-            internalType: 'int256',
-            name: 'averagePrice',
-            type: 'int256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'sqrtTwap',
+            name: 'feePrice',
             type: 'uint256',
           },
           {
             internalType: 'uint256',
-            name: 'sqrtPrice',
+            name: 'minFee',
             type: 'uint256',
           },
         ],
-        internalType: 'struct IPredyPool.TradeResult',
-        name: '',
-        type: 'tuple',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
-            internalType: 'address',
-            name: 'trader',
-            type: 'address',
-          },
-          {
-            internalType: 'uint256',
-            name: 'nonce',
-            type: 'uint256',
-          },
-          {
-            internalType: 'bytes32',
-            name: 'deadlinePairIdLev',
-            type: 'bytes32',
-          },
-          {
-            internalType: 'int256',
-            name: 'tradeAmount',
-            type: 'int256',
-          },
-          {
-            internalType: 'int256',
-            name: 'marginAmount',
-            type: 'int256',
-          },
-          {
-            internalType: 'address',
-            name: 'validatorAddress',
-            type: 'address',
-          },
-          {
-            internalType: 'bytes',
-            name: 'validationData',
-            type: 'bytes',
-          },
-        ],
-        internalType: 'struct PerpOrderV2',
-        name: 'orderV2',
-        type: 'tuple',
-      },
-      {
-        internalType: 'bytes',
-        name: 'sig',
-        type: 'bytes',
-      },
-      {
-        components: [
-          {
-            internalType: 'address',
-            name: 'contractAddress',
-            type: 'address',
-          },
-          {
-            internalType: 'bytes',
-            name: 'encodedData',
-            type: 'bytes',
-          },
-          {
-            internalType: 'uint256',
-            name: 'maxQuoteAmount',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'price',
-            type: 'uint256',
-          },
-          {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
-          },
-        ],
-        internalType: 'struct IFillerMarket.SettlementParams',
-        name: 'settlementParams',
-        type: 'tuple',
-      },
-    ],
-    name: 'executeOrderV2',
-    outputs: [
-      {
-        components: [
-          {
-            components: [
-              {
-                internalType: 'int256',
-                name: 'perpEntryUpdate',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'sqrtEntryUpdate',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'sqrtRebalanceEntryUpdateUnderlying',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'sqrtRebalanceEntryUpdateStable',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'perpPayoff',
-                type: 'int256',
-              },
-              {
-                internalType: 'int256',
-                name: 'sqrtPayoff',
-                type: 'int256',
-              },
-            ],
-            internalType: 'struct IPredyPool.Payoff',
-            name: 'payoff',
-            type: 'tuple',
-          },
-          {
-            internalType: 'uint256',
-            name: 'vaultId',
-            type: 'uint256',
-          },
-          {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
-          },
-          {
-            internalType: 'int256',
-            name: 'minMargin',
-            type: 'int256',
-          },
-          {
-            internalType: 'int256',
-            name: 'averagePrice',
-            type: 'int256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'sqrtTwap',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'sqrtPrice',
-            type: 'uint256',
-          },
-        ],
-        internalType: 'struct IPredyPool.TradeResult',
-        name: '',
-        type: 'tuple',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
-            internalType: 'bytes',
-            name: 'order',
-            type: 'bytes',
-          },
-          {
-            internalType: 'bytes',
-            name: 'sig',
-            type: 'bytes',
-          },
-        ],
-        internalType: 'struct IFillerMarket.SignedOrder',
-        name: 'order',
-        type: 'tuple',
-      },
-      {
-        components: [
-          {
-            internalType: 'address',
-            name: 'contractAddress',
-            type: 'address',
-          },
-          {
-            internalType: 'bytes',
-            name: 'encodedData',
-            type: 'bytes',
-          },
-          {
-            internalType: 'uint256',
-            name: 'maxQuoteAmount',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'price',
-            type: 'uint256',
-          },
-          {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
-          },
-        ],
-        internalType: 'struct IFillerMarket.SettlementParams',
+        internalType: 'struct IFillerMarket.SettlementParamsV3',
         name: 'settlementParams',
         type: 'tuple',
       },
@@ -957,9 +664,9 @@ export const PerpMarketABI = [
             type: 'uint256',
           },
           {
-            internalType: 'int256',
-            name: 'tradeAmount',
-            type: 'int256',
+            internalType: 'uint256',
+            name: 'quantity',
+            type: 'uint256',
           },
           {
             internalType: 'uint256',
@@ -1010,7 +717,12 @@ export const PerpMarketABI = [
           },
           {
             internalType: 'uint256',
-            name: 'maxQuoteAmount',
+            name: 'maxQuoteAmountPrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'minQuoteAmountPrice',
             type: 'uint256',
           },
           {
@@ -1019,14 +731,24 @@ export const PerpMarketABI = [
             type: 'uint256',
           },
           {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
+            internalType: 'uint256',
+            name: 'feePrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'minFee',
+            type: 'uint256',
           },
         ],
-        internalType: 'struct IFillerMarket.SettlementParams',
+        internalType: 'struct IFillerMarket.SettlementParamsV3',
         name: 'settlementParams',
         type: 'tuple',
+      },
+      {
+        internalType: 'uint64',
+        name: 'orderId',
+        type: 'uint64',
       },
     ],
     name: 'executeOrderV3L2',
@@ -1590,138 +1312,14 @@ export const PerpMarketABI = [
             type: 'address',
           },
           {
-            internalType: 'int256',
-            name: 'tradeAmount',
-            type: 'int256',
-          },
-          {
-            internalType: 'int256',
-            name: 'marginAmount',
-            type: 'int256',
+            internalType: 'string',
+            name: 'side',
+            type: 'string',
           },
           {
             internalType: 'uint256',
-            name: 'takeProfitPrice',
+            name: 'quantity',
             type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'stopLossPrice',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint64',
-            name: 'slippageTolerance',
-            type: 'uint64',
-          },
-          {
-            internalType: 'uint8',
-            name: 'leverage',
-            type: 'uint8',
-          },
-          {
-            internalType: 'address',
-            name: 'validatorAddress',
-            type: 'address',
-          },
-          {
-            internalType: 'bytes',
-            name: 'validationData',
-            type: 'bytes',
-          },
-        ],
-        internalType: 'struct PerpOrder',
-        name: 'perpOrder',
-        type: 'tuple',
-      },
-      {
-        components: [
-          {
-            internalType: 'address',
-            name: 'contractAddress',
-            type: 'address',
-          },
-          {
-            internalType: 'bytes',
-            name: 'encodedData',
-            type: 'bytes',
-          },
-          {
-            internalType: 'uint256',
-            name: 'maxQuoteAmount',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'price',
-            type: 'uint256',
-          },
-          {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
-          },
-        ],
-        internalType: 'struct IFillerMarket.SettlementParams',
-        name: 'settlementParams',
-        type: 'tuple',
-      },
-      {
-        internalType: 'address',
-        name: 'filler',
-        type: 'address',
-      },
-    ],
-    name: 'quoteExecuteOrder',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
-            components: [
-              {
-                internalType: 'address',
-                name: 'market',
-                type: 'address',
-              },
-              {
-                internalType: 'address',
-                name: 'trader',
-                type: 'address',
-              },
-              {
-                internalType: 'uint256',
-                name: 'nonce',
-                type: 'uint256',
-              },
-              {
-                internalType: 'uint256',
-                name: 'deadline',
-                type: 'uint256',
-              },
-            ],
-            internalType: 'struct OrderInfo',
-            name: 'info',
-            type: 'tuple',
-          },
-          {
-            internalType: 'uint64',
-            name: 'pairId',
-            type: 'uint64',
-          },
-          {
-            internalType: 'address',
-            name: 'entryTokenAddress',
-            type: 'address',
-          },
-          {
-            internalType: 'int256',
-            name: 'tradeAmount',
-            type: 'int256',
           },
           {
             internalType: 'uint256',
@@ -1777,7 +1375,12 @@ export const PerpMarketABI = [
           },
           {
             internalType: 'uint256',
-            name: 'maxQuoteAmount',
+            name: 'maxQuoteAmountPrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'minQuoteAmountPrice',
             type: 'uint256',
           },
           {
@@ -1786,12 +1389,17 @@ export const PerpMarketABI = [
             type: 'uint256',
           },
           {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
+            internalType: 'uint256',
+            name: 'feePrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'minFee',
+            type: 'uint256',
           },
         ],
-        internalType: 'struct IFillerMarket.SettlementParams',
+        internalType: 'struct IFillerMarket.SettlementParamsV3',
         name: 'settlementParams',
         type: 'tuple',
       },
@@ -1827,7 +1435,12 @@ export const PerpMarketABI = [
           },
           {
             internalType: 'uint256',
-            name: 'maxQuoteAmount',
+            name: 'maxQuoteAmountPrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'minQuoteAmountPrice',
             type: 'uint256',
           },
           {
@@ -1836,12 +1449,17 @@ export const PerpMarketABI = [
             type: 'uint256',
           },
           {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
+            internalType: 'uint256',
+            name: 'feePrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'minFee',
+            type: 'uint256',
           },
         ],
-        internalType: 'struct IFillerMarket.SettlementParams',
+        internalType: 'struct IFillerMarket.SettlementParamsV3',
         name: 'settlementParams',
         type: 'tuple',
       },

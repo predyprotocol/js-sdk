@@ -60,18 +60,23 @@ export const GammaTradeMarketQuoterABI = [
             type: 'uint64',
           },
           {
+            internalType: 'uint256',
+            name: 'positionId',
+            type: 'uint256',
+          },
+          {
             internalType: 'address',
             name: 'entryTokenAddress',
             type: 'address',
           },
           {
             internalType: 'int256',
-            name: 'tradeAmount',
+            name: 'quantity',
             type: 'int256',
           },
           {
             internalType: 'int256',
-            name: 'tradeAmountSqrt',
+            name: 'quantitySqrt',
             type: 'int256',
           },
           {
@@ -80,34 +85,76 @@ export const GammaTradeMarketQuoterABI = [
             type: 'int256',
           },
           {
-            internalType: 'uint256',
-            name: 'hedgeInterval',
-            type: 'uint256',
+            internalType: 'bool',
+            name: 'closePosition',
+            type: 'bool',
           },
           {
-            internalType: 'uint256',
-            name: 'sqrtPriceTrigger',
-            type: 'uint256',
+            internalType: 'int256',
+            name: 'limitValue',
+            type: 'int256',
           },
           {
-            internalType: 'uint64',
-            name: 'minSlippageTolerance',
-            type: 'uint64',
+            internalType: 'uint8',
+            name: 'leverage',
+            type: 'uint8',
           },
           {
-            internalType: 'uint64',
-            name: 'maxSlippageTolerance',
-            type: 'uint64',
-          },
-          {
-            internalType: 'address',
-            name: 'validatorAddress',
-            type: 'address',
-          },
-          {
-            internalType: 'bytes',
-            name: 'validationData',
-            type: 'bytes',
+            components: [
+              {
+                internalType: 'bool',
+                name: 'isEnabled',
+                type: 'bool',
+              },
+              {
+                internalType: 'uint64',
+                name: 'expiration',
+                type: 'uint64',
+              },
+              {
+                internalType: 'uint256',
+                name: 'lowerLimit',
+                type: 'uint256',
+              },
+              {
+                internalType: 'uint256',
+                name: 'upperLimit',
+                type: 'uint256',
+              },
+              {
+                internalType: 'uint32',
+                name: 'hedgeInterval',
+                type: 'uint32',
+              },
+              {
+                internalType: 'uint32',
+                name: 'sqrtPriceTrigger',
+                type: 'uint32',
+              },
+              {
+                internalType: 'uint32',
+                name: 'minSlippageTolerance',
+                type: 'uint32',
+              },
+              {
+                internalType: 'uint32',
+                name: 'maxSlippageTolerance',
+                type: 'uint32',
+              },
+              {
+                internalType: 'uint16',
+                name: 'auctionPeriod',
+                type: 'uint16',
+              },
+              {
+                internalType: 'uint32',
+                name: 'auctionRange',
+                type: 'uint32',
+              },
+            ],
+            internalType: 'struct GammaModifyInfo',
+            name: 'modifyInfo',
+            type: 'tuple',
           },
         ],
         internalType: 'struct GammaOrder',
@@ -128,7 +175,12 @@ export const GammaTradeMarketQuoterABI = [
           },
           {
             internalType: 'uint256',
-            name: 'maxQuoteAmount',
+            name: 'maxQuoteAmountPrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'minQuoteAmountPrice',
             type: 'uint256',
           },
           {
@@ -137,17 +189,22 @@ export const GammaTradeMarketQuoterABI = [
             type: 'uint256',
           },
           {
-            internalType: 'int256',
-            name: 'fee',
-            type: 'int256',
+            internalType: 'uint256',
+            name: 'feePrice',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'minFee',
+            type: 'uint256',
           },
         ],
-        internalType: 'struct IFillerMarket.SettlementParams',
+        internalType: 'struct IFillerMarket.SettlementParamsV3',
         name: 'settlementData',
         type: 'tuple',
       },
     ],
-    name: 'quoteExecuteOrder',
+    name: 'quoteTrade',
     outputs: [
       {
         components: [

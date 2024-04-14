@@ -46,8 +46,9 @@ export const GAMMA_ORDER_TYPES = {
 
 export const GAMMA_ORDER_PERMIT2_TYPES = {
   PermitWitnessTransferFrom: PERMIT_WITNESS_TRANSFER_FROM_TYPES('GammaOrder'),
-  // TODO: OrderInfo: ORDER_INFO_TYPES, is required?
-  GammaOrder: GAMMA_ORDER_TYPES,
+  GammaOrder: GAMMA_ORDER_TYPES_SINGLE,
+  GammaModifyInfo: GAMMA_MODIFY_INFO_TYPES,
+  OrderInfo: ORDER_INFO_TYPES,
   TokenPermissions: TOKEN_PERMISSION_TYPES,
 } as const
 

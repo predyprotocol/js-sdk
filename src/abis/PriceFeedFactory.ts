@@ -1,5 +1,16 @@
 export const PriceFeedFactoryABI = [
   {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'pyth',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -10,9 +21,9 @@ export const PriceFeedFactoryABI = [
       },
       {
         indexed: false,
-        internalType: 'address',
-        name: 'basePrice',
-        type: 'address',
+        internalType: 'bytes32',
+        name: 'priceId',
+        type: 'bytes32',
       },
       {
         indexed: false,
@@ -38,9 +49,9 @@ export const PriceFeedFactoryABI = [
         type: 'address',
       },
       {
-        internalType: 'address',
-        name: 'basePrice',
-        type: 'address',
+        internalType: 'bytes32',
+        name: 'priceId',
+        type: 'bytes32',
       },
       {
         internalType: 'uint256',

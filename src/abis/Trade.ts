@@ -40,4 +40,29 @@ export const TradeABI = [
     name: 'T',
     type: 'error',
   },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'pairId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'int256',
+        name: 'settledQuoteAmount',
+        type: 'int256',
+      },
+      {
+        indexed: false,
+        internalType: 'int256',
+        name: 'settledBaseAmount',
+        type: 'int256',
+      },
+    ],
+    name: 'Swapped',
+    type: 'event',
+  },
 ] as const

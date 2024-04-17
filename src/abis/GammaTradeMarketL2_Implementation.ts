@@ -1,6 +1,11 @@
 export const GammaTradeMarketL2_ImplementationABI = [
   {
     inputs: [],
+    name: 'AlreadyClosed',
+    type: 'error',
+  },
+  {
+    inputs: [],
     name: 'AutoCloseTriggerNotMatched',
     type: 'error',
   },
@@ -17,6 +22,11 @@ export const GammaTradeMarketL2_ImplementationABI = [
   {
     inputs: [],
     name: 'DeadlinePassed',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'DeltaIsZero',
     type: 'error',
   },
   {
@@ -41,6 +51,11 @@ export const GammaTradeMarketL2_ImplementationABI = [
   },
   {
     inputs: [],
+    name: 'MarginUpdateMustBeZero',
+    type: 'error',
+  },
+  {
+    inputs: [],
     name: 'OutOfAcceptablePriceRange',
     type: 'error',
   },
@@ -61,7 +76,7 @@ export const GammaTradeMarketL2_ImplementationABI = [
   },
   {
     inputs: [],
-    name: 'SignerISNotPositionOwner',
+    name: 'SignerIsNotPositionOwner',
     type: 'error',
   },
   {
@@ -558,6 +573,11 @@ export const GammaTradeMarketL2_ImplementationABI = [
         internalType: 'bool',
         name: 'closeRequired',
         type: 'bool',
+      },
+      {
+        internalType: 'uint256',
+        name: 'resultPositionId',
+        type: 'uint256',
       },
     ],
     stateMutability: 'view',

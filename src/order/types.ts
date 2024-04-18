@@ -89,8 +89,8 @@ export interface GammaOrderParams {
   quantity: bigint
   quantitySqrt: bigint
   marginAmount: bigint
-  closePosition: boolean
-  limitValue: bigint
+  baseSqrtPrice: bigint
+  slippageTolerance: number
   leverage: number
   modifyInfo: GammaModifyInfo
 }

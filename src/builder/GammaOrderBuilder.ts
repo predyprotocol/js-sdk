@@ -15,7 +15,8 @@ export class GammaOrderBuilder {
       quantity: 0n,
       quantitySqrt: 0n,
       marginAmount: 0n,
-      closePosition: false,
+      baseSqrtPrice: 0n,
+      slippageTolerance: 0,
       leverage: 1,
       modifyInfo: {
         isEnabled: false,
@@ -106,8 +107,14 @@ export class GammaOrderBuilder {
     return this
   }
 
-  closePosition(closePosition: boolean): GammaOrderBuilder {
-    this.gammaOrder.closePosition = closePosition
+  baseSqrtPrice(baseSqrtPrice: bigint): GammaOrderBuilder {
+    this.gammaOrder.baseSqrtPrice = baseSqrtPrice
+
+    return this
+  }
+
+  slippageTolerance(slippageTolerance: number): GammaOrderBuilder {
+    this.gammaOrder.slippageTolerance = slippageTolerance
 
     return this
   }

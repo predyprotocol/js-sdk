@@ -15,8 +15,8 @@ describe('GammaOrder', () => {
           quantity: ZERO,
           quantitySqrt: ZERO,
           marginAmount: ZERO,
-          limitValue: ZERO,
-          closePosition: false,
+          baseSqrtPrice: ZERO,
+          slippageTolerance: 0,
           leverage: 1,
           modifyInfo: {
             isEnabled: false,
@@ -58,8 +58,8 @@ describe('GammaOrder', () => {
           quantity: 0n,
           quantitySqrt: 0n,
           marginAmount: 0n,
-          closePosition: false,
-          limitValue: 0n,
+          baseSqrtPrice: 0n,
+          slippageTolerance: 0,
           leverage: 1,
           info: {
             market: ZERO_ADDRESS,
@@ -94,8 +94,8 @@ describe('GammaOrder', () => {
           quantity: ZERO,
           quantitySqrt: ZERO,
           marginAmount: ZERO,
-          limitValue: ZERO,
-          closePosition: false,
+          baseSqrtPrice: ZERO,
+          slippageTolerance: 0,
           leverage: 1,
           info: {
             market: ZERO_ADDRESS,
@@ -138,8 +138,8 @@ describe('GammaOrder', () => {
           quantity: ZERO,
           quantitySqrt: ZERO,
           marginAmount: ZERO,
-          limitValue: ZERO,
-          closePosition: false,
+          baseSqrtPrice: ZERO,
+          slippageTolerance: 3,
           leverage: 1,
           modifyInfo: {
             isEnabled: false,
@@ -163,9 +163,14 @@ describe('GammaOrder', () => {
         1
       )
 
+      const modifyParams = order.getOptimizedModifyData()
+      expect(modifyParams).toEqual(
+        '0x0006000000000007000000050000000400000003000000020000000000000001'
+      )
+
       const params = order.getOptimizedData()
       expect(params).toEqual(
-        '0x0006000000000007000000050000000400000003000000020000000000000001'
+        '0x000000000000000000000001000000030000000000000001000000000000000a'
       )
     })
   })

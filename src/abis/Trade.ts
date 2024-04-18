@@ -51,6 +51,18 @@ export const TradeABI = [
       },
       {
         indexed: false,
+        internalType: 'uint256',
+        name: 'vaultId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+      {
+        indexed: false,
         internalType: 'int256',
         name: 'settledQuoteAmount',
         type: 'int256',

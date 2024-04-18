@@ -32,8 +32,8 @@ const GAMMA_ORDER_TYPES_SINGLE = [
   { name: 'quantity', type: 'int256' },
   { name: 'quantitySqrt', type: 'int256' },
   { name: 'marginAmount', type: 'int256' },
-  { name: 'closePosition', type: 'bool' },
-  { name: 'limitValue', type: 'int256' },
+  { name: 'baseSqrtPrice', type: 'uint256' },
+  { name: 'slippageTolerance', type: 'uint32' },
   { name: 'leverage', type: 'uint8' },
   { name: 'modifyInfo', type: 'GammaModifyInfo' },
 ]
@@ -73,8 +73,8 @@ const GAMMA_ORDER_ABI = [
       { name: 'quantity', type: 'int256' },
       { name: 'quantitySqrt', type: 'int256' },
       { name: 'marginAmount', type: 'int256' },
-      { name: 'closePosition', type: 'bool' },
-      { name: 'limitValue', type: 'int256' },
+      { name: 'baseSqrtPrice', type: 'uint256' },
+      { name: 'slippageTolerance', type: 'uint32' },
       { name: 'leverage', type: 'uint8' },
       {
         name: 'modifyInfo',
@@ -132,8 +132,8 @@ export class GammaOrder {
       quantity: this.gammaOrder.quantity,
       quantitySqrt: this.gammaOrder.quantitySqrt,
       marginAmount: this.gammaOrder.marginAmount,
-      closePosition: this.gammaOrder.closePosition,
-      limitValue: this.gammaOrder.limitValue,
+      baseSqrtPrice: this.gammaOrder.baseSqrtPrice,
+      slippageTolerance: this.gammaOrder.slippageTolerance,
       leverage: this.gammaOrder.leverage,
       modifyInfo: this.gammaOrder.modifyInfo,
     }
@@ -178,15 +178,13 @@ export class GammaOrder {
     return {
       trader: this.gammaOrder.info.trader,
       nonce: this.gammaOrder.info.nonce,
-      deadline: this.gammaOrder.info.deadline,
       positionId: this.gammaOrder.positionId,
       quantity: this.gammaOrder.quantity,
       quantitySqrt: this.gammaOrder.quantitySqrt,
       marginAmount: this.gammaOrder.marginAmount,
-      closePosition: this.gammaOrder.closePosition,
-      limitValue: this.gammaOrder.limitValue,
-      leverage: this.gammaOrder.leverage,
+      baseSqrtPrice: this.gammaOrder.baseSqrtPrice,
       param: this.getOptimizedData(),
+      modifyParam: this.getOptimizedModifyData(),
       lowerLimit: this.gammaOrder.modifyInfo.lowerLimit,
       upperLimit: this.gammaOrder.modifyInfo.upperLimit,
     }
@@ -198,13 +196,26 @@ export class GammaOrder {
       nonce: this.gammaOrder.info.nonce,
       deadline: this.gammaOrder.info.deadline,
       positionId: this.gammaOrder.positionId,
-      param: this.getOptimizedData(),
+      param: this.getOptimizedModifyData(),
       lowerLimit: this.gammaOrder.modifyInfo.lowerLimit,
       upperLimit: this.gammaOrder.modifyInfo.upperLimit,
     }
   }
 
   getOptimizedData() {
+    return utils.solidityPack(
+      ['uint88', 'uint8', 'uint32', 'uint64', 'uint64'],
+      [
+        0,
+        this.gammaOrder.leverage,
+        this.gammaOrder.slippageTolerance,
+        this.gammaOrder.pairId,
+        this.gammaOrder.info.deadline,
+      ]
+    ) as Bytes
+  }
+
+  getOptimizedModifyData() {
     return utils.solidityPack(
       [
         'uint16',

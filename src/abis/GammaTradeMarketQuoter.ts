@@ -85,14 +85,14 @@ export const GammaTradeMarketQuoterABI = [
             type: 'int256',
           },
           {
-            internalType: 'bool',
-            name: 'closePosition',
-            type: 'bool',
+            internalType: 'uint256',
+            name: 'baseSqrtPrice',
+            type: 'uint256',
           },
           {
-            internalType: 'int256',
-            name: 'limitValue',
-            type: 'int256',
+            internalType: 'uint32',
+            name: 'slippageTolerance',
+            type: 'uint32',
           },
           {
             internalType: 'uint8',

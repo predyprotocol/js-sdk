@@ -3,6 +3,7 @@ import { abs, sqrt } from '../utils'
 export const Q96 = 2n ** 96n
 const ONE_1E8 = 100000000n
 const RISK_RATIO = 100995049n
+// 0.2%
 const DEBT_RISK_RATIO = 200000n
 
 export class Position {

@@ -670,9 +670,14 @@ export const PredyPoolABI = [
           {
             components: [
               {
-                internalType: 'uint256',
+                internalType: 'uint128',
                 name: 'riskRatio',
-                type: 'uint256',
+                type: 'uint128',
+              },
+              {
+                internalType: 'uint128',
+                name: 'debtRiskRatio',
+                type: 'uint128',
               },
               {
                 internalType: 'int24',
@@ -1185,9 +1190,14 @@ export const PredyPoolABI = [
           {
             components: [
               {
-                internalType: 'uint256',
+                internalType: 'uint128',
                 name: 'riskRatio',
-                type: 'uint256',
+                type: 'uint128',
+              },
+              {
+                internalType: 'uint128',
+                name: 'debtRiskRatio',
+                type: 'uint128',
               },
               {
                 internalType: 'int24',
@@ -1529,9 +1539,14 @@ export const PredyPoolABI = [
       {
         components: [
           {
-            internalType: 'uint256',
+            internalType: 'uint128',
             name: 'riskRatio',
-            type: 'uint256',
+            type: 'uint128',
+          },
+          {
+            internalType: 'uint128',
+            name: 'debtRiskRatio',
+            type: 'uint128',
           },
           {
             internalType: 'int24',

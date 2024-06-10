@@ -3,16 +3,17 @@ import { abs, sqrt } from '../utils'
 export const Q96 = 2n ** 96n
 const ONE_1E8 = 100000000n
 const RISK_RATIO = 100995049n
-// 0.2%
-const DEBT_RISK_RATIO = 200000n
+// 0.02%
+const DEBT_RISK_RATIO = 20000n
 
 export class Position {
   constructor(
     public stable: bigint,
     public squart: bigint,
     public underlying: bigint,
-    public riskRatio: bigint = RISK_RATIO
-  ) {}
+    public riskRatio: bigint = RISK_RATIO,
+    public debtRiskRatio: bigint = DEBT_RISK_RATIO
+  ) { }
 
   calculateLiquidationPrice1(margin: bigint) {
     return computePrice(this.calculateLiquidationSqrtPrice1(margin))
@@ -71,7 +72,7 @@ export class Position {
     const minValue = this.calculateMinValue(sqrtPrice)
     const positionValue = this.calculateValue(sqrtPrice)
     const minMinDeposit =
-      (this.calculateSquartDebt(sqrtPrice) * DEBT_RISK_RATIO) / ONE_1E8
+      (this.calculateSquartDebt(sqrtPrice) * this.debtRiskRatio) / ONE_1E8
 
     return positionValue - minValue + minMinDeposit
   }
